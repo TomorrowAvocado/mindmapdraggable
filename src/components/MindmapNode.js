@@ -35,9 +35,9 @@ class MindmapNode extends Component {
                     width={this.state.nodeWidth + this.state.strokeWidth*2} /* Default width plus room for border */
                     height={this.state.nodeHeight + this.state.strokeWidth*2} /* Default height plus room for border */
                     >
-                        <div style={{
+                        <div className="mindMapNode" style={{
                             backgroundColor: this.state.fill,
-                            borderStyle: "solid",
+                             borderStyle: "solid",
                             borderColor: this.state.strokeColor,
                             borderWidth: this.state.strokeWidth
                             }}>

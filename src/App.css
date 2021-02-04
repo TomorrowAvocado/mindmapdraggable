@@ -4,15 +4,14 @@
 }
 
 .mindMapNode {
-  margin: 0 auto;
-  padding: 20px;
-  border-width: 6px;
+  border-width: 3px;
   border: solid;
-  max-width: min-content;
-  font-size: 20pt;
-  font-weight: bold;
-  background-color: #fff;
+  border-radius: 20px;
 }
+.mindMapNode:hover {
+  box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+}
+
 .selectedNode {
   color: red;
 }
