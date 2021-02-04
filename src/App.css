@@ -16,3 +16,8 @@
 .selectedNode {
   color: red;
 }
+
+foreignObject { 
+  /* Allow border to wrap around content when content grows */
+  overflow: visible; 
+}

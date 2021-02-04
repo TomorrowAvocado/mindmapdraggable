@@ -31,7 +31,10 @@ class MindmapNode extends Component {
         return (
             <Draggable>
                 <g>
-                    <foreignObject x="0" y="0" width={this.state.nodeWidth + this.state.strokeWidth*2} height={this.state.nodeHeight + this.state.strokeWidth*2}>
+                    <foreignObject x="0" y="0" 
+                    width={this.state.nodeWidth + this.state.strokeWidth*2} /* Default width plus room for border */
+                    height={this.state.nodeHeight + this.state.strokeWidth*2} /* Default height plus room for border */
+                    >
                         <div style={{
                             backgroundColor: this.state.fill,
                             borderStyle: "solid",
