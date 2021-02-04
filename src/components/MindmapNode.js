@@ -18,16 +18,26 @@ import Draggable from 'react-draggable';
 
 
 class MindmapNode extends Component {
+    state = {
+        nodeWidth: 200,
+        nodeHeight: 150,
+        strokeColor: "green",
+        strokeWidth: 3,
+        fill: "white",
+    }
+
     render() {
-        let nodeHeight = 150;
-        let nodeWidth = 200;
-        let fill = "white";
+
         return (
             <Draggable>
                 <g>
-                    <rect width={nodeWidth} height={nodeHeight} stroke="green" stroke-width="3" fill={fill} />
-                    <foreignObject x="0" y="0" width="200" height={nodeHeight}>
-                        <div >
+                    <foreignObject x="0" y="0" width={this.state.nodeWidth + this.state.strokeWidth*2} height={this.state.nodeHeight + this.state.strokeWidth*2}>
+                        <div style={{
+                            backgroundColor: this.state.fill,
+                            borderStyle: "solid",
+                            borderColor: this.state.strokeColor,
+                            borderWidth: this.state.strokeWidth
+                            }}>
                             <h1 contentEditable="true">{this.props.node.title}</h1>
                         </div>
                     </foreignObject>
