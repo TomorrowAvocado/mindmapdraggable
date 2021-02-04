@@ -1,5 +1,5 @@
 .App {
-/*   text-align: center; */
+  text-align: center;
 /*   height: 100%; */
 }
 
@@ -15,8 +15,4 @@
 }
 .selectedNode {
   color: red;
-}
-
-div {
-  max-width: min-content;
 }
