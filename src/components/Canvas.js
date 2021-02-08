@@ -26,7 +26,7 @@ state = { nodes: [{
     title: "node two",
     nodeWidth: 200,
     nodeHeight: 1,
-    strokeColor: "green",
+    strokeColor: "orange",
     strokeWidth: 3,
     fill: "white",
     isSelected: false,
@@ -63,7 +63,7 @@ handleSelected = (id) => {
         return (
             <svg width="100vw" height="100vh" viewBox="0 0 100vw 100vh" >
                 {this.state.nodes.map(node =>
-                    <svg>
+                    <svg className="overflow">
                         <MindmapNode node={node} key={node.id} createNewNode={this.createNewNode} handleSelected={this.handleSelected} />
                     </svg>
                 )}

@@ -21,7 +21,9 @@ class MindmapNode extends Component {
                             <button
                                 style={{
                                     visibility: this.state.buttonVisible ? "visible" : "hidden",
-                                    borderColor: this.props.node.strokeColor
+                                    backgroundColor: this.props.node.strokeColor,
+                                    border: "none",
+                                    color: "white"
                                 }}
                                 className="createNodeBtn"
                                 onClick={this.props.createNewNode}>+</button>
@@ -29,8 +31,9 @@ class MindmapNode extends Component {
                                 onClick={this.props.handleSelected.bind(this, this.props.node.id)}
                                 className="mindMapNode"
                                 style={this.props.node.isSelected ? {
-                                    borderColor: "blue",
+                                    boxShadow: "0 0 5px blue",
                                     backgroundColor: this.props.node.fill,
+                                    borderColor: this.props.node.strokeColor,
                                 } : {
                                         backgroundColor: this.props.node.fill,
                                         borderStyle: "solid",

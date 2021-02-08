@@ -20,8 +20,9 @@ foreignObject {
   border-style: solid;
   border-radius: 100%;
   position: fixed; /* Button is placed inside node */
-  margin: 4px;
+  margin: 6px;
+  font-size: 12pt;
 }
 .createNodeBtn:hover {
-  box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+  transform: scale(1.2);
 }
