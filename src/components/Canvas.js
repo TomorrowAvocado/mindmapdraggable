@@ -20,6 +20,7 @@ state = { nodes: [{
     strokeColor: "green",
     strokeWidth: 3,
     fill: "white",
+    
  },
 ]}
 
