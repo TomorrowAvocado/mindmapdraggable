@@ -22,6 +22,6 @@ foreignObject {
   position: fixed; /* Button is placed inside node */
   margin: 4px;
 }
-/* .createNodeBtn:hover {
+.createNodeBtn:hover {
   box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
-} */
+}
