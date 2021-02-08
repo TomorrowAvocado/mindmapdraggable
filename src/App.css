@@ -22,6 +22,7 @@ foreignObject {
   position: fixed; /* Button is placed inside node */
   margin: 6px;
   font-size: 12pt;
+  transition: all .15s ease-in;
 }
 .createNodeBtn:hover {
   transform: scale(1.2);
