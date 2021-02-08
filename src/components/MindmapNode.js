@@ -29,7 +29,7 @@ class MindmapNode extends Component {
     render() {
 
         return (
-            <Draggable>
+            <Draggable cancel="h2">
                 <g>
                     <foreignObject x="0" y="0" 
                     width={this.state.nodeWidth + this.state.strokeWidth*2} /* Default width plus room for border */
@@ -37,11 +37,12 @@ class MindmapNode extends Component {
                     >
                         <div className="mindMapNode" style={{
                             backgroundColor: this.state.fill,
-                             borderStyle: "solid",
+                            borderStyle: "solid",
                             borderColor: this.state.strokeColor,
                             borderWidth: this.state.strokeWidth
                             }}>
-                            <h1 contentEditable="true">{this.props.node.title}</h1>
+                            <button className="createNodeBtn">+</button>
+                            <h2 onSelect={e => console.log("get text value")} contentEditable="true">{this.props.node.title}</h2>
                         </div>
                     </foreignObject>
                 </g>

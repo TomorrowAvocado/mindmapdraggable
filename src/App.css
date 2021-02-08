@@ -1,9 +1,8 @@
 .App {
-  text-align: center;
-/*   height: 100%; */
+background-color: rgb(254, 254, 255);
 }
-
 .mindMapNode {
+  text-align: center;
   border-width: 3px;
   border: solid;
   border-radius: 20px;
@@ -19,4 +18,12 @@
 foreignObject { 
   /* Allow border to wrap around content when content grows */
   overflow: visible; 
+}
+
+.createNodeBtn {
+  border-style: solid;
+  border-radius: 100%;
+}
+.createNodeBtn:hover {
+  box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
 }
