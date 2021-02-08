@@ -2,21 +2,6 @@ import { render } from '@testing-library/react';
 import React, { Component } from 'react'
 import Draggable from 'react-draggable';
 
-
-
-
-/*         const Node = ({node, selected, onClick }) => {
-
-            return (
-                <Draggable>
-                    <div onClick={onClick} className={selected ? "mindMapNode" : "selectedNode"} contentEditable="true">
-                        {this.props.node.title}
-                    </div>
-                </Draggable>
-            )
-    } */
-
-
 class MindmapNode extends Component {
     state = {
         nodeWidth: 200,
