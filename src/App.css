@@ -11,10 +11,6 @@ background-color: rgb(254, 254, 255);
   box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
 }
 
-.selectedNode {
-  color: red;
-}
-
 foreignObject { 
   /* Allow border to wrap around content when content grows */
   overflow: visible; 
@@ -23,7 +19,9 @@ foreignObject {
 .createNodeBtn {
   border-style: solid;
   border-radius: 100%;
+  position: fixed; /* Button is placed inside node */
+  margin: 4px;
 }
-.createNodeBtn:hover {
+/* .createNodeBtn:hover {
   box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
-}
+} */

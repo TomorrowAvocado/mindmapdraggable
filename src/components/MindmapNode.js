@@ -19,13 +19,21 @@ class MindmapNode extends Component {
                     >
                         <div onMouseEnter={e => this.setState({buttonVisible: true})} onMouseLeave={e => this.setState({buttonVisible: false})}>
                             <button style={this.state.buttonVisible ? {visibility: "visible"} : {visibility: "hidden"} } className="createNodeBtn" onClick={this.props.createNewNode}>+</button>
-                            <div className="mindMapNode" style={{
+                            <div 
+                            onClick={this.props.handleSelected.bind(this, this.props.node.id)} 
+                            className="mindMapNode" 
+                            style={this.props.node.isSelected ? {
+                                borderColor:"blue",
                                 backgroundColor: this.props.node.fill,
-                                borderStyle: "solid",
-                                borderColor: this.props.node.strokeColor,
-                                borderWidth: this.props.node.strokeWidth
-                                }}>
-                                <h2 onSelect={e => console.log("get text value")} contentEditable="true">{this.props.node.title}</h2>
+                                } : {
+                                    backgroundColor: this.props.node.fill,
+                                    borderStyle: "solid",
+                                    borderColor: this.props.node.strokeColor,
+                                    borderWidth: this.props.node.strokeWidth
+                                }
+                            }
+                                >
+                                <h2 onClick={e => console.log("get text value")} contentEditable="true">{this.props.node.title}</h2>
                             </div>
                         </div>
                     </foreignObject>
