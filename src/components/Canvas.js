@@ -24,7 +24,8 @@ state = { nodes: [{
  },
 ]}
 
-createNewNode = () => {
+createNewNode = (dimensions) => {
+    console.log("Dimensions: ", dimensions);
     const newNode = {
         title: "node one",
         nodeWidth: 200,
@@ -32,7 +33,9 @@ createNewNode = () => {
         strokeColor: "green",
         strokeWidth: 3,
         fill: "white",
+        parentDimensions: dimensions
     }
+    console.log("PARENT DIMS", dimensions);
     this.setState({nodes: [...this.state.nodes, newNode]})
 };
 
@@ -41,7 +44,7 @@ createNewNode = () => {
             <svg width="100vw" height="100vh" viewBox="0 0 100vw 100vh">
                 {this.state.nodes.map(node =>
                     <svg>
-                        <MindmapNode node={node} createNewNode={this.createNewNode} />
+                        <MindmapNode node={node} createNewNode={this.createNewNode.bind()} />
                     </svg>
                 )}
             </svg>

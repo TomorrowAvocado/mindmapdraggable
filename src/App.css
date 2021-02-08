@@ -6,6 +6,7 @@ background-color: rgb(254, 254, 255);
   border-width: 3px;
   border: solid;
   border-radius: 20px;
+  padding: 0 20px;
 }
 .mindMapNode:hover {
   box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
@@ -26,4 +27,8 @@ foreignObject {
 }
 .createNodeBtn:hover {
   box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+}
+
+[contenteditable] {
+  outline: 0px solid transparent;
 }
