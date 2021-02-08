@@ -43,7 +43,6 @@ class MindmapNode extends Component {
         console.log("PARENT State: ", this.state.parentDimensions);
         console.log("THIS State: ", this.state.containerDimensions);
         return (
-<<<<<<< HEAD
             <Draggable cancel="h2" onStop={this.updateDimensions.bind(this)}>
                 <g >
                     <line 
@@ -57,31 +56,16 @@ class MindmapNode extends Component {
                     height={this.props.node.nodeHeight + this.props.node.strokeWidth*2} // Default height plus room for border 
                     >
                         <div ref={this.nodeRef} onMouseEnter={e => this.setState({buttonVisible: true})} onMouseLeave={e => setTimeout(() => {this.setState({buttonVisible: false})}, 200) }>
-                            <button style={this.state.buttonVisible ? {visibility: "visible"} : {visibility: "collapse"} } className="createNodeBtn" onClick={this.props.createNewNode.bind(this, this.state.containerDimensions)}>+</button>
-                            <div className="mindMapNode" style={{
-                                backgroundColor: this.props.node.fill,
-                                borderStyle: "solid",
-                                borderColor: this.props.node.strokeColor,
-                                borderWidth: this.props.node.strokeWidth
-                                }}>
-                                <h2 onSelect={e => console.log("get text value")} contentEditable="true">{this.props.node.title}</h2>
-=======
-            <Draggable cancel="h2">
-                <g>
-                    <foreignObject x="40vw" y="40vh"
-                        width={this.props.node.nodeWidth + this.props.node.strokeWidth * 2} /* Default width plus room for border */
-                        height={this.props.node.nodeHeight + this.props.node.strokeWidth * 2} /* Default height plus room for border */
-                    >
-                        <div onMouseEnter={e => this.setState({ buttonVisible: true })} onMouseLeave={e => this.setState({ buttonVisible: false })}>
-                            <button
+                            <button 
                                 style={{
                                     visibility: this.state.buttonVisible ? "visible" : "hidden",
                                     backgroundColor: this.props.node.strokeColor,
                                     border: "none",
                                     color: "white"
-                                }}
-                                className="createNodeBtn"
-                                onClick={this.props.createNewNode}>+</button>
+                                }} 
+                                className="createNodeBtn" 
+                                onClick={this.props.createNewNode.bind(this, this.state.containerDimensions)}>+</button>
+                    
                             <div
                                 onClick={this.props.handleSelected.bind(this, this.props.node.id)}
                                 className="mindMapNode"
@@ -98,7 +82,6 @@ class MindmapNode extends Component {
                                 }
                             >
                                 <h2 onClick={e => console.log("get text value")} contentEditable="true">{this.props.node.title}</h2>
->>>>>>> origin/master
                             </div>
                         </div>
                     </foreignObject>
