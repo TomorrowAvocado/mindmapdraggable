@@ -13,7 +13,7 @@ class MindmapNode extends Component {
                     width={this.props.node.nodeWidth + this.props.node.strokeWidth*2} /* Default width plus room for border */
                     height={this.props.node.nodeHeight + this.props.node.strokeWidth*2} /* Default height plus room for border */
                     >
-                        <button className="createNodeBtn" onSubmit={this.props.createNewNode}>+</button>
+                        <button className="createNodeBtn" onClick={this.props.createNewNode}>+</button>
                         <div className="mindMapNode" style={{
                             backgroundColor: this.props.node.fill,
                             borderStyle: "solid",

@@ -24,9 +24,15 @@ state = { nodes: [{
 ]}
 
 createNewNode = () => {
-    const newNode = {title: "new node"}
+    const newNode = {
+        title: "node one",
+        nodeWidth: 200,
+        nodeHeight: 150,
+        strokeColor: "green",
+        strokeWidth: 3,
+        fill: "white",
+    }
     this.setState({nodes: [...this.state.nodes, newNode]})
-    console.log()
 };
 
     render() {
