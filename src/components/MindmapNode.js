@@ -11,12 +11,13 @@ const MindmapNode = (props) => {
                 width={props.node.nodeWidth + props.node.strokeWidth*2} // Default width plus room for border 
                 height={props.node.nodeHeight + props.node.strokeWidth*2} // Default height plus room for border 
                 >
-                    <div onMouseEnter={props.hover}>
+                    <div onMouseEnter={props.mouseEnter} onMouseLeave={props.mouseLeave}>
                         <button 
                             style={{
                                 backgroundColor: props.node.strokeColor,
                                 border: "none",
-                                color: "white"
+                                color: "white",
+                                visibility: props.node.buttonVisible
                             }} 
                             className="createNodeBtn" 
                             onClick={props.plusBtnClicked}>+</button>

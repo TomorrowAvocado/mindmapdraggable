@@ -69,9 +69,6 @@ createNewNode = (parentIndex) => {
         nodes: [...this.state.nodes, newNode], 
         edges: [...this.state.edges, newEdge]
     })
-
-    
-
     // Set new node as selected 
     this.handleSelected(newNode.id) 
     console.log("Parent: ", newNode.parentId)
@@ -84,12 +81,28 @@ handleSelected = (nodeIndex) => {
         }
         else
         node.isSelected = false;
-    })) 
+    }))
 }
 
-handleNodeHover = (e) => {
+handleNodeHover = (node) => {
     this.setState({buttonVisible: true})
 }
+
+handleMouseEnterNode = (nodeIndex) => {
+    this.setState(this.state.nodes.map( (node, index) => {
+        if (index === nodeIndex ) {
+            node.buttonVisible = "visible";
+        }
+    }))
+}
+handleMouseLeaveNode = (nodeIndex) => {
+    this.setState(this.state.nodes.map( (node, index) => {
+        if (index === nodeIndex ) {
+            node.buttonVisible = "hidden";
+        }
+    }))
+}
+
     render() {
         return (
             <svg width="100vw" height="100vh" >
@@ -105,7 +118,8 @@ handleNodeHover = (e) => {
                         <MindmapNode 
                             key={node.id} 
                             node={node} 
-                            hover={this.handleNodeHover} 
+                            mouseEnter={this.handleMouseEnterNode.bind(this, index)} 
+                            mouseLeave={this.handleMouseLeaveNode.bind(this, index)}
                             plusBtnClicked={this.createNewNode.bind(this, index)} 
                             handleSelected={this.handleSelected.bind(this, index)} />
                         
