@@ -11,27 +11,19 @@ const getId = () => {
 
 class Canvas extends Component {
 
-state = { nodes: [{ 
-    id: 1,
-    title: "node one",
-    nodeWidth: 200,
-    nodeHeight: 1,
-    strokeColor: "green",
-    strokeWidth: 3,
-    fill: "white",
-    isSelected: false,
-}, 
-    { 
-    id: 2,
-    title: "node two",
-    nodeWidth: 200,
-    nodeHeight: 1,
-    strokeColor: "orange",
-    strokeWidth: 3,
-    fill: "white",
-    isSelected: false,
- },
-]}
+state = { 
+    nodes: [{ 
+        id: 1,
+        title: "node one",
+        nodeWidth: 200,
+        nodeHeight: 1,
+        strokeColor: "green",
+        strokeWidth: 3,
+        fill: "white",
+        isSelected: false,
+    }],
+    edges: [{}]
+}
 
 createNewNode = (dimensions) => {
     console.log("Dimensions: ", dimensions);
