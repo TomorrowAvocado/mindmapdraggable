@@ -1,5 +1,5 @@
 import { getByTestId } from '@testing-library/react';
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import { useState } from "react";
 import MindmapEdge from './MindmapEdge';
 import MindmapNode from './MindmapNode'
@@ -12,6 +12,11 @@ const getId = () => {
 
 
 class Canvas extends Component {
+
+    constructor(props) {
+        super(props);
+        this.nodeRef = createRef();
+    }
 
     state = { 
         nodes: [{ 
@@ -131,7 +136,7 @@ class Canvas extends Component {
                 {this.state.nodes.map((node, index) =>
                     <svg>
                         <MindmapNode 
-                            key={node.id} 
+                            key={node.id}
                             node={node} 
                             mouseEnter={this.handleMouseEnterNode.bind(this, index)} 
                             mouseLeave={this.handleMouseLeaveNode.bind(this, index)}

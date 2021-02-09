@@ -4,10 +4,8 @@ import Draggable from 'react-draggable';
 
 const MindmapNode = (props) => {
 
-    const nodeRef = createRef();
-    console.log(props.node.buttonVisible);
     return (
-        <Draggable cancel="h2" onDrag={props.dragStopped} onStop={props.dragStopped}>
+        <Draggable cancel="h2" onStop={props.dragStopped}>
             <g >
                 <foreignObject x={props.node.x} y={props.node.y}
                 width={props.node.nodeWidth + props.node.strokeWidth*2} // Default width plus room for border 
