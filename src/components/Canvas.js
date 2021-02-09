@@ -22,7 +22,7 @@ class Canvas extends Component {
             strokeWidth: 3,
             fill: "white",
             isSelected: false,
-            buttonVisible: "visible",
+            buttonVisible: "hidden",
             x: 500,
             y: 500,
             nodeWidth: 200,
@@ -45,7 +45,7 @@ class Canvas extends Component {
             strokeWidth: 3,
             fill: "white",
             isSelected: true,
-            buttonVisible: "visible",
+            buttonVisible: "hidden",
             x: newX,
             y: newY,
             nodeWidth: 200,
@@ -84,10 +84,6 @@ class Canvas extends Component {
         })) 
     }
 
-    handleNodeHover = (e) => {
-        this.setState({buttonVisible: "visible"})
-    }
-
     handleDragNodeRelease = (e, data, draggedNodeIndex) => {
         console.log(data);
         const repositionedNode = this.state.nodes[draggedNodeIndex];
@@ -97,6 +93,30 @@ class Canvas extends Component {
         });
     }
 
+    handleSelected = (nodeIndex) => {
+        this.setState(this.state.nodes.map( (node, index) => {
+            if (index === nodeIndex ) {
+                node.isSelected = true;
+            }
+            else
+            node.isSelected = false;
+        }))
+    }
+
+    handleMouseEnterNode = (nodeIndex) => {
+        this.setState(this.state.nodes.map( (node, index) => {
+            if (index === nodeIndex ) {
+                node.buttonVisible = "visible";
+            }
+        }))
+    }
+    handleMouseLeaveNode = (nodeIndex) => {
+        this.setState(this.state.nodes.map( (node, index) => {
+            if (index === nodeIndex ) {
+                node.buttonVisible = "hidden";
+            }
+        }))
+    }
 
     render() {
         return (
@@ -113,7 +133,8 @@ class Canvas extends Component {
                         <MindmapNode 
                             key={node.id} 
                             node={node} 
-                            hover={this.handleNodeHover} 
+                            mouseEnter={this.handleMouseEnterNode.bind(this, index)} 
+                            mouseLeave={this.handleMouseLeaveNode.bind(this, index)}
                             plusBtnClicked={this.createNewNode.bind(this, index)} 
                             handleSelected={this.handleSelected.bind(this, index)}
                             dragStopped={this.handleDragNodeRelease.bind(this, index)}
