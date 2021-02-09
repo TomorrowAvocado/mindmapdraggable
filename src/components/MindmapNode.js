@@ -4,19 +4,22 @@ import Draggable from 'react-draggable';
 
 const MindmapNode = (props) => {
 
+    const nodeRef = createRef();
+    console.log(props.node.buttonVisible);
     return (
-        <Draggable cancel="h2" onStop={console.log("Mindmap node stopped dragging")}>
-            <g>
+        <Draggable cancel="h2" onDrag={props.dragStopped} onStop={props.dragStopped}>
+            <g >
                 <foreignObject x={props.node.x} y={props.node.y}
                 width={props.node.nodeWidth + props.node.strokeWidth*2} // Default width plus room for border 
                 height={props.node.nodeHeight + props.node.strokeWidth*2} // Default height plus room for border 
                 >
-                    <div onMouseEnter={props.hover}>
+                    <div ref={nodeRef} onMouseEnter={props.hover}>
                         <button 
                             style={{
                                 backgroundColor: props.node.strokeColor,
                                 border: "none",
-                                color: "white"
+                                color: "white",
+                                visibility: props.node.buttonVisible
                             }} 
                             className="createNodeBtn" 
                             onClick={props.plusBtnClicked}>+</button>
