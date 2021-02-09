@@ -101,7 +101,7 @@ handleNodeHover = (e) => {
                     </svg>
                 )}
                 {this.state.nodes.map((node, index) =>
-                    <svg className="overflow">
+                    <svg>
                         <MindmapNode 
                             key={node.id} 
                             node={node} 
