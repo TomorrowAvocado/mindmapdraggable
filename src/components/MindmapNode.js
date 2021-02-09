@@ -36,7 +36,13 @@ const MindmapNode = (props) => {
                                 }
                             }
                         >
-                            <h2 onClick={e => console.log("get text value")} contentEditable="true">{props.node.title}</h2>
+                            <h2 
+                                onClick={e => console.log("get text value")} 
+                                contentEditable="true"
+                                suppressContentEditableWarning={true}
+                            >
+                                    {props.node.title}
+                            </h2>
                         </div>
                     </div>
                 </foreignObject>

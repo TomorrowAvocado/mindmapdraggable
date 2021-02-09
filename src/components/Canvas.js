@@ -1,6 +1,7 @@
 import { getByTestId } from '@testing-library/react';
 import React, { Component } from 'react'
 import { useState } from "react";
+import MindmapEdge from './MindmapEdge';
 import MindmapNode from './MindmapNode'
 
 let idCounter = 3
@@ -9,14 +10,14 @@ const getId = () => {
     return idCounter;
 }
 
+
 class Canvas extends Component {
 
 state = { 
     nodes: [{ 
         id: 1,
+        parentId: 0,
         title: "node one",
-        nodeWidth: 200,
-        nodeHeight: 1,
         strokeColor: "green",
         strokeWidth: 3,
         fill: "white",
@@ -24,30 +25,56 @@ state = {
         buttonVisible: "hidden",
         x: 500,
         y: 500,
-        centerX: 0,
-        centerY: 0,
+        nodeWidth: 200,
+        nodeHeight: 100,
+        centerX: 600,
+        centerY: 550,
         containerDimensions: null,
         parentDimensions: null
     }],
     edges: [{}]
 }
 
-createNewNode = (parentId) => {
+createNewNode = (parentIndex) => {
      const newNode = {
         id: getId(),
-        parentId: parentId,
+        parentId: this.state.nodes[parentIndex].id,
         title: "node two",
-        nodeWidth: 200,
-        nodeHeight: 1,
         strokeColor: "green",
         strokeWidth: 3,
         fill: "white",
-        parentDimensions: 0,
-        isSelected: true
+        isSelected: true,
+        buttonVisible: "hidden",
+        x: 500,
+        y: 500,
+        nodeWidth: 200,
+        nodeHeight: 100,
+        centerX: 600,
+        centerY: 550,
+        containerDimensions: null,
+        parentDimensions: null
     }
-    this.setState({nodes: [...this.state.nodes, newNode]})
+
+    const newEdge = {
+        id: getId(),
+        parentId: newNode.parentId,
+        childId: newNode.id,
+        x1: newNode.centerX, 
+        y1: newNode.centerY,
+        x2: 0,
+        y2: 0
+    }
+
+    this.setState({
+        nodes: [...this.state.nodes, newNode], 
+        edges: [...this.state.edges, newEdge]
+    })
+
+    
+
     // Set new node as selected 
     this.handleSelected(newNode.id) 
+    console.log("Parent: ", newNode.parentId)
 };
 
 handleSelected = (nodeIndex) => {
@@ -65,7 +92,14 @@ handleNodeHover = (e) => {
 }
     render() {
         return (
-            <svg width="100vw" height="100vh" viewBox="0 0" preserveAspectRatio="xMaxYmin slice">
+            <svg width="100vw" height="100vh" >
+                {this.state.edges.map((edge) =>
+                    <svg >
+                        <MindmapEdge 
+                            key={edge.id} 
+                            edge={edge} />                        
+                    </svg>
+                )}
                 {this.state.nodes.map((node, index) =>
                     <svg className="overflow">
                         <MindmapNode 
@@ -74,6 +108,7 @@ handleNodeHover = (e) => {
                             hover={this.handleNodeHover} 
                             plusBtnClicked={this.createNewNode.bind(this, index)} 
                             handleSelected={this.handleSelected.bind(this, index)} />
+                        
                     </svg>
                 )}
             </svg>
