@@ -11,8 +11,8 @@ class MindmapNode extends Component {
 
     state = {
         buttonVisible: false,
-        x: "40vw",
-        y: "40vh",
+        x: "800",
+        y: "350",
         centerX: 0,
         centerY: 0,
         containerDimensions: null,

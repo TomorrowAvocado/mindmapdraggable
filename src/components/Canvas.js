@@ -64,7 +64,7 @@ handleSelected = (id) => {
 
     render() {
         return (
-            <svg width="100vw" height="100vh" viewBox="0 0 100vw 100vh" >
+            <svg width="100vw" height="100vh" viewBox="0 0" >
                 {this.state.nodes.map(node =>
                     <svg className="overflow">
                         <MindmapNode node={node} key={node.id} createNewNode={this.createNewNode} handleSelected={this.handleSelected} />
