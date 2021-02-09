@@ -84,10 +84,6 @@ handleSelected = (nodeIndex) => {
     }))
 }
 
-handleNodeHover = (node) => {
-    this.setState({buttonVisible: true})
-}
-
 handleMouseEnterNode = (nodeIndex) => {
     this.setState(this.state.nodes.map( (node, index) => {
         if (index === nodeIndex ) {
