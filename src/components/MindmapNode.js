@@ -19,10 +19,10 @@ const MindmapNode = (props) => {
                                 color: "white"
                             }} 
                             className="createNodeBtn" 
-                            onClick={props.createNewNode.bind(props.node.id)}>+</button>
+                            onClick={props.plusBtnClicked}>+</button>
                 
                         <div
-                            onClick={props.handleSelected(props.node.id)}
+                            onClick={props.handleSelected}
                             className="mindMapNode"
                             style={props.node.isSelected ? {
                                 boxShadow: "0 0 5px blue",

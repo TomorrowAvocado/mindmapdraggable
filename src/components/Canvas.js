@@ -33,7 +33,7 @@ state = {
 }
 
 createNewNode = (parentId) => {
-    const newNode = {
+     const newNode = {
         id: getId(),
         parentId: parentId,
         title: "node two",
@@ -46,18 +46,18 @@ createNewNode = (parentId) => {
         isSelected: true
     }
     this.setState({nodes: [...this.state.nodes, newNode]})
-    /* Set new node as selected */
-    this.handleSelected(newNode.id)
+    // Set new node as selected 
+    this.handleSelected(newNode.id) 
 };
 
-handleSelected = (id) => {
-    this.setState(this.state.nodes.map( node => {
-        if (node.id === id ) {
+handleSelected = (nodeIndex) => {
+    this.setState(this.state.nodes.map( (node, index) => {
+        if (index === nodeIndex ) {
             node.isSelected = true;
         }
         else
         node.isSelected = false;
-    }))
+    })) 
 }
 
 handleNodeHover = (e) => {
@@ -66,9 +66,14 @@ handleNodeHover = (e) => {
     render() {
         return (
             <svg width="100vw" height="100vh" viewBox="0 0" preserveAspectRatio="xMaxYmin slice">
-                {this.state.nodes.map(node =>
+                {this.state.nodes.map((node, index) =>
                     <svg className="overflow">
-                        <MindmapNode node={node} hover={this.handleNodeHover} key={node.id} createNewNode={this.createNewNode} handleSelected={this.handleSelected} />
+                        <MindmapNode 
+                            key={node.id} 
+                            node={node} 
+                            hover={this.handleNodeHover} 
+                            plusBtnClicked={this.createNewNode.bind(this, index)} 
+                            handleSelected={this.handleSelected.bind(this, index)} />
                     </svg>
                 )}
             </svg>
