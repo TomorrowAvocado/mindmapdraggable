@@ -1,11 +1,11 @@
 
 import './App.css';
-import Canvas from './components/Canvas';
+import ZoomableWrapper from './components/ZoomableWrapper';
 
 const App = () => {
   return (
     <div className="App">
-      <Canvas/>
+      <ZoomableWrapper/>
     </div>
   );
 }
