@@ -45,13 +45,6 @@ class MindmapNode extends Component {
         return (
             <Draggable cancel="h2" onStop={this.updateDimensions.bind(this)}>
                 <g >
-                    <line 
-                    x1={this.state.centerX} 
-                    y1={this.state.centerY} 
-                    x2={this.state.parentDimensions ? (this.state.parentDimensions.x + this.state.parentDimensions.width * 5) : "500"} 
-                    y2={this.state.parentDimensions ? (this.state.parentDimensions.y + this.state.parentDimensions.height * 2) : "200"} strokeWidth="2" stroke="black"
-                    />
-
                     <foreignObject x={this.state.x} y={this.state.y}
                     width={this.props.node.nodeWidth + this.props.node.strokeWidth*2} // Default width plus room for border 
                     height={this.props.node.nodeHeight + this.props.node.strokeWidth*2} // Default height plus room for border 
