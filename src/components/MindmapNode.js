@@ -11,8 +11,8 @@ class MindmapNode extends Component {
 
     state = {
         buttonVisible: false,
-        x: "40vw",
-        y: "40vh",
+        x: "500",
+        y: "500",
         centerX: 0,
         centerY: 0,
         containerDimensions: null,
@@ -49,9 +49,10 @@ class MindmapNode extends Component {
                     x1={this.state.centerX} 
                     y1={this.state.centerY} 
                     x2={this.state.parentDimensions ? (this.state.parentDimensions.x + this.state.parentDimensions.width * 5) : "500"} 
-                    y2={this.state.parentDimensions ? (this.state.parentDimensions.y + this.state.parentDimensions.height * 2) : "200"} strokeWidth="2" stroke="black"/>
+                    y2={this.state.parentDimensions ? (this.state.parentDimensions.y + this.state.parentDimensions.height * 2) : "200"} strokeWidth="2" stroke="black"
+                    />
 
-                    <foreignObject x={this.state.x} y={this.state.y} 
+                    <foreignObject x={this.state.x} y={this.state.y}
                     width={this.props.node.nodeWidth + this.props.node.strokeWidth*2} // Default width plus room for border 
                     height={this.props.node.nodeHeight + this.props.node.strokeWidth*2} // Default height plus room for border 
                     >
