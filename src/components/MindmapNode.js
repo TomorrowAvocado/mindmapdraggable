@@ -5,9 +5,16 @@ import Draggable from 'react-draggable';
 const MindmapNode = (props) => {
 
     return (
-        <Draggable cancel="h2" onDrag={(e) => console.log(e.target.getBoundingClientRect())} onStop={props.dragStopped}>
-            <g >
-                <foreignObject x={props.node.x} y={props.node.y}
+        <Draggable cancel="h2" 
+            onDrag={(e) => console.log(e.target.getBoundingClientRect())} 
+            onStop={props.dragStopped}>
+            <g>
+                <rect 
+                x={props.node.x} y={props.node.y}
+                width={props.node.nodeWidth + props.node.strokeWidth*2} // Default width plus room for border 
+                height={props.node.nodeHeight + props.node.strokeWidth*2} 
+                style={{fill: "red"}} />
+                {/* <foreignObject x={props.node.x} y={props.node.y}
                 width={props.node.nodeWidth + props.node.strokeWidth*2} // Default width plus room for border 
                 height={props.node.nodeHeight + props.node.strokeWidth*2} // Default height plus room for border 
                 >
@@ -46,7 +53,7 @@ const MindmapNode = (props) => {
                             </h2>
                         </div>
                     </div>
-                </foreignObject>
+                </foreignObject> */}
             </g>
         </Draggable>
         

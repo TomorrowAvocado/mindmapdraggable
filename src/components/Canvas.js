@@ -13,11 +13,6 @@ const getId = () => {
 
 class Canvas extends Component {
 
-    constructor(props) {
-        super(props);
-        this.nodeRef = createRef();
-    }
-
     state = { 
         nodes: [{ 
             id: 1,
