@@ -36,12 +36,17 @@ class Canvas extends Component {
     }
 
     createNewNode = (parentIndex) => {
+
+        const newId = getId();
         const newX = this.state.nodes[parentIndex].x + 200;
         const newY = this.state.nodes[parentIndex].y - 200;
-        const newId = getId();
-
         const newWidth = this.state.nodes[parentIndex].nodeWidth * 0.8;
         const newHeight = this.state.nodes[parentIndex].nodeHeight * 0.8;
+        const newCenterX = newX + newWidth / 2;
+        const newCenterY = newY + newHeight / 2;
+
+        console.log("Incoming coords: ", this.state.nodes[parentIndex].x, this.state.nodes[parentIndex].y );
+        console.log("New coords: ", newX, newY);
 
         const newNode = {
             id: newId,
@@ -56,8 +61,8 @@ class Canvas extends Component {
             y: newY,
             nodeWidth: newWidth,
             nodeHeight: newHeight,
-            centerX: newX + 100,
-            centerY: newY + 50,
+            centerX: newCenterX,
+            centerY: newCenterY,
             incomingEdgeId: 0,
             outgoingEdgeId: 0
         }
@@ -99,23 +104,28 @@ class Canvas extends Component {
 
         const updatedNode = {...this.state.nodes[draggedNodeIndex] }
 
+        /* console.log("element: ", e.target)
         console.log(containerDimensions);
-        console.log("x,y: ", updatedNode.x, updatedNode.y);
+        console.log(containerDimensions.x, containerDimensions.y);
+        console.log("x,y: ", updatedNode.x, updatedNode.y);  */
 
         updatedNode.x = containerDimensions.x;
         updatedNode.y = containerDimensions.y;
         updatedNode.centerX = updatedNode.x + containerDimensions.width / 2
         updatedNode.centerY = updatedNode.y + containerDimensions.height / 2
 
-        console.log("X,Y: ", updatedNode.x, updatedNode.y);
-        console.log("cX,cY:", updatedNode.centerX, updatedNode.centerY);
+        /* console.log("X,Y: ", updatedNode.x, updatedNode.y);
+        console.log("cX,cY:", updatedNode.centerX, updatedNode.centerY); */
 
         const nodes = [...this.state.nodes];
         nodes[draggedNodeIndex] = updatedNode;
 
         if(updatedNode.incomingEdgeId !== 0) {
-            const updatedEdgeIndex = this.state.edges.findIndex(edge => {return edge.id === updatedNode.incomingEdgeId});
+            const updatedEdgeIndex = this.state.edges.findIndex(edge => {
+                return edge.id === updatedNode.incomingEdgeId
+            });
             const edge = { ...this.state.edges[updatedEdgeIndex]}
+
             edge.x1 = updatedNode.centerX;
             edge.y1 = updatedNode.centerY;
             const edges = [...this.state.edges];
@@ -124,9 +134,7 @@ class Canvas extends Component {
                 edges: edges
             })
         }
-
-        
-
+         
         this.setState({
             nodes: nodes
         })
@@ -169,14 +177,12 @@ class Canvas extends Component {
         return (
             <svg width="100vw" height="100vh" >
                 {this.state.edges.map((edge) =>
-                    <svg >
                         <MindmapEdge 
                             key={edge.id} 
-                            edge={edge} />                        
-                    </svg>
+                            edge={edge} />   
                 )}
                 {this.state.nodes.map((node, index) =>
-                    <svg>
+                   
                         <MindmapNode 
                             key={node.id}
                             node={node} 
@@ -186,7 +192,6 @@ class Canvas extends Component {
                             handleSelected={this.handleSelected.bind(this, index)}
                             dragStopped={this.handleDragNodeRelease.bind(this, index)}
                         />
-                    </svg>
                 )}
             </svg>
         )
