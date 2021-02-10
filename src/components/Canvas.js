@@ -8,6 +8,8 @@ import croc from "../assets\\img/croc.png";
 import squirrel from "../assets\\img/squirrel.png";
 import lion from "../assets\\img/lion.png";
 import rhino from "../assets\\img/rhino.png";
+import menuDummy from "../assets\\img/menu_dummy.png";
+
 
 let idCounter = 3
 const getId = () => {
@@ -34,12 +36,12 @@ class Canvas extends Component {
             fill: "white",
             isSelected: false,
             buttonVisible: "hidden",
-            x: 500,
-            y: 500,
+            x: window.innerWidth / 2 - 120,
+            y: window.innerHeight / 2 - 100,
             nodeWidth: 200,
             nodeHeight: 100,
-            centerX: 600,
-            centerY: 550,
+            centerX: window.innerWidth / 2 - 20,
+            centerY: window.innerHeight / 2 - 50,
             incomingEdgeId: 0,
             outgoingEdges: []
         }],
@@ -137,7 +139,11 @@ class Canvas extends Component {
     handleDragNode = (draggedNodeIndex, e) => {
 
         // Get bounding rectangle from dragged node
-        const containerDimensions = e.target.parentElement.getBoundingClientRect();
+        let containerDimensions;
+        if(e.target.parentElement) {
+            containerDimensions = e.target.parentElement.getBoundingClientRect();
+        }
+        
 
         const updatedNode = {...this.state.nodes[draggedNodeIndex] }
 
@@ -226,7 +232,8 @@ class Canvas extends Component {
     render() {
         return (
             <div>
-            <svg width="100vw" height="100vh" >
+            <img style={{position: "absolute", zIndex:"999"}} src={menuDummy}/>
+            <svg width="100vw" height="99.5vh" >
                 {this.state.edges.map((edge) =>
                         <MindmapEdge 
                             key={edge.id} 
@@ -246,8 +253,8 @@ class Canvas extends Component {
                 )}
             </svg>
             <div style={{
-                position: "fixed", top: 0, left: 0, 
-                width: "20px", height: "20px", zIndex: "9999"}} 
+                position: "absolute", top: 0, right: 0, 
+                width: "2.2vw", height: "2.2vw", zIndex: "9999"}} 
                 onClick={() => {withImages = !withImages}}></div>
             </div>
         )
