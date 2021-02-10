@@ -30,7 +30,8 @@ foreignObject {
   border-style: solid;
   border-radius: 100%;
   position: fixed; /* Button is placed inside node */
-  margin: 6px;
+  top: 9px;
+  right: 9px;
   font-size: 12pt;
   transition: all .15s ease-in;
   transform: scale(1.2);

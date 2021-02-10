@@ -17,7 +17,7 @@ class Canvas extends Component {
         nodes: [{ 
             id: 1,
             parentId: 0,
-            title: "node one",
+            title: "Main node",
             strokeColor: "green",
             strokeWidth: 3,
             fill: "white",
@@ -36,6 +36,8 @@ class Canvas extends Component {
     }
 
     createNewNode = (parentIndex) => {
+        const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+
         const parentNode = this.state.nodes[parentIndex];
         console.log(parentNode.nodeWidth, parentNode.nodeHeight);
         const newId = getId();
@@ -54,8 +56,8 @@ class Canvas extends Component {
         const newNode = {
             id: newId,
             parentId: parentNode.id,
-            title: ("node " + newId),
-            strokeColor: "green",
+            title: ("Node " + newId),
+            strokeColor: randomColor,
             strokeWidth: 3,
             fill: "white",
             isSelected: true,
@@ -104,9 +106,11 @@ class Canvas extends Component {
     }
 
     handleDragNodeRelease = (draggedNodeIndex, e) => {
-        const containerDimensions = e.target.getBoundingClientRect();
+        const containerDimensions = e.target.parentElement.getBoundingClientRect();
 
         const updatedNode = {...this.state.nodes[draggedNodeIndex] }
+
+        console.log(containerDimensions);
         console.log(this.state.nodes[draggedNodeIndex]);
         console.log("containerdimensions w x h: ", containerDimensions.width, containerDimensions.height );
         /* console.log("element: ", e.target)
@@ -116,8 +120,8 @@ class Canvas extends Component {
 
         updatedNode.x = containerDimensions.x;
         updatedNode.y = containerDimensions.y;
-        updatedNode.centerX = updatedNode.x + updatedNode.nodeWidth / 2
-        updatedNode.centerY = updatedNode.y + updatedNode.nodeHeight / 2
+        updatedNode.centerX = containerDimensions.x + updatedNode.nodeWidth / 2
+        updatedNode.centerY = containerDimensions.y + updatedNode.nodeHeight / 2
 
         /* console.log("X,Y: ", updatedNode.x, updatedNode.y);
         console.log("cX,cY:", updatedNode.centerX, updatedNode.centerY); */
