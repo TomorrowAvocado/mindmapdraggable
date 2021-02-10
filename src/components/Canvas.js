@@ -33,7 +33,9 @@ class Canvas extends Component {
             nodeWidth: 200,
             nodeHeight: 100,
             centerX: 600,
-            centerY: 550
+            centerY: 550,
+            incomingEdgeId: 0,
+            outgoingEdgeId: 0
         }],
         edges: [{}]
     }
@@ -42,6 +44,10 @@ class Canvas extends Component {
         const newX = this.state.nodes[parentIndex].x + 200;
         const newY = this.state.nodes[parentIndex].y - 200;
         const newId = getId();
+
+        const newWidth = this.state.nodes[parentIndex].nodeWidth * 0.8;
+        const newHeight = this.state.nodes[parentIndex].nodeHeight * 0.8;
+
         const newNode = {
             id: newId,
             parentId: this.state.nodes[parentIndex].id,
@@ -53,12 +59,14 @@ class Canvas extends Component {
             buttonVisible: "hidden",
             x: newX,
             y: newY,
-            nodeWidth: 200,
-            nodeHeight: 100,
+            nodeWidth: newWidth,
+            nodeHeight: newHeight,
             centerX: newX + 100,
-            centerY: newY + 50
+            centerY: newY + 50,
+            incomingEdgeId: 0,
+            outgoingEdgeId: 0
         }
-
+        
         const newEdge = {
             id: getId(),
             parentId: newNode.parentId,
@@ -68,6 +76,8 @@ class Canvas extends Component {
             x2: this.state.nodes[parentIndex].centerX,
             y2: this.state.nodes[parentIndex].centerY
         }
+        
+        newNode.incomingEdgeId = newEdge.id;
 
         this.setState({
             nodes: [...this.state.nodes, newNode], 
@@ -89,13 +99,42 @@ class Canvas extends Component {
         })) 
     }
 
-    handleDragNodeRelease = (e, data, draggedNodeIndex) => {
-        console.log(data);
-        const repositionedNode = this.state.nodes[draggedNodeIndex];
-        //repositionedNode.x = repositionedNode
+    handleDragNodeRelease = (draggedNodeIndex, e) => {
+        const containerDimensions = e.target.getBoundingClientRect();
+
+        const updatedNode = {...this.state.nodes[draggedNodeIndex] }
+
+        console.log(containerDimensions);
+        console.log("x,y: ", updatedNode.x, updatedNode.y);
+
+        updatedNode.x = containerDimensions.x;
+        updatedNode.y = containerDimensions.y;
+        updatedNode.centerX = updatedNode.x + containerDimensions.width / 2
+        updatedNode.centerY = updatedNode.y + containerDimensions.height / 2
+
+        console.log("X,Y: ", updatedNode.x, updatedNode.y);
+        console.log("cX,cY:", updatedNode.centerX, updatedNode.centerY);
+
+        const nodes = [...this.state.nodes];
+        nodes[draggedNodeIndex] = updatedNode;
+
+        if(updatedNode.incomingEdgeId !== 0) {
+            const updatedEdgeIndex = this.state.edges.findIndex(edge => {return edge.id === updatedNode.incomingEdgeId});
+            const edge = { ...this.state.edges[updatedEdgeIndex]}
+            edge.x1 = updatedNode.centerX;
+            edge.y1 = updatedNode.centerY;
+            const edges = [...this.state.edges];
+            edges[draggedNodeIndex] = edge;
+            this.setState({
+                edges: edges
+            })
+        }
+
+        
+
         this.setState({
-            
-        });
+            nodes: nodes
+        })
     }
 
     handleSelected = (nodeIndex) => {
@@ -121,6 +160,14 @@ class Canvas extends Component {
                 node.buttonVisible = "hidden";
             }
         }))
+    }
+
+    updateDimensions(e) {
+        const containerDimensions = e.target.getBoundingClientRect();
+        console.log(containerDimensions);
+        this.setState({
+            containerDimensions: containerDimensions
+        })
     }
 
     render() {
