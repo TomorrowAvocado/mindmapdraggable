@@ -20,6 +20,12 @@ background-color: rgb(254, 254, 255);
 foreignObject { 
   /* Allow border to wrap around content when content grows */
   overflow: visible; 
+  
+  box-sizing: border-box;
+}
+
+foreignObject div {
+  box-sizing: border-box;
 }
 
 

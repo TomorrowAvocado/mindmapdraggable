@@ -17,6 +17,7 @@ const MindmapNode = (props) => {
         >
             <foreignObject 
                 x={dim.x} y={dim.y}
+                /* x={props.node.x} y={props.node.y} */
                 width={props.node.nodeWidth + props.node.strokeWidth*2} // Default width plus room for border 
                 height={props.node.nodeHeight + props.node.strokeWidth*2} // Default height plus room for border 
             >

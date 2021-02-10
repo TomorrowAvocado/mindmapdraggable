@@ -18,7 +18,7 @@ class Canvas extends Component {
             id: 1,
             parentId: 0,
             title: "Main node",
-            strokeColor: "green",
+            strokeColor: "black",
             strokeWidth: 3,
             fill: "white",
             isSelected: false,
@@ -36,28 +36,31 @@ class Canvas extends Component {
     }
 
     createNewNode = (parentIndex) => {
-        const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
 
+        const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
         const parentNode = this.state.nodes[parentIndex];
-        console.log(parentNode.nodeWidth, parentNode.nodeHeight);
+
+        // Set Id and dimensions for new node
         const newId = getId();
-        const newX = parentNode.x + 200;
-        const newY = parentNode.y - 200;
+        const newX = parentNode.x + 150;
+        const newY = parentNode.y - 100;
         const newWidth = parentNode.nodeWidth * 0.8;
         const newHeight = parentNode.nodeHeight * 0.8;
         const newCenterX = newX + newWidth / 2;
         const newCenterY = newY + newHeight / 2;
 
-        console.log("Parent position: ", parentNode.x, parentNode.y );
+        /* console.log("Parent position: ", parentNode.x, parentNode.y );
         console.log("Parent center: ", parentNode.centerX, parentNode.centerY);
         console.log("Child position: ", newX, newY);
-        console.log("Child dimensions: ", newWidth, newHeight, newCenterX, newCenterY);
+        console.log("Child dimensions: ", newWidth, newHeight, newCenterX, newCenterY); */
 
+
+        // Create child node and set values
         const newNode = {
             id: newId,
             parentId: parentNode.id,
             title: ("Node " + newId),
-            strokeColor: randomColor,
+            strokeColor: "#555",
             strokeWidth: 3,
             fill: "white",
             isSelected: true,
@@ -72,6 +75,7 @@ class Canvas extends Component {
             outgoingEdges: []
         }
         
+        // Create edge from parent node to child node
         const newEdge = {
             id: getId(),
             parentId: newNode.parentId,
@@ -82,9 +86,11 @@ class Canvas extends Component {
             y2: parentNode.centerY
         }
         
+        // Set reference to edge in parent and child node
         newNode.incomingEdgeId = newEdge.id;
         parentNode.outgoingEdges.push(newEdge.id);
 
+        // Add new node and edge to mindmap data
         this.setState({
             nodes: [...this.state.nodes, newNode], 
             edges: [...this.state.edges, newEdge]
@@ -94,6 +100,8 @@ class Canvas extends Component {
         this.handleSelected(newNode.id) 
         console.log("Parent: ", newNode.parentId)
     };
+
+
 
     handleSelected = (nodeIndex) => {
         this.setState(this.state.nodes.map( (node, index) => {
@@ -105,40 +113,38 @@ class Canvas extends Component {
         })) 
     }
 
-    handleDragNodeRelease = (draggedNodeIndex, e) => {
+
+
+    handleDragNode = (draggedNodeIndex, e) => {
+
+        // Get bounding rectangle from dragged node
         const containerDimensions = e.target.parentElement.getBoundingClientRect();
 
         const updatedNode = {...this.state.nodes[draggedNodeIndex] }
 
-        console.log(containerDimensions);
-        console.log(this.state.nodes[draggedNodeIndex]);
-        console.log("containerdimensions w x h: ", containerDimensions.width, containerDimensions.height );
-        /* console.log("element: ", e.target)
-        console.log(containerDimensions);
-        console.log(containerDimensions.x, containerDimensions.y);
-        console.log("x,y: ", updatedNode.x, updatedNode.y);  */
+        console.log("initial x,y: ", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
+        console.log("containerdims: ", containerDimensions.x, containerDimensions.y, containerDimensions.width, containerDimensions.height);
 
         updatedNode.x = containerDimensions.x;
         updatedNode.y = containerDimensions.y;
         updatedNode.centerX = containerDimensions.x + updatedNode.nodeWidth / 2
         updatedNode.centerY = containerDimensions.y + updatedNode.nodeHeight / 2
 
-        /* console.log("X,Y: ", updatedNode.x, updatedNode.y);
-        console.log("cX,cY:", updatedNode.centerX, updatedNode.centerY); */
+        console.log("updated dimensions:", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
 
         const nodes = [...this.state.nodes];
         nodes[draggedNodeIndex] = updatedNode;
 
         if(updatedNode.incomingEdgeId !== 0) {
+
             const updatedEdgeIndex = this.state.edges.findIndex(edge => {
                 return edge.id === updatedNode.incomingEdgeId
             });
-            const edge = { ...this.state.edges[updatedEdgeIndex]}
 
+            const edge = { ...this.state.edges[updatedEdgeIndex]}
             edge.x1 = updatedNode.centerX;
             edge.y1 = updatedNode.centerY;
 
-           
             const edges = [...this.state.edges];
             edges[draggedNodeIndex] = edge;
 
@@ -147,17 +153,18 @@ class Canvas extends Component {
             })
         }
 
-        console.log("updated node outgoingEdgeId", updatedNode.outgoingEdges);
-
         if(updatedNode.outgoingEdges) {
+
             updatedNode.outgoingEdges.map(edgeId => {
+
                 const edgeIndex = this.state.edges.findIndex(e => { return e.id === edgeId})
                 console.log(edgeIndex);
                 this.state.edges[edgeIndex].x2 = updatedNode.centerX;
                 this.state.edges[edgeIndex].y2 = updatedNode.centerY;
+
             });
+
         }
-        //edges[outgoingIndex] = outgoingEdge
          
         this.setState({
             nodes: nodes
@@ -214,7 +221,7 @@ class Canvas extends Component {
                             mouseLeave={this.handleMouseLeaveNode.bind(this, index)}
                             plusBtnClicked={this.createNewNode.bind(this, index)} 
                             handleSelected={this.handleSelected.bind(this, index)}
-                            dragStopped={this.handleDragNodeRelease.bind(this, index)}
+                            dragStopped={this.handleDragNode.bind(this, index)}
                         />
                 )}
             </svg>
