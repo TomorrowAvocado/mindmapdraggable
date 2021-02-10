@@ -8,12 +8,12 @@ const MindmapNode = (props) => {
         x: props.node.x,
         y: props.node.y
     })
-    console.log("actual coords: ", dim.x, dim.y)
+    //console.log("actual coords: ", dim.x, dim.y)
 
     return (
         <Draggable cancel="h2" 
-            onDrag={(e) => console.log(e.target.getBoundingClientRect())} 
-            onStop={props.dragStopped}
+            /* onDrag={(e) => console.log(e.target.getBoundingClientRect())}  */
+            onDrag={props.dragStopped}
         >
             <foreignObject 
                 x={dim.x} y={dim.y}
