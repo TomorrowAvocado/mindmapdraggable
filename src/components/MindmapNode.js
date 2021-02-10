@@ -10,6 +10,12 @@ const MindmapNode = (props) => {
     })
     //console.log("actual coords: ", dim.x, dim.y)
 
+    let img = null;
+
+    if(props.node.img) {
+        img =  <img src={props.node.img}/>
+    }
+
     return (
         <Draggable cancel="h2" 
             /* onDrag={(e) => console.log(e.target.getBoundingClientRect())}  */
@@ -49,11 +55,13 @@ const MindmapNode = (props) => {
                     >
                         <h2 
                             onClick={e => console.log("get text value")} 
+                            style={{fontSize: props.node.fontsize}}
                             contentEditable="true"
                             suppressContentEditableWarning={true}
                         >
                                 {props.node.title}
                         </h2>
+                        {img}
                     </div>
                 </div>
             </foreignObject>

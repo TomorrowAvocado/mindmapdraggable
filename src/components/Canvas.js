@@ -4,11 +4,20 @@ import { useState } from "react";
 import MindmapEdge from './MindmapEdge';
 import MindmapNode from './MindmapNode'
 
+import croc from "../assets\\img/croc.png";
+import squirrel from "../assets\\img/squirrel.png";
+import lion from "../assets\\img/lion.png";
+import rhino from "../assets\\img/rhino.png";
+
 let idCounter = 3
 const getId = () => {
     idCounter ++;
     return idCounter;
 }
+
+let withImages = false;
+let imageCounter = 0;
+const images = [croc, squirrel, lion, rhino];
 
 
 class Canvas extends Component {
@@ -18,8 +27,10 @@ class Canvas extends Component {
             id: 1,
             parentId: 0,
             title: "Main node",
+            img: null,
             strokeColor: "black",
             strokeWidth: 3,
+            fontsize: "20pt",
             fill: "white",
             isSelected: false,
             buttonVisible: "hidden",
@@ -37,13 +48,19 @@ class Canvas extends Component {
 
     createNewNode = (parentIndex) => {
 
+        let image = null;
+
+        if(withImages) {
+            image = images[imageCounter++];
+        }
+
         const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
         const parentNode = this.state.nodes[parentIndex];
 
         // Set Id and dimensions for new node
         const newId = getId();
-        const newX = parentNode.x + 150;
-        const newY = parentNode.y - 100;
+        const newX = parentNode.x + 200;
+        const newY = parentNode.y - 200;
         const newWidth = parentNode.nodeWidth * 0.8;
         const newHeight = parentNode.nodeHeight * 0.8;
         const newCenterX = newX + newWidth / 2;
@@ -53,15 +70,17 @@ class Canvas extends Component {
         console.log("Parent center: ", parentNode.centerX, parentNode.centerY);
         console.log("Child position: ", newX, newY);
         console.log("Child dimensions: ", newWidth, newHeight, newCenterX, newCenterY); */
-
+    
 
         // Create child node and set values
         const newNode = {
             id: newId,
             parentId: parentNode.id,
             title: ("Node " + newId),
+            img: image,
             strokeColor: "#555",
             strokeWidth: 3,
+            fontsize: "14pt",
             fill: "white",
             isSelected: true,
             buttonVisible: "hidden",
@@ -206,6 +225,7 @@ class Canvas extends Component {
 
     render() {
         return (
+            <div>
             <svg width="100vw" height="100vh" >
                 {this.state.edges.map((edge) =>
                         <MindmapEdge 
@@ -225,6 +245,11 @@ class Canvas extends Component {
                         />
                 )}
             </svg>
+            <div style={{
+                position: "fixed", top: 0, left: 0, 
+                width: "20px", height: "20px", zIndex: "9999"}} 
+                onClick={() => {withImages = !withImages}}></div>
+            </div>
         )
     }
 }
