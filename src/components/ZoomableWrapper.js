@@ -10,7 +10,7 @@ class ZoomableWrapper extends Component {
         }
 
         const panOptions = {
-            disableOnTarget: ["div", "h2"]
+            disableOnTarget: ["div", "h2", "button"]
         }
 
         const wheelOptions = {
