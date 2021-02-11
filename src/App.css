@@ -43,10 +43,10 @@ img {
   right: 9px;
   font-size: 12pt;
   transition: all .15s ease-in;
-  transform: scale(1.2);
 }
 .createNodeBtn:hover {
-  box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+  transform: scale(1.2);
+  cursor: pointer;
 }
 
 [contenteditable] {
