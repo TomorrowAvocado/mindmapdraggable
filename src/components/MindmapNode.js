@@ -44,7 +44,7 @@ const MindmapNode = (props) => {
                         onClick={props.handleSelected}
                         className="mindMapNode"
                         style={props.node.isSelected ? {
-                            boxShadow: "0 0 5px blue",
+                            boxShadow: "0 0 10px blue",
                             backgroundColor: props.node.fill,
                             borderColor: props.node.strokeColor,
                         } : {
