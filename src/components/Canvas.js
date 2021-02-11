@@ -36,7 +36,7 @@ class Canvas extends Component {
             fill: "white",
             isSelected: false,
             buttonVisible: "hidden",
-            x: window.innerWidth / 2 - 120,
+            x: window.innerWidth / 2 - 100,
             y: window.innerHeight / 2 - 100,
             nodeWidth: 200,
             nodeHeight: 100,
