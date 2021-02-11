@@ -20,6 +20,7 @@ const getId = () => {
 let withImages = false;
 let imageCounter = 0;
 const images = [croc, squirrel, lion, rhino];
+let nodeElementBeingDragged = null;
 
 
 class Canvas extends Component {
@@ -122,8 +123,6 @@ class Canvas extends Component {
         console.log("Parent: ", newNode.parentId)
     };
 
-
-
     handleSelected = (nodeIndex) => {
         this.setState(this.state.nodes.map( (node, index) => {
             if (index === nodeIndex ) {
@@ -134,14 +133,25 @@ class Canvas extends Component {
         })) 
     }
 
+    handleDragNodeStart = (e) => {
+        if(e.target.parentElement) {
+            this.nodeElementBeingDragged = e.target.parentElement;
+        }
+    }
 
+    handleOnDragStop = (draggedNodeIndex, e) => {
+        // Handle dragged node one final time after release
+        // to let edges line up
+        this.handleDragNode(draggedNodeIndex, e);
+        nodeElementBeingDragged = null;
+    }
 
     handleDragNode = (draggedNodeIndex, e) => {
 
         // Get bounding rectangle from dragged node
         let containerDimensions;
         if(e.target.parentElement) {
-            containerDimensions = e.target.parentElement.getBoundingClientRect();
+            containerDimensions = this.nodeElementBeingDragged.getBoundingClientRect();
         }
         
 
@@ -248,7 +258,9 @@ class Canvas extends Component {
                             mouseLeave={this.handleMouseLeaveNode.bind(this, index)}
                             plusBtnClicked={this.createNewNode.bind(this, index)} 
                             handleSelected={this.handleSelected.bind(this, index)}
-                            dragStopped={this.handleDragNode.bind(this, index)}
+                            onDragStart={this.handleDragNodeStart.bind(this)}
+                            onDrag={this.handleDragNode.bind(this, index)}
+                            onDragStop={this.handleOnDragStop.bind(this, index)}
                         />
                 )}
             </svg>
