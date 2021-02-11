@@ -217,18 +217,10 @@ class Canvas extends Component {
     }
 
     handleMouseEnterNode = (nodeIndex) => {
-        this.setState(this.state.nodes.map( (node, index) => {
-            if (index === nodeIndex ) {
-                node.buttonVisible = "visible";
-            }
-        }))
+        this.setState({...this.state.nodes[nodeIndex].buttonVisible = "visible"})
     }
     handleMouseLeaveNode = (nodeIndex) => {
-        this.setState(this.state.nodes.map( (node, index) => {
-            if (index === nodeIndex ) {
-                node.buttonVisible = "hidden";
-            }
-        }))
+        this.setState({...this.state.nodes[nodeIndex].buttonVisible = "hidden"})
     }
 
     updateDimensions(e) {
