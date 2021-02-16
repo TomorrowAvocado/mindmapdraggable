@@ -17,7 +17,7 @@ const MindmapNode = (props) => {
     }
 
     return (
-        <Draggable cancel="h2" 
+        <Draggable cancel={props.node.isSelected ? "h2" : null} 
             /* onDrag={(e) => console.log(e.target.getBoundingClientRect())}  */
             onDrag={props.onDrag}
             onStart={props.onDragStart}
@@ -56,9 +56,11 @@ const MindmapNode = (props) => {
                         }
                     >
                         <h2 
-                            onClick={e => console.log("get text value")} 
-                            style={{fontSize: props.node.fontsize}}
-                            contentEditable="true"
+                            style={{
+                                fontSize: props.node.fontsize,
+                                cursor: props.node.isSelected ? "text" : "context-menu",
+                            }}
+                            contentEditable={props.node.isSelected ? "true" : "false"} /* Cursor will not change on hover if node is not selected */
                             suppressContentEditableWarning={true}
                         >
                                 {props.node.title}
