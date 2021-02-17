@@ -18,7 +18,7 @@ const MindmapNode = (props) => {
     }
 
     return (
-        <Draggable cancel={props.node.isSelected ? "h2" : ""} /* TODO: "h2" only when text is onfocus */
+        <Draggable cancel=".focusedText" /* Cancels drag on className="focusedText" */
             /* onDrag={(e) => console.log(e.target.getBoundingClientRect())}  */
             onDrag={props.onDrag}
             onStart={props.onDragStart}
