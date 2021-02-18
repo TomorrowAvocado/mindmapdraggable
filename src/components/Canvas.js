@@ -9,6 +9,7 @@ import squirrel from "../assets\\img/squirrel.png";
 import lion from "../assets\\img/lion.png";
 import rhino from "../assets\\img/rhino.png";
 import menuDummy from "../assets\\img/menu_dummy.png";
+import { dummyMindmapNodes } from '../assets/data/dummyData';
 
 
 let idCounter = 3
@@ -26,26 +27,7 @@ let nodeElementBeingDragged = null;
 class Canvas extends Component {
 
     state = { 
-        nodes: [{ 
-            id: 1,
-            parentId: 0,
-            title: "Main node",
-            img: null,
-            strokeColor: "black",
-            strokeWidth: 3,
-            fontsize: "20pt",
-            fill: "white",
-            isSelected: false,
-            buttonVisible: "hidden",
-            x: window.innerWidth / 2 - 100,
-            y: window.innerHeight / 2 - 100,
-            nodeWidth: 200,
-            nodeHeight: 100,
-            centerX: window.innerWidth / 2 - 20,
-            centerY: window.innerHeight / 2 - 50,
-            incomingEdgeId: 0,
-            outgoingEdges: []
-        }],
+        nodes: dummyMindmapNodes,
         edges: [{}]
     }
 
