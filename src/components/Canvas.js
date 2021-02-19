@@ -27,7 +27,7 @@ let nodeElementBeingDragged = null;
 class Canvas extends Component {
 
     state = { 
-        nodes: dummyMindmapNodes,
+        nodes: this.props.nodes,
         edges: [{}]
     }
 
