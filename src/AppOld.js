@@ -5,7 +5,7 @@ import InitializeMindmap from './Oldcomponents/InitializeMindmap';
 const App = () => {
   return (
     <div className="App">
-      <MindmapApplication />
+      <InitializeMindmap />
     </div>
   );
 }
