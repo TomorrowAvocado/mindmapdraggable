@@ -29,7 +29,7 @@ class MindmapNode extends Component {
 
     createNewNode(x, y) {
         const newNode = {
-            id: getId(),
+            id: getId(), // Temporary solution //// brukes kun for å se forskjell på nodene i debugging.
             x: x,
             y: y,
             children: []
