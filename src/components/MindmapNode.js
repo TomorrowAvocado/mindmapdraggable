@@ -1,7 +1,7 @@
 import Draggable from 'react-draggable';
 import React, { Component } from 'react'
 
-// testing start. (skal bruke denne til testing snart)
+// testing start (Midlertidig løsning)
 let id = 0
 const getId = () => {
     id++
