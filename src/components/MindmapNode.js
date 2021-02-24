@@ -3,6 +3,8 @@ import React, { Component, createRef, ReactDOM, useRef, useState } from 'react'
 import Draggable from 'react-draggable';
 import NodeText from './NodeText';
 
+
+
 const MindmapNode = (props) => {
 
     const [dim, setDim] = useState({

@@ -3,7 +3,7 @@ import { dummyMindmapNodes } from '../assets/data/dummyData';
 import Canvas from './Canvas';
 import axios from 'axios';
 
-const url = "http://localhost:8080/api/mindmaps/"
+const url = "https://bachelor-mindmap-default-rtdb.firebaseio.com/mindmapNodes.json"
 
 class InitializeMindmap extends Component {
   constructor(props) {
@@ -16,11 +16,11 @@ class InitializeMindmap extends Component {
   }
 
   componentDidMount() {
-    axios.get(url + this.state.mindmapId, {timeout: 1000}) // Timeout 1 sec for sake of developing
+    axios.get(url) // Timeout 1 sec for sake of developing
       .then(response => {
         this.setState(
           {
-            nodes: response.data,
+            nodes: Object.values(response.data),
             loading: false
           }
         )
@@ -37,13 +37,14 @@ class InitializeMindmap extends Component {
   }
 
   render() {
-
+    console.log(this.state.nodes)
     const loadingAnimation = <p>Loading...</p>
 
     return (
       this.state.loading ?
-        loadingAnimation :
-        <Canvas nodes={this.state.nodes} />
+        loadingAnimation : this.state.nodes ?
+        <Canvas nodes={this.state.nodes} /> :
+          <p>Could not load data</p>
     );
   }
 }

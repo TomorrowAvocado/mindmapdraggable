@@ -2,7 +2,7 @@ import { getByTestId } from '@testing-library/react';
 import React, { Component, createRef } from 'react'
 import { useState } from "react";
 import MindmapEdge from './MindmapEdge';
-import MindmapNode from './MindmapNode'
+import MindmapNode from './MindmapNodeClean';
 
 import croc from "../assets\\img/croc.png";
 import squirrel from "../assets\\img/squirrel.png";
@@ -34,7 +34,6 @@ class Canvas extends Component {
     createNewNode = (parentIndex) => {
 
         let image = null;
-
         if(withImages) {
             image = images[imageCounter++];
         }
@@ -50,12 +49,6 @@ class Canvas extends Component {
         const newHeight = parentNode.nodeHeight * 0.8;
         const newCenterX = newX + newWidth / 2;
         const newCenterY = newY + newHeight / 2;
-
-        /* console.log("Parent position: ", parentNode.x, parentNode.y );
-        console.log("Parent center: ", parentNode.centerX, parentNode.centerY);
-        console.log("Child position: ", newX, newY);
-        console.log("Child dimensions: ", newWidth, newHeight, newCenterX, newCenterY); */
-    
 
         // Create child node and set values
         const newNode = {
@@ -92,6 +85,9 @@ class Canvas extends Component {
         
         // Set reference to edge in parent and child node
         newNode.incomingEdgeId = newEdge.id;
+        if(!parentNode.outgoingEdges) {
+            parentNode.outgoingEdges = [];
+        }
         parentNode.outgoingEdges.push(newEdge.id);
 
         // Add new node and edge to mindmap data
@@ -188,31 +184,6 @@ class Canvas extends Component {
         })
     }
 
-    handleSelected = (nodeIndex) => {
-        this.setState(this.state.nodes.map( (node, index) => {
-            if (index === nodeIndex ) {
-                node.isSelected = true;
-            }
-            else
-            node.isSelected = false;
-        }))
-    }
-
-    handleMouseEnterNode = (nodeIndex) => {
-        this.setState({...this.state.nodes[nodeIndex].buttonVisible = "visible"})
-    }
-    handleMouseLeaveNode = (nodeIndex) => {
-        this.setState({...this.state.nodes[nodeIndex].buttonVisible = "hidden"})
-    }
-
-    updateDimensions(e) {
-        const containerDimensions = e.target.getBoundingClientRect();
-        console.log(containerDimensions);
-        this.setState({
-            containerDimensions: containerDimensions
-        })
-    }
-
     render() {
         return (
             <div>
@@ -228,8 +199,6 @@ class Canvas extends Component {
                         <MindmapNode 
                             key={node.id}
                             node={node} 
-                            mouseEnter={this.handleMouseEnterNode.bind(this, index)} 
-                            mouseLeave={this.handleMouseLeaveNode.bind(this, index)}
                             plusBtnClicked={this.createNewNode.bind(this, index)} 
                             handleSelected={this.handleSelected.bind(this, index)}
                             onDragStart={this.handleDragNodeStart.bind(this)}
