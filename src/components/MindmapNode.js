@@ -38,13 +38,13 @@ class MindmapNode extends Component {
     }
 
     handlePlusBtnClick() {
-        const newNode = this.createNewNode(this.state.x + 100)
+        const newNode = this.createNewNode(this.state.x + 100, 0)
         // Add new node to children in state
         this.setState({
             children: [...this.state.children, newNode]
         })
         // Report change to parent
-        this.props.addMeToMyParentsChildren(this.state, this.props.index)
+        this.props.addMeToMyParent(this.state, this.props.index)
     }
 
     addChildToState(node, index) {
@@ -56,7 +56,7 @@ class MindmapNode extends Component {
         })
 
         // Call the same method in parent node
-        this.props.addMeToMyParentsChildren(this.state, this.props.index)
+        this.props.addMeToMyParent(this.state, this.props.index)
     }
 
     render() {
@@ -72,7 +72,7 @@ class MindmapNode extends Component {
                 </Draggable>
 
                 {this.state.children.map((child, index) => (
-                    <MindmapNode node={child} className={child.id} addMeToMyParentsChildren={this.addChildToState.bind(this)} index={index} />
+                    <MindmapNode node={child} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
                 ))}
             </div>
         )
