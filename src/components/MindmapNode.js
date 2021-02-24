@@ -9,6 +9,10 @@ const getId = () => {
 }
 // testing slutt
 
+// Note to self: 
+// Når den lager ny node, blir ikke det første klikket registrert i state.
+// Tror oppdateringen hos forfedrene henger ett klikk etter.
+
 //
 // Code begins here:
 //
