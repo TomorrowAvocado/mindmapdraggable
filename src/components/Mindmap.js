@@ -11,20 +11,20 @@ export default class Mindmap extends Component {
             title: "MY MINDMAP!!",
             mainNode: {
                 id: "Eve",
-                x: 400,
-                y: 400,
+                x: 0,
+                y: 0,
                 layout: "mindmap",
                 children: [
                     {
                         id: "EveChild",
-                        x: 450,
-                        y: 450,
+                        x: 50,
+                        y: 0,
                         layout: "mindmap",
                         children: [
                             {
                                 id: "EveGrandChild",
-                                x: 500,
-                                y: 500,
+                                x: 100,
+                                y: 0,
                                 layout: "mindmap",
                                 children: []
                             }

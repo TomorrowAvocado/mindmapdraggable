@@ -38,7 +38,7 @@ class MindmapNode extends Component {
     }
 
     handlePlusBtnClick() {
-        const newNode = this.createNewNode(this.state.x + 100, 0)
+        const newNode = this.createNewNode(this.state.x + 50, 0)
         // Add new node to children in state
         this.setState({
             children: [...this.state.children, newNode]
