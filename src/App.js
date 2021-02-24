@@ -1,6 +1,6 @@
 
 import './App.css';
-import InitializeMindmap from './Oldcomponents/InitializeMindmap';
+import MindmapApplication from './containers/MindmapApplication/MindmapApplication';
 
 const App = () => {
   return (

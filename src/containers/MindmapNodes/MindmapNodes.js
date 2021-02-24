@@ -1,49 +1,56 @@
-import { getByTestId } from '@testing-library/react';
-import React, { Component, createRef } from 'react'
-import { useState } from "react";
-import MindmapEdge from './MindmapEdge';
-import MindmapNode from './MindmapNode'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { v4 as uuid } from 'uuid';
 
-import croc from "../assets\\img/croc.png";
-import squirrel from "../assets\\img/squirrel.png";
-import lion from "../assets\\img/lion.png";
-import rhino from "../assets\\img/rhino.png";
-import menuDummy from "../assets\\img/menu_dummy.png";
-import { dummyMindmapNodes } from '../assets/data/dummyData';
+import MindmapNode from '../../components/MindmapNode/MindmapNode';
+import MindmapEdge from '../../components/MindmapEdge/MindmapEdge';
 
 
-let idCounter = 3
-const getId = () => {
-    idCounter ++;
-    return idCounter;
-}
-
-let withImages = false;
-let imageCounter = 0;
-const images = [croc, squirrel, lion, rhino];
 let nodeElementBeingDragged = null;
 
+class MindmapNodes extends Component {
 
-class Canvas extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            nodes: this.props.nodeList,
+            edges: this.props.edgeList ? this.props.edgeList : []
+        }
+    }
+    
 
-    state = { 
-        nodes: this.props.nodes,
-        edges: [{}]
+    /* static propTypes = {
+        nodes: PropTypes.array,
+        edges: PropTypes.array
+    } */
+
+    handleSelected = (id) => {
+        // kanskje en global selected node her, også if(this = global selected) => set class NodeIsSelected
+        const nodes = [...this.state.nodes];
+        let updatedNodes = nodes.map( (node) => {
+            if (node.id === id ) {
+                node.isSelected = true;
+            }
+            else
+            node.isSelected = false;
+            return node;
+        })
+        this.setState({nodes: updatedNodes})
     }
 
     createNewNode = (parentIndex) => {
 
-        let image = null;
+        /* let image = null;
 
         if(withImages) {
             image = images[imageCounter++];
-        }
+        } */
 
-        const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
         const parentNode = this.state.nodes[parentIndex];
 
         // Set Id and dimensions for new node
-        const newId = getId();
+        const newNodeId = "node" + uuid();
         const newX = parentNode.x + 200;
         const newY = parentNode.y - 200;
         const newWidth = parentNode.nodeWidth * 0.8;
@@ -59,10 +66,10 @@ class Canvas extends Component {
 
         // Create child node and set values
         const newNode = {
-            id: newId,
+            id: newNodeId,
             parentId: parentNode.id,
-            title: ("Node " + newId),
-            img: image,
+            title: (""),
+            img: null,
             strokeColor: "#555",
             strokeWidth: 3,
             fontsize: "14pt",
@@ -81,7 +88,7 @@ class Canvas extends Component {
         
         // Create edge from parent node to child node
         const newEdge = {
-            id: getId(),
+            id: "edge" + uuid(),
             parentId: newNode.parentId,
             childId: newNode.id,
             x1: newNode.centerX, 
@@ -92,29 +99,23 @@ class Canvas extends Component {
         
         // Set reference to edge in parent and child node
         newNode.incomingEdgeId = newEdge.id;
+        if(!parentNode.outgoingEdges) {
+            parentNode.outgoingEdges = [];
+        }
         parentNode.outgoingEdges.push(newEdge.id);
 
+        console.log('NEW NODE LIST',  [...this.state.nodes, newNode])
         // Add new node and edge to mindmap data
-        this.setState({
-            nodes: [...this.state.nodes, newNode], 
-            edges: [...this.state.edges, newEdge]
-        })
+        this.setState((prevState) => ({
+            nodes: [...prevState.nodes, newNode], // THIS DOES NOT WORK!
+            edges: [...prevState.edges, newEdge] // BUT THIS DOES??????????????????????
+        }))
+
+        console.log('nodes after setState: ', this.state.nodes)
 
         // Set new node as selected 
         this.handleSelected(newNode.id) 
-        console.log("Parent: ", newNode.parentId)
     };
-
-    handleSelected = (id) => {
-        nodeIndex = this.state.nodes.findIndex(node => node.id === id);
-        this.setState(this.state.nodes.map( (node, index) => {
-            if (index === nodeIndex ) {
-                node.isSelected = true;
-            }
-            else
-            node.isSelected = false;
-        })) 
-    }
 
     handleDragNodeStart = (e) => {
         if(e.target.parentElement) {
@@ -122,7 +123,7 @@ class Canvas extends Component {
         }
     }
 
-    handleOnDragStop = (draggedNodeIndex, e) => {
+    handleDragNodeStop = (draggedNodeIndex, e) => {
         // Handle dragged node one final time after release
         // to let edges line up
         this.handleDragNode(draggedNodeIndex, e);
@@ -130,10 +131,9 @@ class Canvas extends Component {
     }
 
     handleDragNode = (draggedNodeIndex, e) => {
-
         // Get bounding rectangle from dragged node
         let containerDimensions;
-        if(e.target.parentElement) {
+        if(e.target) {
             containerDimensions = this.nodeElementBeingDragged.getBoundingClientRect();
         }
         
@@ -189,64 +189,37 @@ class Canvas extends Component {
         })
     }
 
-   /*  handleSelected = (nodeIndex) => {
-        this.setState(this.state.nodes.map( (node, index) => {
-            if (index === nodeIndex ) {
-                node.isSelected = true;
-            }
-            else
-            node.isSelected = false;
-        }))
-    } */
-
-    /* handleMouseEnterNode = (nodeIndex) => {
-        this.setState({...this.state.nodes[nodeIndex].buttonVisible = "visible"})
-    }
-    handleMouseLeaveNode = (nodeIndex) => {
-        this.setState({...this.state.nodes[nodeIndex].buttonVisible = "hidden"})
-    } */
-
-    updateDimensions(e) {
-        const containerDimensions = e.target.getBoundingClientRect();
-        console.log(containerDimensions);
-        this.setState({
-            containerDimensions: containerDimensions
-        })
-    }
-
     render() {
+        
+        const nodes = this.state.nodes
+            .map((node, index) => {
+                return(
+                    <MindmapNode 
+                        key = {node.id}
+                        node = {node}
+                        plusBtnClicked={this.createNewNode.bind(this, index)}
+                        /* onDrag={this.handleDragNode.bind(this.index)} */
+                        onDragStart = {this.handleDragNodeStart.bind(this)}
+                        onDragStop = {this.handleDragNodeStop.bind(this, index)}
+                        clicked={() => this.handleSelected(node.id)}/>
+                );
+            });
+            
+        const edges = this.state.edges.map((edge) =>
+            <MindmapEdge 
+                key={edge.id} 
+                edge={edge} />   
+            );
+
+        console.log('nodes', this.state.nodes)
+        console.log('edges', this.state.edges)
         return (
-            <div>
-            <img style={{position: "absolute", zIndex:"999"}} src={menuDummy}/>
-            <svg width="100vw" height="99.5vh" >
-                {this.state.edges.map((edge) =>
-                        <MindmapEdge 
-                            key={edge.id} 
-                            edge={edge} />   
-                )}
-                {this.state.nodes.map((node, index) =>
-                   
-                        <MindmapNode 
-                            key={node.id}
-                            node={node} 
-                            mouseEnter={this.handleMouseEnterNode.bind(this, index)} 
-                            mouseLeave={this.handleMouseLeaveNode.bind(this, index)}
-                            plusBtnClicked={this.createNewNode.bind(this, index)} 
-                            handleSelected={this.handleSelected.bind(this, node.id)}
-                            
-                            onDragStart={this.handleDragNodeStart.bind(this)}
-                            onDrag={this.handleDragNode.bind(this, index)}
-                            onDragStop={this.handleOnDragStop.bind(this, index)}
-                        />
-                )}
-            </svg>
-            <div style={{
-                position: "absolute", top: 0, right: 0, 
-                width: "2.2vw", height: "2.2vw", zIndex: "9999"}} 
-                onClick={() => {withImages = !withImages}}></div>
-            </div>
-        )
+            <>
+                {edges}
+                {nodes}
+            </>
+        );
     }
 }
 
-export default Canvas
+export default MindmapNodes;

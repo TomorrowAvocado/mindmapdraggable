@@ -1,0 +1,29 @@
+.MindmapNode {
+    text-align: center;
+    border-width: 3px;
+    border: solid;
+    border-radius: 20px;
+    padding: 0 20px;
+
+    button {
+        background-color: #333;
+        border: "none";
+        color: white;
+        visibility: hidden;
+
+    }
+
+    &:hover {
+
+        button {
+            visibility: visible;
+
+        }
+
+    }
+    
+}
+
+.NodeIsSelected {
+    box-shadow: 0 0 10px blue;
+}
