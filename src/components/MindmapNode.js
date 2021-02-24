@@ -1,53 +1,79 @@
-import { render } from '@testing-library/react';
-import React, { Component } from 'react'
 import Draggable from 'react-draggable';
+import React, { Component } from 'react'
+
+
+// testing start. (skal bruke denne til testing snart)
+let id = 0
+const getId = () => {
+    id++
+    return id
+}
+// testing slutt
+
+//
+// Code begins here:
+//
 
 class MindmapNode extends Component {
+    constructor(props) {
+        super(props)
+        // State represent the node itself in this class. Think of this.state as a node, THIS node, actually.
+        this.state = {
+            //// Lurer på om dette fører til ingen oppdatering
+            ...props.node
+        }
+        this.handlePlusBtnClick = this.handlePlusBtnClick.bind(this)
+    }
 
-    state = {
-        buttonVisible: false,
+    createNewNode(x, y) {
+        const newNode = {
+            x: x,
+            y: y,
+            children: []
+        }
+        return newNode
+    }
+
+    handlePlusBtnClick() {
+        const newNode = this.createNewNode(this.state.x + 100, 0)
+        // Add new node to children in state
+        this.setState({
+            children: [...this.state.children, newNode]
+        })
+        this.props.addMeToMyParentsChildren(this.state, this.props.index)
+    }
+
+    addChildToState(node, index) {
+
+        // This method takes a node and index to update child node.
+        let stateChildren = this.state.children
+        // Update child in children
+        stateChildren[index] = node
+        this.setState({
+            children: stateChildren
+        })
+
+        // Call the same method in parent node
+        this.props.addMeToMyParentsChildren(this.state, this.props.index)
     }
 
     render() {
 
         return (
-            <Draggable cancel="h2">
-                <g>
-                    <foreignObject x="40vw" y="40vh"
-                        width={this.props.node.nodeWidth + this.props.node.strokeWidth * 2} /* Default width plus room for border */
-                        height={this.props.node.nodeHeight + this.props.node.strokeWidth * 2} /* Default height plus room for border */
-                    >
-                        <div onMouseEnter={e => this.setState({ buttonVisible: true })} onMouseLeave={e => this.setState({ buttonVisible: false })}>
-                            <button
-                                style={{
-                                    visibility: this.state.buttonVisible ? "visible" : "hidden",
-                                    backgroundColor: this.props.node.strokeColor,
-                                    border: "none",
-                                    color: "white"
-                                }}
-                                className="createNodeBtn"
-                                onClick={this.props.createNewNode}>+</button>
-                            <div
-                                onClick={this.props.handleSelected.bind(this, this.props.node.id)}
-                                className="mindMapNode"
-                                style={this.props.node.isSelected ? {
-                                    boxShadow: "0 0 5px blue",
-                                    backgroundColor: this.props.node.fill,
-                                    borderColor: this.props.node.strokeColor,
-                                } : {
-                                        backgroundColor: this.props.node.fill,
-                                        borderStyle: "solid",
-                                        borderColor: this.props.node.strokeColor,
-                                        borderWidth: this.props.node.strokeWidth
-                                    }
-                                }
-                            >
-                                <h2 onClick={e => console.log("get text value")} contentEditable="true">{this.props.node.title}</h2>
-                            </div>
+            <div >
+                <Draggable position={{ x: this.state.x, y: this.state.y }} >
+                    <div style={{ border: "solid" }}>
+                        <div onClick={this.handlePlusBtnClick} >
+                            Create new node
                         </div>
-                    </foreignObject>
-                </g>
-            </Draggable>
+
+                    </div>
+                </Draggable>
+
+                {this.state.children.map((child, index) => (
+                    <MindmapNode node={child} className={child.id} addMeToMyParentsChildren={this.addChildToState.bind(this)} index={index} />
+                ))}
+            </div>
         )
     }
 }

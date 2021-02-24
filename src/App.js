@@ -1,12 +1,10 @@
 
 import './App.css';
-import Canvas from './components/Canvas';
+import Mindmap from './components/Mindmap';
 
-const App = () => {
+function App() {
   return (
-    <div className="App">
-      <Canvas/>
-    </div>
+      <Mindmap />
   );
 }
 
