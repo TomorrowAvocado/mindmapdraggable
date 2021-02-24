@@ -25,6 +25,7 @@ class MindmapNode extends Component {
 
     createNewNode(x, y) {
         const newNode = {
+            id: getId(),
             x: x,
             y: y,
             children: []
