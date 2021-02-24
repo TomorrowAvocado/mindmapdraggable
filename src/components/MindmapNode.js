@@ -57,13 +57,12 @@ class MindmapNode extends Component {
     render() {
 
         return (
-            <div >
+            <div>
                 <Draggable position={{ x: this.state.x, y: this.state.y }} >
                     <div style={{ border: "solid" }}>
                         <div onClick={this.handlePlusBtnClick} >
                             Create new node
                         </div>
-
                     </div>
                 </Draggable>
 
