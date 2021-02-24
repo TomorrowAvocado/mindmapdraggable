@@ -25,6 +25,7 @@ class MindmapNode extends Component {
 
     createNewNode(x, y) {
         const newNode = {
+            id: getId(),
             x: x,
             y: y,
             children: []
@@ -33,7 +34,7 @@ class MindmapNode extends Component {
     }
 
     handlePlusBtnClick() {
-        const newNode = this.createNewNode(this.state.x + 100, 0)
+        const newNode = this.createNewNode(this.state.x + 100)
         // Add new node to children in state
         this.setState({
             children: [...this.state.children, newNode]
