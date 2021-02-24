@@ -1,7 +1,6 @@
 import Draggable from 'react-draggable';
 import React, { Component } from 'react'
 
-
 // testing start. (skal bruke denne til testing snart)
 let id = 0
 const getId = () => {
@@ -19,7 +18,6 @@ class MindmapNode extends Component {
         super(props)
         // State represent the node itself in this class. Think of this.state as a node, THIS node, actually.
         this.state = {
-            //// Lurer på om dette fører til ingen oppdatering
             ...props.node
         }
         this.handlePlusBtnClick = this.handlePlusBtnClick.bind(this)
@@ -40,12 +38,11 @@ class MindmapNode extends Component {
         this.setState({
             children: [...this.state.children, newNode]
         })
+        // Report change to parent
         this.props.addMeToMyParentsChildren(this.state, this.props.index)
     }
 
     addChildToState(node, index) {
-
-        // This method takes a node and index to update child node.
         let stateChildren = this.state.children
         // Update child in children
         stateChildren[index] = node
