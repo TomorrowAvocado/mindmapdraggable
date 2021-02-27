@@ -1,37 +1,34 @@
+
 import React, { Component } from 'react'
 import MindmapNode from './MindmapNode';
 
 export default class Mindmap extends Component {
 
-    constructor() {
-        super()
-
-        this.state = {
-            id: "Some UUID",
-            title: "MY MINDMAP!!",
-            mainNode: {
-                id: "Eve",
-                x: 0,
-                y: 0,
-                layout: "mindmap",
-                children: [
-                    {
-                        id: "EveChild",
-                        x: 50,
-                        y: 0,
-                        layout: "mindmap",
-                        children: [
-                            {
-                                id: "EveGrandChild",
-                                x: 100,
-                                y: 0,
-                                layout: "mindmap",
-                                children: []
-                            }
-                        ]
-                    }
-                ]
-            }
+    state = {
+        id: "Some UUID",
+        title: "MY MINDMAP!!",
+        mainNode: {
+            id: "Eve",
+            x: 0,
+            y: 0,
+            layout: "mindmap",
+            children: [
+                {
+                    id: "EveChild",
+                    x: 50,
+                    y: 0,
+                    layout: "mindmap",
+                    children: [
+                        {
+                            id: "EveGrandChild",
+                            x: 100,
+                            y: 0,
+                            layout: "mindmap",
+                            children: []
+                        }
+                    ]
+                }
+            ]
         }
     }
 
@@ -42,9 +39,10 @@ export default class Mindmap extends Component {
         // This method does not need the index since this.state.mindmapNode is not an array.
         // The MindmapNode component has a corresponding method called addChildToState().
 
-        this.setState({
+        this.setState(prevState => ({
+            ...prevState,
             mainNode: node
-        })
+        }))
     }
 
     render() {

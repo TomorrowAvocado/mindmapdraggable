@@ -1,30 +1,18 @@
 import Draggable from 'react-draggable';
 import React, { Component } from 'react'
 
-// testing start (Midlertidig løsning)
+// Temporary solution for generating ID
 let id = 0
 const getId = () => {
     id++
     return id
 }
-// testing slutt
 
-// Note to self: 
-// Når den lager ny node, blir ikke det første klikket registrert i state.
-// Tror oppdateringen hos forfedrene henger ett klikk etter.
 
-//
-// Code begins here:
-//
 
 class MindmapNode extends Component {
-    constructor(props) {
-        super(props)
-        // State represent the node itself in this class. Think of this.state as a node, THIS node, actually.
-        this.state = {
-            ...props.node
-        }
-        this.handlePlusBtnClick = this.handlePlusBtnClick.bind(this)
+    state = {
+        ...this.props.node
     }
 
     createNewNode(x, y) {
@@ -38,34 +26,36 @@ class MindmapNode extends Component {
     }
 
     handlePlusBtnClick() {
+        // Create copy of this node
+        let thisNode = this.state
+        // Create new node
         const newNode = this.createNewNode(this.state.x + 50, 0)
-        // Add new node to children in state
-        this.setState({
-            children: [...this.state.children, newNode]
-        })
-        // Report change to parent
-        this.props.addMeToMyParent(this.state, this.props.index)
+        // Add the new node to "children" in the copy of this node
+        thisNode.children = [...thisNode.children, newNode]
+
+        // Report this change to my parent. Use the copy of the node as parameter. (State will be set later when props arrive)
+        this.props.addMeToMyParent(thisNode, this.props.index)
     }
 
+    // My kids know this method as props.addMeToMyParent.
     addChildToState(node, index) {
         let stateChildren = this.state.children
         // Update child in children
         stateChildren[index] = node
-        this.setState({
+        this.setState(prevState => ({
+            ...prevState,
             children: stateChildren
-        })
-
-        // Call the same method in parent node
+        }))
+        // I better report the change to my parent.
         this.props.addMeToMyParent(this.state, this.props.index)
     }
 
     render() {
-
         return (
-            <div>
-                <Draggable position={{ x: this.state.x, y: this.state.y }} >
-                    <div style={{ border: "solid" }}>
-                        <div onClick={this.handlePlusBtnClick} >
+            <div /* style={{position: "absolute"}} */>
+                <Draggable /* position={{ x: this.state.x, y: this.state.y }} */ >
+                    <div style={{ border: "solid", padding: "10px" }}>
+                        <div onClick={this.handlePlusBtnClick.bind(this)} style={{ border: "solid" }} >
                             Create new node
                         </div>
                     </div>
