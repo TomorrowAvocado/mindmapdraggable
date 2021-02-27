@@ -39,15 +39,11 @@ class MindmapNode extends Component {
 
     // My kids know this method as props.addMeToMyParent.
     addChildToState(node, index) {
-        let stateChildren = this.state.children
-        // Update child in children
-        stateChildren[index] = node
-        this.setState(prevState => ({
-            ...prevState,
-            children: stateChildren
-        }))
+        let thisNode = this.state
+        thisNode.children[index] = node
+
         // I better report the change to my parent.
-        this.props.addMeToMyParent(this.state, this.props.index)
+        this.props.addMeToMyParent(thisNode, this.props.index)
     }
 
     render() {
