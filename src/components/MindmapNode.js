@@ -17,7 +17,7 @@ class MindmapNode extends Component {
 
     createNewNode(x, y) {
         const newNode = {
-            id: getId(), // Temporary solution //// brukes kun for å se forskjell på nodene i debugging.
+            id: getId(), // Temporary solution //// brukes foreløpig kun for å se forskjell på nodene i debugging.
             x: x,
             y: y,
             children: []
@@ -34,16 +34,22 @@ class MindmapNode extends Component {
         thisNode.children = [...thisNode.children, newNode]
 
         // Report this change to my parent. Use the copy of the node as parameter. (State will be set later when props arrive)
-        this.props.addMeToMyParent(thisNode, this.props.index)
+        this.props.reportToParent(thisNode, this.props.index)
     }
 
-    // My kids know this method as props.addMeToMyParent.
-    addChildToState(node, index) {
+    // My children know this method as props.reportToParent.
+    updateChild(updatedChild, index) {
+        // I'll just create a copy of myself, and replace the child that is updated.
         let thisNode = this.state
-        thisNode.children[index] = node
+        thisNode.children[index] = updatedChild
 
         // I better report the change to my parent.
-        this.props.addMeToMyParent(thisNode, this.props.index)
+        this.props.reportToParent(thisNode, this.props.index)
+        // Now I wait for the new props to arrive.
+        // My parent will do the same procedure. It will report to its parent, and its parent will report to its parent, and so forth.
+        // At one point, the Mindmap component is actually the parent!
+        // That's when the big render starts, and we all get our new props that will define our new state and shape as a whole.
+        // ... Not that my state will be any different from what I reported to my parent, though.
     }
 
     render() {
@@ -58,7 +64,7 @@ class MindmapNode extends Component {
                 </Draggable>
 
                 {this.state.children.map((child, index) => (
-                    <MindmapNode node={child} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
+                    <MindmapNode node={child} className={child.id} reportToParent={this.updateChild.bind(this)} index={index} />
                 ))}
             </div>
         )

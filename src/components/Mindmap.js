@@ -37,7 +37,7 @@ export default class Mindmap extends Component {
         // The MindMapNode will send its index. The index indicates its placement in the children list. 
         // In this case, the index is whatever we sent as a prop from here.
         // This method does not need the index since this.state.mindmapNode is not an array.
-        // The MindmapNode component has a corresponding method called addChildToState().
+        // The MindmapNode component has a corresponding method called updateChild().
 
         this.setState(prevState => ({
             ...prevState,
@@ -47,7 +47,7 @@ export default class Mindmap extends Component {
 
     render() {
         return (
-            <MindmapNode node={this.state.mainNode} addMeToMyParent={this.updateMainNode.bind(this)} index={0} />
+            <MindmapNode node={this.state.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
         )
     }
 }
