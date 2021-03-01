@@ -11,7 +11,6 @@ const MindmapNode = (props) => {
         x: props.node.x,
         y: props.node.y
     })
-    console.log('dims', dim)
     
     let img = null;
 
@@ -26,32 +25,33 @@ const MindmapNode = (props) => {
     }
 
     return (
+
         <Draggable 
             cancel=".focusedText" /* Cancels drag on className="focusedText" */
-                    onDrag={props.onDrag}
-                    onStart={props.onDragStart}
-                    onStop={props.onDragStop}
-            /* onDrag={(e) => console.log(e.target.getBoundingClientRect())}  */
-        >
+            onDrag={props.onDrag}
+            onStart={props.onDragStart}
+            onStop={props.onDragStop}>
+
             <foreignObject 
-                x={dim.x} y={dim.y}
-                /* x={props.node.x} y={props.node.y} */
+                x={dim.x} y={dim.y} /* x={props.node.x} y={props.node.y} */
                 width={props.node.nodeWidth + props.node.strokeWidth*2}  
-                height={props.node.nodeHeight + props.node.strokeWidth*2}
-            >
+                height={props.node.nodeHeight + props.node.strokeWidth*2}>
+
                 <div 
                     onClick={props.handleSelected}
-                    className={styles}
-                >
+                    className={styles}>
+
                     <button
                         className="createNodeBtn"
                         onClick={props.plusBtnClicked}>+</button>
+
                     <NodeText node={props.node} />
+
                     {img}
+
                 </div>
             </foreignObject>
         </Draggable>
-
     )
 }
 

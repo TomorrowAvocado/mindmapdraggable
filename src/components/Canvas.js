@@ -89,7 +89,7 @@ class Canvas extends Component {
             parentNode.outgoingEdges = [];
         }
         parentNode.outgoingEdges.push(newEdge.id);
-
+        parentNode.isSelected = false;
         // Add new node and edge to mindmap data
         this.setState({
             nodes: [...this.state.nodes, newNode], 
@@ -97,17 +97,18 @@ class Canvas extends Component {
         })
 
         // Set new node as selected 
-        this.handleSelected(newNode.id) 
+        this.handleSelected(newNode.id)
         console.log("Parent: ", newNode.parentId)
     };
 
     handleSelected = (nodeIndex) => {
         this.setState(this.state.nodes.map( (node, index) => {
+            console.log("NewNodeIndex", nodeIndex)
             if (index === nodeIndex ) {
                 node.isSelected = true;
             }
             else
-            node.isSelected = false;
+                node.isSelected = false;
         })) 
     }
 

@@ -24,13 +24,12 @@ const MindmapNode = (props) => {
             /* onDrag={(e) => console.log(e.target.getBoundingClientRect())}  */
             onDrag={props.onDrag}
             onStart={props.onDragStart}
-            onStop={props.onDragStop}
-        >
+            onStop={props.onDragStop}>
             <foreignObject
                 x={dim.x} y={dim.y}
                 /* x={props.node.x} y={props.node.y} */
-                width={props.node.nodeWidth + props.node.strokeWidth*2} // Default width plus room for border 
-                height={props.node.nodeHeight + props.node.strokeWidth*2} // Default height plus room for border 
+                width={props.node.nodeWidth + props.node.strokeWidth*2}
+                height={props.node.nodeHeight + props.node.strokeWidth*2}
             >
                 <div onMouseEnter={props.mouseEnter} onMouseLeave={props.mouseLeave}>
                     <button
