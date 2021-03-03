@@ -53,20 +53,25 @@ class MindmapNode extends Component {
     }
 
     render() {
-        return (
-            <div /* style={{position: "absolute"}} */>
-                <Draggable /* position={{ x: this.state.x, y: this.state.y }} */ >
-                    <div style={{ border: "solid", padding: "10px" }}>
-                        <div onClick={this.handlePlusBtnClick.bind(this)} style={{ border: "solid" }} >
-                            Create new node
-                        </div>
-                    </div>
-                </Draggable>
 
-                {this.state.children.map((child, index) => (
-                    <MindmapNode node={child} className={child.id} reportToParent={this.updateChild.bind(this)} index={index} />
-                ))}
-            </div>
+        return (
+            <>
+                <Draggable /* position={{ x: this.state.x, y: this.state.y }} */ >
+                    <li>
+                        <div style={{ border: "solid", padding: "10px", display: "inline-block" }}>
+                            <p>{this.state.id}</p>
+                            <button onClick={this.handlePlusBtnClick.bind(this)} >
+                                New node
+                            </button>
+                        </div>
+                    </li>
+                </Draggable>
+                <ul>
+                    {this.state.children.map((child, index) => (
+                        <MindmapNode node={child} className={child.id} reportToParent={this.updateChild.bind(this)} index={index} />
+                    ))}
+                </ul>
+            </>
         )
     }
 }

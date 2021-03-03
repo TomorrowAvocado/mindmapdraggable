@@ -47,7 +47,9 @@ export default class Mindmap extends Component {
 
     render() {
         return (
-            <MindmapNode node={this.state.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
+            <ul>
+                <MindmapNode node={this.state.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
+            </ul>
         )
     }
 }
