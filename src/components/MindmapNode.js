@@ -1,6 +1,8 @@
 import Draggable from 'react-draggable';
 import React, { Component } from 'react'
 
+import NodeText from './NodeText';
+
 // testing start (Midlertidig løsning)
 let id = 0
 const getId = () => {
@@ -83,7 +85,7 @@ class MindmapNode extends Component {
                                 className="createNodeBtn"
                                 onClick={this.props.plusBtnClicked}>+</button>
 
-                            {/* <NodeText node={this.props.node} /> */}
+                           <NodeText node={this.props.node} />
 
                         </div>
                     </foreignObject>

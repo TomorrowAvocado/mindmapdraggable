@@ -14,18 +14,21 @@ export default class Mindmap extends Component {
                 x: 400,
                 y: 400,
                 layout: "mindmap",
+                text: "Main node",
                 children: [
                     {
                         id: "EveChild",
                         x: 450,
                         y: 450,
                         layout: "mindmap",
+                        text: "1st level node",
                         children: [
                             {
                                 id: "EveGrandChild",
                                 x: 500,
                                 y: 500,
                                 layout: "mindmap",
+                                text: "2nd level node",
                                 children: []
                             }
                         ]
