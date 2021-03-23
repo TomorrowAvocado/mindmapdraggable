@@ -63,15 +63,36 @@ class MindmapNode extends Component {
 
         return (
             <div>
-                <Draggable position={{ x: this.state.x, y: this.state.y }} >
-                    <div style={{ border: "solid" }}>
-                        <div onClick={this.handlePlusBtnClick} >
-                            Create new node
+                <Draggable 
+                    cancel=".focusedText" /* Cancels drag on className="focusedText" */
+                    onDrag={this.onDrag}
+                    onStart={this.props.onDragStart}
+                    onStop={this.props.onDragStop}>
+
+                    <foreignObject 
+                        /* x={dim.x} y={dim.y}  */
+                        x={this.props.node.x} y={this.props.node.y}
+                        width={this.props.node.nodeWidth + this.props.node.strokeWidth*2}  
+                        height={this.props.node.nodeHeight + this.props.node.strokeWidth*2}>
+
+                        <div 
+                            onClick={this.props.handleSelected}
+                            /* className={styles} */>
+
+                            <button
+                                className="createNodeBtn"
+                                onClick={this.props.plusBtnClicked}>+</button>
+
+                            {/* <NodeText node={this.props.node} /> */}
+
                         </div>
-                    </div>
+                    </foreignObject>
                 </Draggable>
 
                 {this.state.children.map((child, index) => (
+                    //generer bare barn
+                    //ved flytting manipulerer denne node sin forelder edge
+                    // og for hvert barn
                     <MindmapNode node={child} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
                 ))}
             </div>
