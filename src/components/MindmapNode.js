@@ -2,6 +2,7 @@ import Draggable from 'react-draggable';
 import React, { Component } from 'react'
 
 import NodeText from './NodeText';
+import './MindmapNode.css';
 
 // testing start (Midlertidig løsning)
 let id = 0
