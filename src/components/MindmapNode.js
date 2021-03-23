@@ -2,6 +2,7 @@ import Draggable from 'react-draggable';
 import React, { Component } from 'react'
 
 import NodeText from './NodeText';
+import MindmapEdge from './MindmapEdge';
 import './MindmapNode.css';
 
 // testing start (Midlertidig løsning)
@@ -72,12 +73,12 @@ class MindmapNode extends Component {
 
         return (
             <>
+                <MindmapEdge x1={this.props.parentX + 30} y1={this.props.parentY + 30} x2={this.state.x + 30} y2={this.state.y + 50}/>
                 <Draggable 
                     cancel=".focusedText" /* Cancels drag on className="focusedText" */
                     onDrag={this.onDrag}
                     onStart={this.props.onDragStart}
                     onStop={this.props.onDragStop}>
-
                     <foreignObject 
                         /* x={dim.x} y={dim.y}  */
                         x={this.state.x} y={this.state.y}
@@ -102,7 +103,7 @@ class MindmapNode extends Component {
                     //generer bare barn
                     //ved flytting manipulerer denne node sin forelder edge
                     // og for hvert barn
-                    <MindmapNode node={child} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
+                    <MindmapNode node={child} parentX={this.state.x} parentY={this.state.y} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
                 ))}
             </>
         )

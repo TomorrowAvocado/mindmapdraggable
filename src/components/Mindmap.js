@@ -11,8 +11,8 @@ export default class Mindmap extends Component {
             title: "MY MINDMAP!!",
             mainNode: {
                 id: "Eve",
-                x: 400,
-                y: 400,
+                x: 300,
+                y: 300,
                 layout: "mindmap",
                 text: "Main node",
                 children: [
@@ -25,8 +25,8 @@ export default class Mindmap extends Component {
                         children: [
                             {
                                 id: "EveGrandChild",
-                                x: 500,
-                                y: 500,
+                                x: 600,
+                                y: 600,
                                 layout: "mindmap",
                                 text: "2nd level node",
                                 children: []
@@ -53,7 +53,12 @@ export default class Mindmap extends Component {
     render() {
         return (
             <svg width="1000" height="800">
-                <MindmapNode node={this.state.mainNode} addMeToMyParent={this.updateMainNode.bind(this)} index={0} />
+                <MindmapNode 
+                    node={this.state.mainNode} 
+                    parentX={this.state.mainNode.x} 
+                    parentY={this.state.mainNode.y}
+                    addMeToMyParent={this.updateMainNode.bind(this)}
+                    index={0} />
             </svg>
         )
     }
