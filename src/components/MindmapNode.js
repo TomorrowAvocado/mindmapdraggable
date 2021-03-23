@@ -64,8 +64,14 @@ class MindmapNode extends Component {
 
     render() {
 
+        let styles = "MindmapNode";
+
+        if(this.props.node.isSelected) {
+            styles = styles + " NodeIsSelected";
+        }
+
         return (
-            <div>
+            <>
                 <Draggable 
                     cancel=".focusedText" /* Cancels drag on className="focusedText" */
                     onDrag={this.onDrag}
@@ -74,13 +80,13 @@ class MindmapNode extends Component {
 
                     <foreignObject 
                         /* x={dim.x} y={dim.y}  */
-                        x={this.props.node.x} y={this.props.node.y}
+                        x={this.state.x} y={this.state.y}
                         width={this.props.node.nodeWidth + this.props.node.strokeWidth*2}  
                         height={this.props.node.nodeHeight + this.props.node.strokeWidth*2}>
 
                         <div 
                             onClick={this.props.handleSelected}
-                            /* className={styles} */>
+                            className={styles}>
 
                             <button
                                 className="createNodeBtn"
@@ -98,7 +104,7 @@ class MindmapNode extends Component {
                     // og for hvert barn
                     <MindmapNode node={child} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
                 ))}
-            </div>
+            </>
         )
     }
 }
