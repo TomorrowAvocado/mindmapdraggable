@@ -73,6 +73,12 @@ class MindmapNode extends Component {
 
         return (
             <>
+                {this.state.children.map((child, index) => (
+                    //generer bare barn
+                    //ved flytting manipulerer denne node sin forelder edge
+                    // og for hvert barn
+                    <MindmapNode node={child} parentX={this.state.x} parentY={this.state.y} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
+                ))}
                 <MindmapEdge x1={this.props.parentX + 30} y1={this.props.parentY + 30} x2={this.state.x + 30} y2={this.state.y + 50}/>
                 <Draggable 
                     cancel=".focusedText" /* Cancels drag on className="focusedText" */
@@ -99,12 +105,7 @@ class MindmapNode extends Component {
                     </foreignObject>
                 </Draggable>
 
-                {this.state.children.map((child, index) => (
-                    //generer bare barn
-                    //ved flytting manipulerer denne node sin forelder edge
-                    // og for hvert barn
-                    <MindmapNode node={child} parentX={this.state.x} parentY={this.state.y} className={child.id} addMeToMyParent={this.addChildToState.bind(this)} index={index} />
-                ))}
+                
             </>
         )
     }
