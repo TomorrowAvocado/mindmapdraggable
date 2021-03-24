@@ -1,5 +1,5 @@
-.App {
-background-color: rgb(254, 254, 255);
+body {
+  background-color: rgb(233, 233, 233);
 }
 .mindMapNode {
   text-align: center;
