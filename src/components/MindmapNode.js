@@ -1,5 +1,6 @@
 import Draggable from 'react-draggable';
-import React, { Component } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import * as d3 from 'd3'
 
 import NodeText from './NodeText';
 import MindmapEdge from './MindmapEdge';
@@ -21,17 +22,13 @@ const getId = () => {
 // Code begins here:
 //
 
-class MindmapNode extends Component {
-    constructor(props) {
-        super(props)
-        // State represent the node itself in this class. Think of this.state as a node, THIS node, actually.
-        this.state = {
-            ...props.node
-        }
-        this.handlePlusBtnClick = this.handlePlusBtnClick.bind(this)
-    }
+const MindmapNode = (props) => {
+    
+    const [state, setState] = useState({
+        ...props.node
+    })
 
-    createNewNode(x, y) {
+    const createNewNode = (x, y) => {
         const newNode = {
             id: getId(),
             x: x,
@@ -41,84 +38,114 @@ class MindmapNode extends Component {
         return newNode
     }
 
-    handlePlusBtnClick() {
-        const newNode = this.createNewNode(this.state.x + 100, 0)
+    const handlePlusBtnClick = () => {
+        const newNode = createNewNode(this.state.x + 100, 0)
         // Add new node to children in state
-        this.setState({
+        setState({
             children: [...this.state.children, newNode]
         })
         // Report change to parent
-        this.props.addMeToMyParent(this.state, this.props.index)
+        props.addMeToMyParent(this.state, this.props.index)
     }
 
-    addChildToState(node, index) {
+    const addChildToState = (node, index) => {
         let stateChildren = this.state.children
         // Update child in children
         stateChildren[index] = node
-        this.setState({
+        setState({
             children: stateChildren
         })
 
         // Call the same method in parent node
-        this.props.addMeToMyParent(this.state, this.props.index)
+        props.addMeToMyParent(this.state, this.props.index)
     }
 
-    render() {
 
-        let styles = "MindmapNode";
+    let styles = "MindmapNode";
 
-        if(this.props.node.isSelected) {
-            styles = styles + " NodeIsSelected";
+    /* if(this.props.node.isSelected) {
+        styles = styles + " NodeIsSelected";
+    } */
+
+    const nodeRef = useRef(null);
+
+    useEffect(() => {
+        if(nodeRef.current) {
+
+            const node = d3.select(nodeRef.current);
+
+            function dragstarted() {
+                d3.select(this).raise();
+                node.attr("cursor", "grabbing");
+            }
+        
+            function dragged(event, d) {
+                //d3.select(this).attr("x", d.x = event.x).attr("y", d.y = event.y);
+            }
+        
+            function dragended() {
+                node.attr("cursor", "grab");
+            }
+        
+            function zoomed({transform}){
+                node.attr("transform", transform);
+            }
+
+            node
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
         }
+    }, [nodeRef.current])
 
-        return (
-            <>
-                {this.state.children.map((child, index) => (
-                    //generer bare barn
-                    //ved flytting manipulerer denne node sin forelder edge
-                    // og for hvert barn
-                    <MindmapNode 
-                        node={child} 
-                        parentX={this.state.x}
-                        parentY={this.state.y}
-                        className={child.id}
-                        addMeToMyParent={this.addChildToState.bind(this)}
-                        index={index} />
-                ))}
-                <MindmapEdge 
-                    x1={this.props.parentX + 30} 
-                    y1={this.props.parentY + 30} 
-                    x2={this.state.x + 30} 
-                    y2={this.state.y + 50}/>
-                <Draggable 
-                    cancel=".focusedText" /* Cancels drag on className="focusedText" */
-                    onDrag={this.onDrag}
-                    onStart={this.props.onDragStart}
-                    onStop={this.props.onDragStop}>
-                    <foreignObject 
-                        /* x={dim.x} y={dim.y}  */
-                        x={this.state.x} y={this.state.y}
-                        width={this.props.node.nodeWidth + this.props.node.strokeWidth*2}  
-                        height={this.props.node.nodeHeight + this.props.node.strokeWidth*2}>
+    return (
+        <>
+            {state.children.map((child, index) => (
+                //generer bare barn
+                //ved flytting manipulerer denne node sin forelder edge
+                // og for hvert barn
+                <MindmapNode 
+                    key={index}
+                    node={child} 
+                    parentX={state.x}
+                    parentY={state.y}
+                    className={child.id}
+                    addMeToMyParent={addChildToState.bind(this)}
+                    index={index} />
+            ))}
 
-                        <div 
-                            onClick={this.props.handleSelected}
-                            className={styles}>
+            <MindmapEdge 
+                x1={props.parentX + 30} 
+                y1={props.parentY + 30} 
+                x2={state.x + 30} 
+                y2={state.y + 50}/>
 
-                            <button
-                                className="createNodeBtn"
-                                onClick={this.props.plusBtnClicked}>+</button>
+                <foreignObject 
+                    /* x={dim.x} y={dim.y}  */
+                    ref={nodeRef}
+                    x={state.x} y={state.y}
+                    width={props.node.nodeWidth + props.node.strokeWidth*2}  
+                    height={props.node.nodeHeight + props.node.strokeWidth*2}
+                    >
 
-                           <NodeText node={this.props.node} />
+                    <div 
+                        onClick={props.handleSelected}
+                        className={styles}
+                        >
 
-                        </div>
-                    </foreignObject>
-                </Draggable>
+                        <button
+                            className="createNodeBtn"
+                            onClick={props.plusBtnClicked}>+</button>
 
-                
-            </>
-        )
-    }
+                        <NodeText node={props.node} />
+
+                    </div>
+                </foreignObject>
+            
+        </>
+    )
 }
 
 export default MindmapNode;
