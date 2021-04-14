@@ -8,9 +8,19 @@
 }
 .MindmapNode button {
   background-color: #333;
-  border: "none";
   color: white;
   visibility: hidden;
+  border-style: solid;
+  border-radius: 100%;
+  position: fixed;
+  /* Button is placed inside node */
+  margin: 4px;
+  font-size: 12pt;
+  transition: all 0.15s ease-in;
+  right: 5px;
+}
+.MindmapNode button:hover {
+  transform: scale(1.2);
 }
 .MindmapNode:hover button {
   visibility: visible;

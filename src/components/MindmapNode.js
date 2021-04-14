@@ -71,7 +71,6 @@ const MindmapNode = React.forwardRef((props, ref) => {
 
     useEffect(() => {
         if(nodeRef.current) {
-            const thisNode = d3.select(nodeRef.current)
             makeDraggable(nodeRef.current)
         }
     }, [nodeRef.current])
