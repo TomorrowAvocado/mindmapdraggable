@@ -2,6 +2,9 @@ import React, { Component, useState, useRef, useEffect } from 'react'
 import MindmapNode from './MindmapNode';
 import * as d3 from 'd3'
 
+import ChartWrapper from './ChartWrapper';
+import ZoomWrapper from './ZoomWrapper';
+
 const Mindmap = (props) => {
 
     const [nodes, setNodes] = useState({
@@ -61,50 +64,6 @@ const Mindmap = (props) => {
     useEffect( () => {
         if (nodes && svgContainer.current) {
             const svg = d3.select(svgContainer.current);  
-            //const svg = d3.create("svg").attr("viewBox", [0, 0, 1000, 800]);
-
-            const g = svg.append("g").attr("cursor", "grab");
-
-            function dragstarted() {
-                d3.select(this).raise();
-                g.attr("cursor", "grabbing");
-            }
-        
-            function dragged(event, d) {
-                d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y);
-            }
-        
-            function dragended() {
-                g.attr("cursor", "grab");
-            }
-        
-            function zoomed({transform}){
-                g.attr("transform", transform);
-            }
-
-            g.selectAll("circle")
-            .data([{x: 50, y: 50}, {x: 150, y: 150}])
-            .join("circle")
-            .attr("cx", ({x}) => x)
-            .attr("cy", ({y}) => y)
-            .attr("r", 50)
-            .attr("fill", "red")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-            
-            g.selectAll("text")
-                .data([{x: 50, y: 50}, {x: 150, y: 150}])
-                .join("text")
-                    .attr("x", ({x}) => x)
-                    .attr("y", ({y}) => y)
-                    .text("Hello world")
-
-            svg.call(d3.zoom()
-                .extent([[0, 0], [1000, 800]])
-                .scaleExtent([1, 8])
-                .on("zoom", zoomed));          
         }
     },
 
@@ -117,24 +76,29 @@ const Mindmap = (props) => {
         */
     [nodes, svgContainer.current])
 
-    
-
     return (
+        <>
+        {/* s */}
 
-        <svg 
+        <svg
             ref={svgContainer} 
             width="100vw" 
             height="100vh" 
             viewBox="0,0,1000,800"
             style={{backgroundColor: "#BBB"}}>
-                <MindmapNode
-                node={nodes.mainNode} 
-                parentX={nodes.mainNode.x} 
-                parentY={nodes.mainNode.y}
-                addMeToMyParent={updateMainNode.bind(this)}
-                index={0} />
+                <ZoomWrapper ref = {svgContainer}>
+                    <MindmapNode
+                        node={nodes.mainNode} 
+                        parentX={nodes.mainNode.x} 
+                        parentY={nodes.mainNode.y}
+                        parentWidth={nodes.mainNode.nodeWidth}
+                        parentHeight={nodes.mainNode.nodeHeight}
+                        addMeToMyParent={updateMainNode.bind(this)}
+                        index={0} />
+                </ZoomWrapper>
+                
         </svg>
-        
+        </>
     )
 }
 

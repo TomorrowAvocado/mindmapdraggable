@@ -1,6 +1,6 @@
-import Draggable from 'react-draggable';
 import React, { useState, useRef, useEffect } from 'react'
-import * as d3 from 'd3'
+import * as d3 from 'd3';
+import makeDraggable from './makeDraggable';
 
 import NodeText from './NodeText';
 import MindmapEdge from './MindmapEdge';
@@ -22,7 +22,7 @@ const getId = () => {
 // Code begins here:
 //
 
-const MindmapNode = (props) => {
+const MindmapNode = React.forwardRef((props, ref) => {
     
     const [state, setState] = useState({
         ...props.node
@@ -71,81 +71,58 @@ const MindmapNode = (props) => {
 
     useEffect(() => {
         if(nodeRef.current) {
-
-            const node = d3.select(nodeRef.current);
-
-            function dragstarted() {
-                d3.select(this).raise();
-                node.attr("cursor", "grabbing");
-            }
-        
-            function dragged(event, d) {
-                //d3.select(this).attr("x", d.x = event.x).attr("y", d.y = event.y);
-            }
-        
-            function dragended() {
-                node.attr("cursor", "grab");
-            }
-        
-            function zoomed({transform}){
-                node.attr("transform", transform);
-            }
-
-            node
-                .call(d3.drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended));
-
+            const thisNode = d3.select(nodeRef.current)
+            makeDraggable(nodeRef.current)
         }
     }, [nodeRef.current])
 
-    return (
-        <>
+    return ( 
+        <g ref={nodeRef}>
             {state.children.map((child, index) => (
                 //generer bare barn
                 //ved flytting manipulerer denne node sin forelder edge
                 // og for hvert barn
                 <MindmapNode 
+                    ref = {ref}
                     key={index}
                     node={child} 
                     parentX={state.x}
                     parentY={state.y}
+                    parentWidth={props.node.nodeWidth}
+                    parentHeight={props.node.nodeHeight}
                     className={child.id}
                     addMeToMyParent={addChildToState.bind(this)}
                     index={index} />
             ))}
 
             <MindmapEdge 
-                x1={props.parentX + 30} 
-                y1={props.parentY + 30} 
-                x2={state.x + 30} 
-                y2={state.y + 50}/>
+                x1={props.parentX + props.parentWidth / 2} 
+                y1={props.parentY + props.parentHeight / 2} 
+                x2={state.x + state.nodeWidth / 2} 
+                y2={state.y + state.nodeHeight / 2}/>
+            <foreignObject className="nodeWrapper"
+                /* x={dim.x} y={dim.y}  */
+                
+                x={state.x} y={state.y}
+                width={props.node.nodeWidth + props.node.strokeWidth*2}  
+                height={props.node.nodeHeight + props.node.strokeWidth*2}
+                >
 
-                <foreignObject 
-                    /* x={dim.x} y={dim.y}  */
-                    ref={nodeRef}
-                    x={state.x} y={state.y}
-                    width={props.node.nodeWidth + props.node.strokeWidth*2}  
-                    height={props.node.nodeHeight + props.node.strokeWidth*2}
+                <div 
+                    onClick={props.handleSelected}
+                    className={styles}
                     >
 
-                    <div 
-                        onClick={props.handleSelected}
-                        className={styles}
-                        >
+                    <button
+                        className="createNodeBtn"
+                        onClick={props.plusBtnClicked}>+</button>
 
-                        <button
-                            className="createNodeBtn"
-                            onClick={props.plusBtnClicked}>+</button>
+                    <NodeText node={props.node} />
 
-                        <NodeText node={props.node} />
-
-                    </div>
-                </foreignObject>
-            
-        </>
+                </div>
+            </foreignObject>
+        </g>
     )
-}
+})
 
 export default MindmapNode;
