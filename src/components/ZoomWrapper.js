@@ -8,7 +8,6 @@ const ZoomWrapper = React.forwardRef((props, ref) => {
     useEffect( () => {
         const svg = d3.select(ref.current)
         const g = d3.select(gRef.current)
-        console.log(svg)
         
         function zoomed({transform}){
             g.attr("transform", transform);

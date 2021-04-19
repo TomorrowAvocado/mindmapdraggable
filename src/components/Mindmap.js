@@ -54,7 +54,7 @@ const Mindmap = (props) => {
         // This method does not need the index since mindmapNode is not an array.
         // MindmapNode has a corresponding method called addChildToState().
 
-        this.setState({
+        setNodes({
             mainNode: node
         })
     }
@@ -62,9 +62,11 @@ const Mindmap = (props) => {
     const svgContainer = useRef(null);
 
     useEffect( () => {
-        if (nodes && svgContainer.current) {
+
+        /* if (nodes && svgContainer.current) {
             const svg = d3.select(svgContainer.current);  
-        }
+        } */
+
     },
 
         /*
