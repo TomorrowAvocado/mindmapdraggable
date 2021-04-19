@@ -12,6 +12,7 @@ const getId = () => {
     id++
     return id
 }
+
 // testing slutt
 
 // Note to self: 
@@ -39,13 +40,13 @@ const MindmapNode = React.forwardRef((props, ref) => {
     }
 
     const handlePlusBtnClick = () => {
-        const newNode = createNewNode(this.state.x + 100, 0)
+        const newNode = createNewNode(state.x + 100, state.y + 100)
         // Add new node to children in state
         setState({
-            children: [...this.state.children, newNode]
+            children: [...state.children, newNode]
         })
         // Report change to parent
-        props.addMeToMyParent(this.state, this.props.index)
+        props.addMeToMyParent(state, props.index)
     }
 
     const addChildToState = (node, index) => {
@@ -114,7 +115,7 @@ const MindmapNode = React.forwardRef((props, ref) => {
 
                     <button
                         className="createNodeBtn"
-                        onClick={props.plusBtnClicked}>+</button>
+                        onClick={handlePlusBtnClick}>+</button>
 
                     <NodeText node={props.node} />
 
