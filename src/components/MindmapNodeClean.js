@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import React, { Component, createRef, ReactDOM, useRef, useState } from 'react'
+import React, { Component, useEffect, createRef, ReactDOM, useRef, useState } from 'react'
 import Draggable from 'react-draggable';
 import NodeText from './NodeText';
 
@@ -23,6 +23,10 @@ const MindmapNode = (props) => {
     if(props.node.isSelected) {
         styles = styles + " NodeIsSelected";
     }
+
+    useEffect(() => {
+        console.log('RENDER!');
+      }, []);
 
     return (
 

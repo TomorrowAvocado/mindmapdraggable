@@ -186,6 +186,7 @@ class Canvas extends Component {
     }
 
     render() {
+        console.log('MINDMAP RENDER!');
         return (
             <div>
             <img style={{position: "absolute", zIndex:"999"}} src={menuDummy}/>

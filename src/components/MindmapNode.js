@@ -19,6 +19,10 @@ const MindmapNode = (props) => {
         img =  <img src={props.node.img}/>
     }
 
+    useEffect(() => {
+        console.log('RENDER!');
+      }, [dim]);
+
     return (
         <Draggable cancel=".focusedText" /* Cancels drag on className="focusedText" */
             /* onDrag={(e) => console.log(e.target.getBoundingClientRect())}  */
