@@ -1,11 +1,13 @@
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import MindmapNode from './MindmapNode';
+import axios from '../axios_mindmaps';
 
 export default class Mindmap extends Component {
 
     state = {
-        id: "Some UUID",
+        mindmapData : {
+         id: "Some UUID",
         title: "MY MINDMAP!!",
         mainNode: {
             id: "Eve",
@@ -29,7 +31,30 @@ export default class Mindmap extends Component {
                     ]
                 }
             ]
+        } }
+    }
+
+    saveMindmap() {
+        const mindmapRequestBody = {
+            filename: "test1",
+            mindmapJSONString: JSON.stringify(this.state.mindmapData)
         }
+        axios.post('/mindmapsJSON/', mindmapRequestBody)
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+            .finally(console.log(mindmapRequestBody));
+    }
+
+    componentDidMount() {
+        axios.get('/mindmapsJSON/2')
+            .then(response => {
+                this.setState({mindmapData: response.data});
+            })
+            .catch(error => {
+                this.setState({
+                    error: true
+                })
+            });
     }
 
     updateMainNode(node, index) {
@@ -46,8 +71,17 @@ export default class Mindmap extends Component {
     }
 
     render() {
+        let content = <p>LOADING MINDMAP...</p>
+        if(this.state.mindmapData) {
+            console.log("FROM DATABASE:")
+                console.log(this.state.mindmapData);
+            console.log("END")
+            content = <MindmapNode node={this.state.mindmapData.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
+        }
         return (
-            <MindmapNode node={this.state.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
+            <>
+                {content}
+            </>
         )
     }
 }
