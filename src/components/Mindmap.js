@@ -6,7 +6,7 @@ import axios from '../axios_mindmaps';
 export default class Mindmap extends Component {
 
     state = {
-        mindmapData : {
+        mindmapData :  null /* {
          id: "Some UUID",
         title: "MY MINDMAP!!",
         mainNode: {
@@ -17,13 +17,13 @@ export default class Mindmap extends Component {
             children: [
                 {
                     id: "EveChild",
-                    x: 50,
+                    x: 100,
                     y: 0,
                     layout: "mindmap",
                     children: [
                         {
                             id: "EveGrandChild",
-                            x: 100,
+                            x: 200,
                             y: 0,
                             layout: "mindmap",
                             children: []
@@ -31,7 +31,7 @@ export default class Mindmap extends Component {
                     ]
                 }
             ]
-        } }
+        } }  */
     }
 
     saveMindmap() {
@@ -46,9 +46,13 @@ export default class Mindmap extends Component {
     }
 
     componentDidMount() {
-        axios.get('/mindmapsJSON/2')
+        axios.get('/mindmapsJSON/1')
             .then(response => {
-                this.setState({mindmapData: response.data});
+                console.log(response.data.mindmapJSONString);
+                const mindmapData = JSON.parse(response.data.mindmapJSONString);
+                this.setState({
+                    mindmapData: mindmapData
+                });
             })
             .catch(error => {
                 this.setState({
@@ -71,6 +75,7 @@ export default class Mindmap extends Component {
     }
 
     render() {
+        console.log(this.state.mindmapData)
         let content = <p>LOADING MINDMAP...</p>
         if(this.state.mindmapData) {
             console.log("FROM DATABASE:")
@@ -79,9 +84,9 @@ export default class Mindmap extends Component {
             content = <MindmapNode node={this.state.mindmapData.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
         }
         return (
-            <>
+            <svg width="100vw" height="100vh">
                 {content}
-            </>
+            </svg>
         )
     }
 }
