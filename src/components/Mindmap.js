@@ -6,7 +6,7 @@ import axios from '../axios_mindmaps';
 export default class Mindmap extends Component {
 
     state = {
-        mindmapData :  null /* {
+        mindmapData :   {
          id: "Some UUID",
         title: "MY MINDMAP!!",
         mainNode: {
@@ -31,7 +31,7 @@ export default class Mindmap extends Component {
                     ]
                 }
             ]
-        } }  */
+        } }  
     }
 
     saveMindmap() {
