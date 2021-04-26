@@ -72,7 +72,7 @@ export default class Mindmap extends Component {
             ...prevState,
             mainNode: node
         }))
-    }
+    },
 
     render() {
         console.log(this.state.mindmapData)
