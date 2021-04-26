@@ -1,5 +1,5 @@
 .App {
-background-color: rgb(254, 254, 255);
+  background-color: rgb(254, 254, 255);
 }
 .mindMapNode {
   text-align: center;
@@ -11,9 +11,9 @@ background-color: rgb(254, 254, 255);
   box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
 }
 
-foreignObject { 
+foreignObject {
   /* Allow border to wrap around content when content grows */
-  overflow: visible; 
+  overflow: visible;
 }
 
 .createNodeBtn {
@@ -22,7 +22,7 @@ foreignObject {
   position: fixed; /* Button is placed inside node */
   margin: 6px;
   font-size: 12pt;
-  transition: all .15s ease-in;
+  transition: all 0.15s ease-in;
 }
 .createNodeBtn:hover {
   transform: scale(1.2);

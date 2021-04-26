@@ -7,31 +7,32 @@ export default class Mindmap extends Component {
 
     state = {
         mindmapData :   {
-         id: "Some UUID",
-        title: "MY MINDMAP!!",
-        mainNode: {
-            id: "Eve",
-            x: 0,
-            y: 0,
-            layout: "mindmap",
-            children: [
-                {
-                    id: "EveChild",
-                    x: 100,
-                    y: 0,
-                    layout: "mindmap",
-                    children: [
-                        {
-                            id: "EveGrandChild",
-                            x: 200,
-                            y: 0,
-                            layout: "mindmap",
-                            children: []
-                        }
-                    ]
-                }
-            ]
-        } }  
+            id: "Some UUID",
+            title: "MY MINDMAP!!",
+            mainNode: {
+                id: "Eve",
+                x: 0,
+                y: 0,
+                layout: "mindmap",
+                children: [
+                    {
+                        id: "EveChild",
+                        x: 100,
+                        y: 0,
+                        layout: "mindmap",
+                        children: [
+                            {
+                                id: "EveGrandChild",
+                                x: 200,
+                                y: 0,
+                                layout: "mindmap",
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            } 
+        }  
     }
 
     saveMindmap() {
@@ -72,7 +73,7 @@ export default class Mindmap extends Component {
             ...prevState,
             mainNode: node
         }))
-    },
+    }
 
     render() {
         console.log(this.state.mindmapData)

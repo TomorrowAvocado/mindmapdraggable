@@ -1,1 +1,13 @@
-/* No CSS *//*# sourceMappingURL=MindmapNode.css.map */
+.mindmap-node {
+  display: inline-block;
+}
+.mindmap-node .node-wrapper {
+  border: 2px solid;
+  border-radius: 10px;
+  padding: 20px;
+}
+.mindmap-node .node-wrapper .new-node-button {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}/*# sourceMappingURL=MindmapNode.css.map */

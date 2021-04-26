@@ -13,18 +13,17 @@ const MindmapNode = (props) => {
 
     const [node, setNode] = useState({
         node: props.node,
-        nodeWidth: 0
+        nodeWidth: 300
     })
     const textRef = useRef(null);
 
-    let nodeWidth = 0;
     useEffect(() => {
         console.log("WIDTH:", textRef.current.offsetWidth);
         setNode({
             nodeWidth: textRef.current.offsetWidth
         });
         console.log(node.nodeWidth)
-    }, [node]);
+    }, []);
 
     function createNewNode(x, y) {
         const newNode = {
@@ -67,13 +66,14 @@ const MindmapNode = (props) => {
         <>
             <Draggable /* position={{ x: props.node.x, y: props.node.y }} */ >
                 <g>
-                    <foreignObject className="mindmape-node" width={node.nodeWidth}
-                        x={props.node.x + 20} y={props.node.y } style={{display: "inline-block"}}
+                    <foreignObject 
+                        className="mindmap-node" width={node.nodeWidth}
+                        x={props.node.x + 20} y={props.node.y }
                         overflow="visible">
                         
-                        <div className="node-wrapper" style={{border: "2px solid", borderRadius:"10px", padding:"20px"}}>
-                            <div  className="new-node-button" style={{width: "20px", height: "20px", backgroundColor: "red"}} onClick={handlePlusBtnClick}>+</div>
-                            <p className="text-content" ref={textRef} style={{display:"inline-block", padding: "20px", border: "3px solid", borderRadius: "15px"}} contentEditable="true">{props.node.id}</p>
+                        <div className="node-wrapper">
+                            <div className="new-node-buttonf" onClick={handlePlusBtnClick}>+</div>
+                            <p className="text-content" ref={textRef} contentEditable="true">{props.node.id}</p>
                         </div>
                     </foreignObject>
                 </g>

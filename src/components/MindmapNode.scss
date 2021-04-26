@@ -1,12 +1,19 @@
 .mindmap-node {
+  display: inline-block;
 
-    .node-wrapper {
-        .new-node-button {
+  .node-wrapper {
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 20px;
 
-        }
-
-        .text-content {
-            
-        }
+    .new-node-button {
+      width: 20px;
+      height: 20px;
+      background-color: red;
     }
+
+    .text-content {
+      //display: inline-block;
+    }
+  }
 }
