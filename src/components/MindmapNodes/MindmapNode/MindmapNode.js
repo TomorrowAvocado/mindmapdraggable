@@ -18,6 +18,12 @@ const MindmapNode = React.forwardRef((props, ref) => {
     })
 
     let styles = "MindmapNode";
+    if(state.node.id === props.selectedNodeId) {
+        styles += " NodeSelected";
+    }
+    else {
+        styles += " NodeNotSelected";
+    }
     const nodeRef = useRef(null);
 
     useEffect(() => {
@@ -87,6 +93,7 @@ const MindmapNode = React.forwardRef((props, ref) => {
                     parentHeight={props.node.nodeHeight}
                     className={child.id}
                     reportToParent={updateChild.bind(this)}
+                    handleSelected={props.handleSelected}
                     index={index} />
             ))}
 
@@ -99,17 +106,21 @@ const MindmapNode = React.forwardRef((props, ref) => {
             <foreignObject className="node-wrapper"
                 x={state.node.x} y={state.node.y}
                 width="200"//{state.node.nodeWidth + state.node.strokeWidth*2}  
-                height="50"//{state.node.nodeHeight + state.node.strokeWidth*2}
+                //{state.node.nodeHeight + state.node.strokeWidth*2}
                 >
 
                 <div 
-                    onClick={props.handleSelected}
+                    onClick={() => props.handleSelected(state.node.id)}
                     className={styles}
                     >
 
                     <button
                         className="new-node-button"
                         onClick={handlePlusBtnClick}>+</button>
+                    
+                    <button
+                        className="adjust-width-button"
+                        onClick={console.log("DRAG TO ALTER WIDTH")}>&lt;&gt;</button>
 
                     <NodeContent node={props.node} />
 

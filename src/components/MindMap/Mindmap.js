@@ -41,7 +41,8 @@ const Mindmap = () => {
                 ]
             } 
         },
-        error: false  
+        error: false,
+        selectedNodeId: ""
     })
 
     const svgContainer = useRef(null);
@@ -86,6 +87,14 @@ const Mindmap = () => {
         }))
     }
 
+    const handleSelectedNode = (id) => {
+        setState({
+            ...state,
+            selectedNodeId: id
+        })
+        console.log("AAAAAAH", state.selectedNodeId)
+    }
+
     console.log(state.mindmapData)
     let content = <text>LOADING MINDMAP...</text>
     if(state.error) {
@@ -96,12 +105,13 @@ const Mindmap = () => {
             console.log(state.mindmapData);
         console.log("END")
         content = (<MindmapNode
-            node={state.mindmapData.node} 
+            node={state.mindmapData.mainNode} 
             parentX={state.mindmapData.mainNode.x} 
             parentY={state.mindmapData.mainNode.y}
             parentWidth={state.mindmapData.mainNode.nodeWidth}
             parentHeight={state.mindmapData.mainNode.nodeHeight}
             reportToParent={updateMainNode.bind(this)}
+            handleSelected={handleSelectedNode}
             index={0} />);
         console.log("CONTENT: ", content);
     }
@@ -120,7 +130,9 @@ const Mindmap = () => {
                 parentWidth={state.mindmapData.mainNode.nodeWidth}
                 parentHeight={state.mindmapData.mainNode.nodeHeight}
                 reportToParent={updateMainNode.bind(this)}
-                index={0} />
+                handleSelected={handleSelectedNode}
+                index={0}
+                selectedNodeId = {state.selectedNodeId} />
             </ZoomPanWrapper>
             
     </svg>
