@@ -85,9 +85,24 @@ export default class Mindmap extends Component {
             content = <MindmapNode node={this.state.mindmapData.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
         }
         return (
-            <svg width="100vw" height="100vh">
-                {content}
-            </svg>
+            <svg
+            ref={svgContainer} 
+            width="100vw" 
+            height="100vh" 
+            viewBox="0,0,1000,800"
+            style={{backgroundColor: "#BBB"}}>
+                <ZoomWrapper ref = {svgContainer}>
+                    <MindmapNode
+                        node={nodes.mainNode} 
+                        parentX={nodes.mainNode.x} 
+                        parentY={nodes.mainNode.y}
+                        parentWidth={nodes.mainNode.nodeWidth}
+                        parentHeight={nodes.mainNode.nodeHeight}
+                        addMeToMyParent={updateMainNode.bind(this)}
+                        index={0} />
+                </ZoomWrapper>
+                
+        </svg>
         )
     }
 }
