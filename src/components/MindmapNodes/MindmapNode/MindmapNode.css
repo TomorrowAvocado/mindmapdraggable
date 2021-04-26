@@ -3,7 +3,6 @@
 }
 .node-wrapper .MindmapNode {
   display: block;
-  border: 2px solid;
   border-radius: 10px;
   height: inherit;
   background-color: wheat;
@@ -24,9 +23,39 @@
 .node-wrapper .MindmapNode .new-node-button:hover {
   transform: scale(1.2);
 }
+.node-wrapper .MindmapNode .adjust-width-button {
+  background-color: #7d7bff;
+  color: white;
+  border-style: none;
+  border-radius: 100%;
+  position: fixed;
+  /* Button is placed inside node */
+  right: -10px;
+  top: 100%;
+  transform: translate(0%, 150%);
+  padding: 4px;
+  font-size: 10pt;
+  transition: all 0.15s ease-in;
+}
 .node-wrapper .MindmapNode:hover {
-  box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+  box-shadow: 0 0 5px 2px #7d7bff;
 }
 .node-wrapper .MindmapNode:hover button {
+  visibility: visible;
+}
+.node-wrapper .MindmapNode:active {
+  box-shadow: 0px 0px 13px blue;
+}
+.NodeNotSelected {
+  border: 3px solid;
+}
+.NodeNotSelected button {
+  visibility: hidden;
+}
+
+.NodeSelected {
+  border: 3px solid #7d7bff;
+}
+.NodeSelected button {
   visibility: visible;
 }/*# sourceMappingURL=MindmapNode.css.map */
