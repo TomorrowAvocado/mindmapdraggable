@@ -94,7 +94,8 @@ const MindmapNode = React.forwardRef((props, ref) => {
                     className={child.id}
                     reportToParent={updateChild.bind(this)}
                     handleSelected={props.handleSelected}
-                    index={index} />
+                    index={index}
+                    selectedNodeId = {props.selectedNodeId} />
             ))}
 
             <MindmapEdge 
