@@ -16,6 +16,7 @@ const MindmapNode = (props) => {
         nodeWidth: 300
     })
     const textRef = useRef(null);
+    const nodeRef = useRef(null);
 
     useEffect(() => {
         console.log("WIDTH:", textRef.current.offsetWidth);
@@ -63,8 +64,59 @@ const MindmapNode = (props) => {
     }
 
     return (
-        <>
-            <Draggable /* position={{ x: props.node.x, y: props.node.y }} */ >
+        
+        <g ref={nodeRef}>
+        {node.children.map((child, index) => (
+            //generer bare barn
+            //ved flytting manipulerer denne node sin forelder edge
+            // og for hvert barn
+            <MindmapNode 
+                ref = {ref}
+                key={index}
+                node={child} 
+                parentX={node.x}
+                parentY={node.y}
+                parentWidth={props.node.nodeWidth}
+                parentHeight={props.node.nodeHeight}
+                className={child.id}
+                addMeToMyParent={addChildToState.bind(this)}
+                index={index} />
+        ))}
+
+        <MindmapEdge 
+            x1={props.parentX + props.parentWidth / 2} 
+            y1={props.parentY + props.parentHeight / 2} 
+            x2={node.x + node.nodeWidth / 2} 
+            y2={node.y + node.nodeHeight / 2}/>
+        <foreignObject className="nodeWrapper"
+            /* x={dim.x} y={dim.y}  */
+            
+            x={node.x} y={node.y}
+            width={props.node.nodeWidth + props.node.strokeWidth*2}  
+            height={props.node.nodeHeight + props.node.strokeWidth*2}
+            >
+
+            <div 
+                onClick={props.handleSelected}
+                className={styles}
+                >
+
+                <button
+                    className="createNodeBtn"
+                    onClick={handlePlusBtnClick}>+</button>
+
+                <NodeText node={props.node} />
+
+            </div>
+        </foreignObject>
+    </g>
+    )
+}
+
+export default MindmapNode;
+
+{/* <>
+            <Draggable /* position={{ x: props.node.x, y: props.node.y }}  >
                 <g>
                     <foreignObject 
                         className="mindmap-node" width={node.nodeWidth}
@@ -82,8 +134,4 @@ const MindmapNode = (props) => {
             {props.node.children.map((child, index) => (
                 <MindmapNode node={child} className={child.id} reportToParent={updateChild.bind(this)} index={index} />
             ))}
-        </>
-    )
-}
-
-export default MindmapNode;
+        </> */}
