@@ -1,11 +1,12 @@
 
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MindmapNode from './MindmapNode';
 import axios from '../axios_mindmaps';
 
-export default class Mindmap extends Component {
+const Mindmap = () => {
 
-    state = {
+    const [state, setState] = useState({
+
         mindmapData :   {
             id: "Some UUID",
             title: "MY MINDMAP!!",
@@ -13,18 +14,24 @@ export default class Mindmap extends Component {
                 id: "Eve",
                 x: 0,
                 y: 0,
+                nodeWidth: 300,
+                nodeHeight: 100,
                 layout: "mindmap",
                 children: [
                     {
                         id: "EveChild",
                         x: 100,
                         y: 0,
+                        nodeWidth: 300,
+                        nodeHeight: 100,
                         layout: "mindmap",
                         children: [
                             {
                                 id: "EveGrandChild",
                                 x: 200,
                                 y: 0,
+                                nodeWidth: 300,
+                                nodeHeight: 100,
                                 layout: "mindmap",
                                 children: []
                             }
@@ -33,9 +40,11 @@ export default class Mindmap extends Component {
                 ]
             } 
         }  
-    }
+    })
 
-    saveMindmap() {
+    const svgContainer = useRef(null);
+
+    const saveMindmap = () => {
         const mindmapRequestBody = {
             filename: "test1",
             mindmapJSONString: JSON.stringify(this.state.mindmapData)
@@ -46,7 +55,7 @@ export default class Mindmap extends Component {
             .finally(console.log(mindmapRequestBody));
     }
 
-    componentDidMount() {
+    useEffect(() => {
         axios.get('/mindmapsJSON/1')
             .then(response => {
                 console.log(response.data.mindmapJSONString);
@@ -60,9 +69,9 @@ export default class Mindmap extends Component {
                     error: true
                 })
             });
-    }
+    }, [])
 
-    updateMainNode(node, index) {
+    const updateMainNode = (node, index) => {
         // This method gets called from the MindMapNode component
         // The MindMapNode will send its index. The index indicates its placement in the children list. 
         // In this case, the index is whatever we sent as a prop from here.
@@ -75,34 +84,35 @@ export default class Mindmap extends Component {
         }))
     }
 
-    render() {
-        console.log(this.state.mindmapData)
-        let content = <p>LOADING MINDMAP...</p>
-        if(this.state.mindmapData) {
-            console.log("FROM DATABASE:")
-                console.log(this.state.mindmapData);
-            console.log("END")
-            content = <MindmapNode node={this.state.mindmapData.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
-        }
-        return (
-            <svg
-            ref={svgContainer} 
-            width="100vw" 
-            height="100vh" 
-            viewBox="0,0,1000,800"
-            style={{backgroundColor: "#BBB"}}>
-                <ZoomWrapper ref = {svgContainer}>
-                    <MindmapNode
-                        node={nodes.mainNode} 
-                        parentX={nodes.mainNode.x} 
-                        parentY={nodes.mainNode.y}
-                        parentWidth={nodes.mainNode.nodeWidth}
-                        parentHeight={nodes.mainNode.nodeHeight}
-                        addMeToMyParent={updateMainNode.bind(this)}
-                        index={0} />
-                </ZoomWrapper>
-                
-        </svg>
-        )
+    console.log(this.state.mindmapData)
+    let content = <p>LOADING MINDMAP...</p>
+    if(this.state.mindmapData) {
+        console.log("FROM DATABASE:")
+            console.log(this.state.mindmapData);
+        console.log("END")
+        content = <MindmapNode node={this.state.mindmapData.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
     }
+
+    return (
+        <svg
+        ref={svgContainer} 
+        width="100vw" 
+        height="100vh" 
+        viewBox="0,0,1000,800"
+        style={{backgroundColor: "#BBB"}}>
+            <ZoomWrapper ref = {svgContainer}>
+                <MindmapNode
+                    node={state.mindmapData.mainNode} 
+                    parentX={state.mindmapData.mainNode.x} 
+                    parentY={state.mindmapData.mainNode.y}
+                    parentWidth={state.mindmapData.mainNode.nodeWidth}
+                    parentHeight={state.mindmapData.mainNode.nodeHeight}
+                    addMeToMyParent={updateMainNode.bind(this)}
+                    index={0} />
+            </ZoomWrapper>
+            
+    </svg>
+    )
 }
+
+export default Mindmap;
