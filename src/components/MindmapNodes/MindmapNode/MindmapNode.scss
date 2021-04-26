@@ -5,14 +5,30 @@
     display: block;
     border: 2px solid;
     border-radius: 10px;
-    padding: 20px;
     height: inherit;
     background-color: wheat;
 
     .new-node-button {
-      width: 20px;
-      height: 20px;
-      background-color: red;
+      background-color: #555;
+      color: white;
+      visibility: hidden;
+      border-style: solid;
+      border-radius: 100%;
+      position: fixed; /* Button is placed inside node */
+      right: 2px;
+      margin: 4px;
+      font-size: 12pt;
+      transition: all 0.15s ease-in;
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+
+    &:hover {
+      box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
+      button {
+        visibility: visible;
+      }
     }
 
     .text-content {

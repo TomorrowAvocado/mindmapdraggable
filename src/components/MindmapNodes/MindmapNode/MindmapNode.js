@@ -29,11 +29,13 @@ const MindmapNode = React.forwardRef((props, ref) => {
         console.log("Node width: ", props.node.nodeWidth)
     }, [nodeRef.current]);
 
-    function createNewNode(x, y) {
+    function createNewNode(parentNode) {
         const newNode = {
             id: getId(), // Temporary solution //// brukes foreløpig kun for å se forskjell på nodene i debugging.
-            x: x,
-            y: y,
+            x: parentNode.x + 100,
+            y: parentNode.y - 100,
+            nodeWidth: parentNode.nodeWidth,
+            nodeHeight: parentNode.nodeHeight,
             children: []
         }
         return newNode
@@ -43,7 +45,7 @@ const MindmapNode = React.forwardRef((props, ref) => {
         // Create copy of this node
         let thisNode = state.node
         // Create new node
-        const newNode = createNewNode(props.node.x + 50, 0)
+        const newNode = createNewNode(thisNode)
         // Add the new node to "children" in the copy of this node
         thisNode.children = [...thisNode.children, newNode]
 
@@ -81,8 +83,8 @@ const MindmapNode = React.forwardRef((props, ref) => {
                     node={child} 
                     parentX={state.node.x}
                     parentY={state.node.y}
-                    parentWidth={state.node.nodeWidth}
-                    parentHeight={state.node.nodeHeight}
+                    parentWidth={props.node.nodeWidth}
+                    parentHeight={props.node.nodeHeight}
                     className={child.id}
                     reportToParent={updateChild.bind(this)}
                     index={index} />
@@ -91,8 +93,8 @@ const MindmapNode = React.forwardRef((props, ref) => {
             <MindmapEdge 
                 x1={props.parentX + props.parentWidth / 2} 
                 y1={props.parentY + props.parentHeight / 2} 
-                x2={state.x + state.nodeWidth / 2} 
-                y2={state.y + state.nodeHeight / 2}/>
+                x2={state.node.x + state.node.nodeWidth / 2} 
+                y2={state.node.y + state.node.nodeHeight / 2}/>
 
             <foreignObject className="node-wrapper"
                 x={state.node.x} y={state.node.y}
@@ -106,7 +108,7 @@ const MindmapNode = React.forwardRef((props, ref) => {
                     >
 
                     <button
-                        className="createNodeBtn"
+                        className="new-node-button"
                         onClick={handlePlusBtnClick}>+</button>
 
                     <NodeContent node={props.node} />
