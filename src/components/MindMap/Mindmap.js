@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import MindmapNode from './MindmapNode';
-import axios from '../axios_mindmaps';
+import MindmapNode from '../MindmapNodes/MindmapNode/MindmapNode';
+import ZoomPanWrapper from '../../hoc/ZoomPanWrapper';
+import axios from '../../axios_mindmaps';
 
 const Mindmap = () => {
 
@@ -13,23 +14,23 @@ const Mindmap = () => {
             mainNode: {
                 id: "Eve",
                 x: 0,
-                y: 0,
+                y: 100,
                 nodeWidth: 300,
                 nodeHeight: 100,
                 layout: "mindmap",
                 children: [
                     {
                         id: "EveChild",
-                        x: 100,
-                        y: 0,
+                        x: 300,
+                        y: 200,
                         nodeWidth: 300,
                         nodeHeight: 100,
                         layout: "mindmap",
                         children: [
                             {
                                 id: "EveGrandChild",
-                                x: 200,
-                                y: 0,
+                                x: 600,
+                                y: 300,
                                 nodeWidth: 300,
                                 nodeHeight: 100,
                                 layout: "mindmap",
@@ -39,7 +40,8 @@ const Mindmap = () => {
                     }
                 ]
             } 
-        }  
+        },
+        error: false  
     })
 
     const svgContainer = useRef(null);
@@ -47,7 +49,7 @@ const Mindmap = () => {
     const saveMindmap = () => {
         const mindmapRequestBody = {
             filename: "test1",
-            mindmapJSONString: JSON.stringify(this.state.mindmapData)
+            mindmapJSONString: JSON.stringify(state.mindmapData)
         }
         axios.post('/mindmapsJSON/', mindmapRequestBody)
             .then(response => console.log(response))
@@ -55,7 +57,7 @@ const Mindmap = () => {
             .finally(console.log(mindmapRequestBody));
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
         axios.get('/mindmapsJSON/1')
             .then(response => {
                 console.log(response.data.mindmapJSONString);
@@ -65,11 +67,11 @@ const Mindmap = () => {
                 });
             })
             .catch(error => {
-                this.setState({
-                    error: true
+                setState({
+                    error: false
                 })
             });
-    }, [])
+    }, []) */
 
     const updateMainNode = (node, index) => {
         // This method gets called from the MindMapNode component
@@ -78,19 +80,30 @@ const Mindmap = () => {
         // This method does not need the index since this.state.mindmapNode is not an array.
         // The MindmapNode component has a corresponding method called updateChild().
 
-        this.setState(prevState => ({
+        setState(prevState => ({
             ...prevState,
             mainNode: node
         }))
     }
 
-    console.log(this.state.mindmapData)
-    let content = <p>LOADING MINDMAP...</p>
-    if(this.state.mindmapData) {
+    console.log(state.mindmapData)
+    let content = <text>LOADING MINDMAP...</text>
+    if(state.error) {
+        content = <text>"ERROR READING DATA..."</text>;
+    }
+    if(state.mindmapData) {
         console.log("FROM DATABASE:")
-            console.log(this.state.mindmapData);
+            console.log(state.mindmapData);
         console.log("END")
-        content = <MindmapNode node={this.state.mindmapData.mainNode} reportToParent={this.updateMainNode.bind(this)} index={0} />
+        content = (<MindmapNode
+            node={state.mindmapData.node} 
+            parentX={state.mindmapData.mainNode.x} 
+            parentY={state.mindmapData.mainNode.y}
+            parentWidth={state.mindmapData.mainNode.nodeWidth}
+            parentHeight={state.mindmapData.mainNode.nodeHeight}
+            reportToParent={updateMainNode.bind(this)}
+            index={0} />);
+        console.log("CONTENT: ", content);
     }
 
     return (
@@ -98,18 +111,17 @@ const Mindmap = () => {
         ref={svgContainer} 
         width="100vw" 
         height="100vh" 
-        viewBox="0,0,1000,800"
         style={{backgroundColor: "#BBB"}}>
-            <ZoomWrapper ref = {svgContainer}>
-                <MindmapNode
-                    node={state.mindmapData.mainNode} 
-                    parentX={state.mindmapData.mainNode.x} 
-                    parentY={state.mindmapData.mainNode.y}
-                    parentWidth={state.mindmapData.mainNode.nodeWidth}
-                    parentHeight={state.mindmapData.mainNode.nodeHeight}
-                    addMeToMyParent={updateMainNode.bind(this)}
-                    index={0} />
-            </ZoomWrapper>
+            <ZoomPanWrapper ref = {svgContainer}>
+            <MindmapNode
+                node={state.mindmapData.mainNode} 
+                parentX={state.mindmapData.mainNode.x} 
+                parentY={state.mindmapData.mainNode.y}
+                parentWidth={state.mindmapData.mainNode.nodeWidth}
+                parentHeight={state.mindmapData.mainNode.nodeHeight}
+                reportToParent={updateMainNode.bind(this)}
+                index={0} />
+            </ZoomPanWrapper>
             
     </svg>
     )

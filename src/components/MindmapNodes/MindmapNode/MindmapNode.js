@@ -1,6 +1,8 @@
-import Draggable from 'react-draggable';
-import React, { useRef, useEffect, useState } from 'react'
-import { symbolDiamond } from 'd3-shape';
+import React, { useRef, useEffect, useState } from 'react';
+
+import MindmapEdge from '../MindmapEdge/MindmapEdge';
+import NodeContent from './NodeContent/NodeContent';
+import makeDraggable from '../../../hoc/makeDraggable';
 import './MindmapNode.css';
 // Temporary solution for generating ID
 let id = 0
@@ -9,22 +11,23 @@ const getId = () => {
     return id
 }
 
-const MindmapNode = (props) => {
+const MindmapNode = React.forwardRef((props, ref) => {
 
-    const [node, setNode] = useState({
+    const [state, setState] = useState({
         node: props.node,
-        nodeWidth: 300
     })
-    const textRef = useRef(null);
+
+    let styles = "MindmapNode";
     const nodeRef = useRef(null);
 
     useEffect(() => {
-        console.log("WIDTH:", textRef.current.offsetWidth);
-        setNode({
-            nodeWidth: textRef.current.offsetWidth
-        });
-        console.log(node.nodeWidth)
-    }, []);
+        if(nodeRef.current) {
+            makeDraggable(nodeRef.current)
+        }
+        console.log("THIS NODE", state.node)
+        console.log("Node x: ", props.node.x)
+        console.log("Node width: ", props.node.nodeWidth)
+    }, [nodeRef.current]);
 
     function createNewNode(x, y) {
         const newNode = {
@@ -38,12 +41,15 @@ const MindmapNode = (props) => {
 
     const handlePlusBtnClick = () => {
         // Create copy of this node
-        let thisNode = props.node
+        let thisNode = state.node
         // Create new node
         const newNode = createNewNode(props.node.x + 50, 0)
         // Add the new node to "children" in the copy of this node
         thisNode.children = [...thisNode.children, newNode]
 
+        setState({
+            node: thisNode
+        })
         // Report this change to my parent. Use the copy of the node as parameter. (State will be set later when props arrive)
         props.reportToParent(thisNode, props.index)
     }
@@ -51,9 +57,8 @@ const MindmapNode = (props) => {
     // My children know this method as props.reportToParent.
     const updateChild = (updatedChild, index) => {
         // I'll just create a copy of myself, and replace the child that is updated.
-        let thisNode = props.node
+        let thisNode = state.node
         thisNode.children[index] = updatedChild
-
         // I better report the change to my parent.
         props.reportToParent(thisNode, props.index)
         // Now I wait for the new props to arrive.
@@ -66,56 +71,62 @@ const MindmapNode = (props) => {
     return (
         
         <g ref={nodeRef}>
-        {node.children.map((child, index) => (
-            //generer bare barn
-            //ved flytting manipulerer denne node sin forelder edge
-            // og for hvert barn
-            <MindmapNode 
-                ref = {ref}
-                key={index}
-                node={child} 
-                parentX={node.x}
-                parentY={node.y}
-                parentWidth={props.node.nodeWidth}
-                parentHeight={props.node.nodeHeight}
-                className={child.id}
-                addMeToMyParent={addChildToState.bind(this)}
-                index={index} />
-        ))}
+            {props.node.children.map((child, index) => (
+                //generer bare barn
+                //ved flytting manipulerer denne node sin forelder edge
+                // og for hvert barn
+                <MindmapNode 
+                    ref = {ref}
+                    key={index}
+                    node={child} 
+                    parentX={state.node.x}
+                    parentY={state.node.y}
+                    parentWidth={state.node.nodeWidth}
+                    parentHeight={state.node.nodeHeight}
+                    className={child.id}
+                    reportToParent={updateChild.bind(this)}
+                    index={index} />
+            ))}
 
-        <MindmapEdge 
-            x1={props.parentX + props.parentWidth / 2} 
-            y1={props.parentY + props.parentHeight / 2} 
-            x2={node.x + node.nodeWidth / 2} 
-            y2={node.y + node.nodeHeight / 2}/>
-        <foreignObject className="nodeWrapper"
-            /* x={dim.x} y={dim.y}  */
-            
-            x={node.x} y={node.y}
-            width={props.node.nodeWidth + props.node.strokeWidth*2}  
-            height={props.node.nodeHeight + props.node.strokeWidth*2}
-            >
+            <MindmapEdge 
+                x1={props.parentX + props.parentWidth / 2} 
+                y1={props.parentY + props.parentHeight / 2} 
+                x2={state.x + state.nodeWidth / 2} 
+                y2={state.y + state.nodeHeight / 2}/>
 
-            <div 
-                onClick={props.handleSelected}
-                className={styles}
+            <foreignObject className="node-wrapper"
+                x={state.node.x} y={state.node.y}
+                width="200"//{state.node.nodeWidth + state.node.strokeWidth*2}  
+                height="50"//{state.node.nodeHeight + state.node.strokeWidth*2}
                 >
 
-                <button
-                    className="createNodeBtn"
-                    onClick={handlePlusBtnClick}>+</button>
+                <div 
+                    onClick={props.handleSelected}
+                    className={styles}
+                    >
 
-                <NodeText node={props.node} />
+                    <button
+                        className="createNodeBtn"
+                        onClick={handlePlusBtnClick}>+</button>
 
-            </div>
-        </foreignObject>
-    </g>
+                    <NodeContent node={props.node} />
+
+                </div>
+            </foreignObject>
+        </g>
     )
-}
+})
 
 export default MindmapNode;
 
-{/* <>
+{/* 
+    
+    
+
+
+
+    
+    <>
             <Draggable /* position={{ x: props.node.x, y: props.node.y }}  >
                 <g>
                     <foreignObject 

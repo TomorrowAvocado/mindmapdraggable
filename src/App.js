@@ -1,6 +1,6 @@
 
 import './App.css';
-import Mindmap from './components/Mindmap';
+import Mindmap from './components/MindMap/Mindmap';
 
 function App() {
   return (
