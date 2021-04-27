@@ -42,7 +42,7 @@
 .node-wrapper .MindmapNode:hover {
   box-shadow: 0 0 2px 2px #7d7bff;
 }
-.node-wrapper .MindmapNode:hover button {
+.node-wrapper .MindmapNode:hover .new-node-button {
   visibility: visible;
 }
 .node-wrapper .MindmapNode button:focus {

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 
 import MindmapEdge from '../MindmapEdge/MindmapEdge';
 import NodeContent from './NodeContent/NodeContent';
-import makeDraggable from '../../../hoc/makeDraggable';
+import DragWrapper from '../../../hoc/DragWrapper';
 import './MindmapNode.css';
 // Temporary solution for generating ID
 let id = 0
@@ -11,29 +11,20 @@ const getId = () => {
     return id
 }
 
-const MindmapNode = React.forwardRef((props, ref) => {
+const MindmapNode = (props) => {
 
     const [state, setState] = useState({
         node: props.node,
     })
 
     let styles = "MindmapNode";
+
     if(state.node.id === props.selectedNodeId) {
         styles += " NodeSelected";
     }
     else {
         styles += " NodeNotSelected";
     }
-    const nodeRef = useRef(null);
-
-    useEffect(() => {
-        if(nodeRef.current) {
-            makeDraggable(nodeRef.current)
-        }
-        console.log("THIS NODE", state.node)
-        console.log("Node x: ", props.node.x)
-        console.log("Node width: ", props.node.nodeWidth)
-    }, [nodeRef.current]);
 
     function createNewNode(parentNode) {
         const newNode = {
@@ -78,19 +69,17 @@ const MindmapNode = React.forwardRef((props, ref) => {
 
     return (
         
-        <g ref={nodeRef}>
+        <>
+            <DragWrapper>
+
             {props.node.children.map((child, index) => (
                 //generer bare barn
                 //ved flytting manipulerer denne node sin forelder edge
                 // og for hvert barn
                 <MindmapNode 
-                    ref = {ref}
                     key={index}
                     node={child} 
-                    parentX={state.node.x}
-                    parentY={state.node.y}
-                    parentWidth={props.node.nodeWidth}
-                    parentHeight={props.node.nodeHeight}
+                    parent={state.node}
                     className={child.id}
                     reportToParent={updateChild.bind(this)}
                     handleSelected={props.handleSelected}
@@ -98,38 +87,42 @@ const MindmapNode = React.forwardRef((props, ref) => {
                     selectedNodeId = {props.selectedNodeId} />
             ))}
 
-            <MindmapEdge 
-                x1={props.parentX + props.parentWidth / 2} 
-                y1={props.parentY + props.parentHeight / 2} 
-                x2={state.node.x + state.node.nodeWidth / 2} 
-                y2={state.node.y + state.node.nodeHeight / 2}/>
+                <MindmapEdge 
+                    x1={props.parent.x + props.parent.nodeWidth / 2} 
+                    y1={props.parent.y + props.parent.nodeHeight / 2} 
+                    x2={state.node.x + state.node.nodeWidth / 2} 
+                    y2={state.node.y + state.node.nodeHeight / 2}/>
 
-            <foreignObject className="node-wrapper"
-                x={state.node.x} y={state.node.y}
-                width="200"//{state.node.nodeWidth + state.node.strokeWidth*2}  
-                //{state.node.nodeHeight + state.node.strokeWidth*2}
-                >
+                <foreignObject className="node-wrapper"
+                    x={state.node.x} y={state.node.y}
+                    width={props.node.nodeWidth}> {/* state.node.strokeWidth*2} */}
 
-                <div 
-                    onClick={() => props.handleSelected(state.node.id)}
-                    className={styles}
-                    >
+                    <div 
+                        onClick={() => props.handleSelected(state.node.id)}
+                        className={styles}>
 
-                    <button
-                        className="new-node-button"
-                        onClick={handlePlusBtnClick}>+</button>
-                    
-                    <button
-                        className="adjust-width-button"
-                        onClick={console.log("DRAG TO ALTER WIDTH")}>&lt;&gt;</button>
+                        <button
+                            className="new-node-button"
+                            onClick={handlePlusBtnClick}>
+                            +                        
+                        </button>
+                        
+                        <button
+                            className="adjust-width-button"
+                            onClick={console.log("DRAG TO ALTER WIDTH")}>
+                            &lt;&gt;
+                        </button>
 
-                    <NodeContent node={props.node} />
+                        <NodeContent node={props.node} />
 
-                </div>
-            </foreignObject>
-        </g>
+                    </div>
+
+                </foreignObject>
+            </DragWrapper>
+
+        </>
     )
-})
+}
 
 export default MindmapNode;
 

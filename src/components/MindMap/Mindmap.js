@@ -91,51 +91,45 @@ const Mindmap = () => {
         setState({
             ...state,
             selectedNodeId: id
-        })
-        console.log("AAAAAAH", state.selectedNodeId)
+        });
     }
 
-    console.log(state.mindmapData)
     let content = <text>LOADING MINDMAP...</text>
+
     if(state.error) {
         content = <text>"ERROR READING DATA..."</text>;
     }
+
     if(state.mindmapData) {
+
         console.log("FROM DATABASE:")
             console.log(state.mindmapData);
         console.log("END")
+
         content = (<MindmapNode
             node={state.mindmapData.mainNode} 
-            parentX={state.mindmapData.mainNode.x} 
-            parentY={state.mindmapData.mainNode.y}
-            parentWidth={state.mindmapData.mainNode.nodeWidth}
-            parentHeight={state.mindmapData.mainNode.nodeHeight}
+            parent={state.mindmapData.mainNode}
             reportToParent={updateMainNode.bind(this)}
             handleSelected={handleSelectedNode}
             index={0} />);
-        console.log("CONTENT: ", content);
     }
 
     return (
-        <svg
-        ref={svgContainer} 
-        width="100vw" 
-        height="100vh" 
-        style={{backgroundColor: "#BBB"}}>
+        <svg ref={svgContainer} width="100vw" height="100vh">
+
             <ZoomPanWrapper ref = {svgContainer}>
-            <MindmapNode
-                node={state.mindmapData.mainNode} 
-                parentX={state.mindmapData.mainNode.x} 
-                parentY={state.mindmapData.mainNode.y}
-                parentWidth={state.mindmapData.mainNode.nodeWidth}
-                parentHeight={state.mindmapData.mainNode.nodeHeight}
-                reportToParent={updateMainNode.bind(this)}
-                handleSelected={handleSelectedNode}
-                index={0}
-                selectedNodeId = {state.selectedNodeId} />
+
+                <MindmapNode
+                    node={state.mindmapData.mainNode}
+                    parent={state.mindmapData.mainNode}
+                    reportToParent={updateMainNode.bind(this)}
+                    handleSelected={handleSelectedNode}
+                    index={0}
+                    selectedNodeId = {state.selectedNodeId} />
+
             </ZoomPanWrapper>
-            
-    </svg>
+
+        </svg>
     )
 }
 
