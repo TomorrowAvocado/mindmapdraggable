@@ -5,7 +5,6 @@ const NodeContent = (props) => {
 
     return (
             <p 
-            
                 contentEditable="true" /* TODO: hasFocus insted of props.node.isSelected */
                 suppressContentEditableWarning={true}
             >
