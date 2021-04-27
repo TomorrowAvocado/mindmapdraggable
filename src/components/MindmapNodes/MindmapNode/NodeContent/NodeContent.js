@@ -1,15 +1,19 @@
 import React, {useState} from 'react';
 
+import './NodeContent.css';
+
 const NodeContent = (props) => {
     const [hasFocus, setHasFocus] = useState(false)
 
     return (
-            <p 
+        <>
+            <p className="text-content"
                 contentEditable="true" /* TODO: hasFocus insted of props.node.isSelected */
                 suppressContentEditableWarning={true}
             >
                 {props.node.id}
             </p>
+        </>
     )
 };
 

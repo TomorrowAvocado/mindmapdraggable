@@ -4,6 +4,7 @@
 .node-wrapper .MindmapNode {
   display: block;
   border-radius: 10px;
+  padding: 20px;
   height: inherit;
   background-color: white;
 }
@@ -16,6 +17,7 @@
   position: fixed;
   /* Button is placed inside node */
   right: 2px;
+  top: 2px;
   margin: 4px;
   font-size: 12pt;
   transition: all 0.15s ease-in;
@@ -32,7 +34,7 @@
   /* Button is placed inside node */
   right: -10px;
   top: 100%;
-  transform: translate(0%, 150%);
+  transform: translate(0%, 170%);
   padding: 4px;
   font-size: 10pt;
   transition: all 0.15s ease-in;
@@ -46,6 +48,7 @@
 .node-wrapper .MindmapNode button:focus {
   outline: 0px solid transparent;
 }
+
 .NodeNotSelected {
   border: 3px solid;
 }
