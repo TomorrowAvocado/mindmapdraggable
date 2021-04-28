@@ -11,39 +11,7 @@ const Mindmap = () => {
     const [state, setState] = useState({
 
         newProjectTemplates: [],
-        mindmapData : null, /* {
-            id: "Some UUID",
-            title: "MY MINDMAP!!",
-            mainNode: {
-                id: "Eve",
-                x: 0,
-                y: 100,
-                nodeWidth: 300,
-                nodeHeight: 100,
-                layout: "mindmap",
-                children: [
-                    {
-                        id: "EveChild",
-                        x: 300,
-                        y: 200,
-                        nodeWidth: 300,
-                        nodeHeight: 100,
-                        layout: "mindmap",
-                        children: [
-                            {
-                                id: "EveGrandChild",
-                                x: 600,
-                                y: 300,
-                                nodeWidth: 300,
-                                nodeHeight: 100,
-                                layout: "mindmap",
-                                children: []
-                            }
-                        ]
-                    }
-                ]
-            } 
-        }, */
+        mindmapData : null,
         error: false,
         selectedNodeId: "",
         modalShow: true
@@ -143,6 +111,52 @@ const Mindmap = () => {
         });
     }
 
+    function loadLocalDummy() {
+        if(!state.error)
+            return;
+
+        setState({
+            ...state,
+            mindmapData: {
+                id: "Some UUID",
+                title: "MY MINDMAP!!",
+                mainNode: {
+                    id: "Eve",
+                    text: "MAIN NODE (LOCAL)",
+                    x: 0,
+                    y: 100,
+                    nodeWidth: 300,
+                    nodeHeight: 100,
+                    layout: "mindmap",
+                    children: [
+                        {
+                            id: "EveChild",
+                            text: "SUB NODE",
+                            x: 300,
+                            y: 200,
+                            nodeWidth: 200,
+                            nodeHeight: 100,
+                            layout: "mindmap",
+                            children: [
+                                {
+                                    id: "EveGrandChild",
+                                    text: "SUBSUB NODE",
+                                    x: 600,
+                                    y: 300,
+                                    nodeWidth: 150,
+                                    nodeHeight: 100,
+                                    layout: "mindmap",
+                                    children: []
+                                }
+                            ]
+                        }
+                    ]
+                } 
+            },
+            modalShow: false
+        });
+    }
+
     let content = <text>LOADING MINDMAP...</text>
 
     if(state.error) {
@@ -184,10 +198,11 @@ const Mindmap = () => {
 
                 </ZoomPanWrapper>
             </svg>
-            <Modal show={state.modalShow}>
+            <Modal show={state.modalShow} modalClosed={loadLocalDummy}>
                 <ProjectSelector 
                     newProjectTemplates = {state.newProjectTemplates}
-                    selectTemplate = {loadNewProjectFromTemplate}/>
+                    selectTemplate = {loadNewProjectFromTemplate}
+                    errorLoadingData = {state.error}/>
             </Modal>
         </>
     )

@@ -21,7 +21,9 @@ const ProjectSelector = (props) => {
     );
 
     let templateButtons =  <p>LOADING BUTTONS...</p>;
-
+    if (props.errorLoadingData) {
+        templateButtons =  <p>ERROR LOADING TEMPLATES...click background to go local</p>;
+    }
     if (props.newProjectTemplates.length > 0) {
         console.log("TEMPLATES LOADED:", state.newProjectTemplates)
         templateButtons = props.newProjectTemplates.map((template, index) => (
