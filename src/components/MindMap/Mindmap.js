@@ -5,12 +5,15 @@ import ZoomPanWrapper from '../../hoc/ZoomPanWrapper';
 import axios from '../../axios_mindmaps';
 import Modal from '../UI/Modal/Modal';
 import ProjectSelector from '../UI/ProjectSelector/ProjectSelector';
+import DummyData from '../../DummyData';
+import CreateDummyDataForDb from '../../CreateDummyDataForDb';
 
 const Mindmap = () => {
 
     const [state, setState] = useState({
 
         newProjectTemplates: [],
+        existingProjects: null,
         mindmapData : null,
         error: false,
         selectedNodeId: "",
@@ -19,20 +22,67 @@ const Mindmap = () => {
 
     const svgContainer = useRef(null);
 
-    const saveMindmap = () => {
-        /* const mindmapRequestBody = {
-            filename: "test1",
-            mindmapJSONString: JSON.stringify(state.mindmapData)
+    function writeData() {
+        const data = CreateDummyDataForDb();
+        console.log(data)
+        saveEntry(data[0]);
+        saveEntry(data[1]);
+        console.log("DATA LOADED")
+    }
+
+    function saveEntry(project) {
+        const mindmapRequestBody = {
+            filename: project.title,
+            mindmapJSONString: JSON.stringify(project)
         }
         axios.post('/mindmapsJSON/', mindmapRequestBody)
-            .then(response => console.log(response))
-            .catch(error => console.log(error))
-            .finally(console.log(mindmapRequestBody)); */
-            console.log("SAVED DATA: ", state.mindmapData)
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
+                .finally(console.log(mindmapRequestBody)); 
     }
 
     useEffect(() => {
-        axios.get('/projectTemplates/')
+
+        const requests = [axios.get('/projectTemplates/'), axios.get('/mindmapsJSON/')];
+
+        Promise.all(requests)
+            .then(responses => {
+                const templatesResponse = responses[0];
+                const projectsResponse = responses[1];
+                
+                const templateList = templatesResponse.data.map(template => {
+                    return {
+                        id: template.id,
+                        name: template.templateName,
+                        template: JSON.parse(template.templateJSONString)
+                    }
+                });
+
+                const existingProjects = projectsResponse.data.map(project => {
+                    return {
+                        id: project.id,
+                        name: project.filename,
+                        mindmap: JSON.parse(project.mindmapJSONString)
+                    }
+                });
+
+                setState({
+                    ...state,
+                    newProjectTemplates: templateList,
+                    existingProjects: existingProjects
+                });
+
+
+            })
+            .catch(errors => {
+                console.log(errors);
+                setState({
+                    ...state,
+                    error: true
+                })
+            });
+
+        /* axios.get('/projectTemplates/')
             .then(response => {
 
                 console.log("PARSED TEMPLATE DATA: ", JSON.parse(response.data[0].templateJSONString));
@@ -60,19 +110,25 @@ const Mindmap = () => {
                 })
             });
 
-        /* axios.get('/mindmapsJSON/1')
+        axios.get('/mindmapsJSON/')
             .then(response => {
-                console.log(response.data.mindmapJSONString);
-                const mindmapData = JSON.parse(response.data.mindmapJSONString);
+                console.log(response.data);
+                const existingProjects = response.data.map(project => {
+                    return {
+                        id: project.id,
+                        name: project.filename,
+                        mindmap: JSON.parse(project.mindmapJSONString)
+                    }
+                });
                 setState({
                     ...state,
-                    mindmapData: mindmapData
+                    existingProjects: existingProjects
                 });
             })
             .catch(error => {
                 setState({
                     ...state,
-                    error: false
+                    error: true
                 })
             }); */
     }, [])
@@ -101,8 +157,8 @@ const Mindmap = () => {
         setState({...state, modalShow:true});
     }
 
-    const loadNewProjectFromTemplate = (index) => {
-        const template = state.newProjectTemplates.find(t => t.id === index).template;
+    const createNewProjectFromTemplate = (id) => {
+        const template = state.newProjectTemplates.find(t => t.id === id).template;
         console.log("SELECTED TEMPLATE: ", template);
         setState({
             ...state,
@@ -111,48 +167,24 @@ const Mindmap = () => {
         });
     }
 
+    const loadExistingProject = (id) => {
+        const project = state.existingProjects.find(p => p.id === id)
+        console.log("LOADED ID", id);
+        console.log("LOADED PROJECT", project.mindmap);
+        setState({
+            ...state,
+            mindmapData: project.mindmap,
+            modalShow: false
+        })
+    }
+
     function loadLocalDummy() {
         if(!state.error)
             return;
 
         setState({
             ...state,
-            mindmapData: {
-                id: "Some UUID",
-                title: "MY MINDMAP!!",
-                mainNode: {
-                    id: "Eve",
-                    text: "MAIN NODE (LOCAL)",
-                    x: 0,
-                    y: 100,
-                    nodeWidth: 300,
-                    nodeHeight: 100,
-                    layout: "mindmap",
-                    children: [
-                        {
-                            id: "EveChild",
-                            text: "SUB NODE",
-                            x: 300,
-                            y: 200,
-                            nodeWidth: 200,
-                            nodeHeight: 100,
-                            layout: "mindmap",
-                            children: [
-                                {
-                                    id: "EveGrandChild",
-                                    text: "SUBSUB NODE",
-                                    x: 600,
-                                    y: 300,
-                                    nodeWidth: 150,
-                                    nodeHeight: 100,
-                                    layout: "mindmap",
-                                    children: []
-                                }
-                            ]
-                        }
-                    ]
-                } 
-            },
+            mindmapData: DummyData(),
             modalShow: false
         });
     }
@@ -176,12 +208,16 @@ const Mindmap = () => {
             handleSelected={handleSelectedNode}
             index={0}
             selectedNodeId = {state.selectedNodeId} 
-            save={saveMindmap} />);
+            adjustWidth={console.log("IMPLEMENT ADJUS WIDTH")} />);
     }
 
     return (
         <>  
-            <button onClick={showProjectSelector} style={{position: "fixed", top: "0"}}>MENU</button>
+            <div style={{position: "fixed", top: "0"}}>
+                <button onClick={showProjectSelector} >MENU</button>
+                
+            </div>
+            
             <svg ref={svgContainer} width="100vw" height="100vh">
 
                 <ZoomPanWrapper 
@@ -201,9 +237,13 @@ const Mindmap = () => {
             <Modal show={state.modalShow} modalClosed={loadLocalDummy}>
                 <ProjectSelector 
                     newProjectTemplates = {state.newProjectTemplates}
-                    selectTemplate = {loadNewProjectFromTemplate}
+                    existingProjects = {state.existingProjects}
+                    errorLoadingData = {state.error}
+                    selectTemplate = {createNewProjectFromTemplate}
                     selectLocal = {loadLocalDummy}
-                    errorLoadingData = {state.error}/>
+                    loadProject = {loadExistingProject}
+                    writeDataToDb = {writeData}
+                    />
             </Modal>
         </>
     )

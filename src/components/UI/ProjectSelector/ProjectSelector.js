@@ -1,26 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import axios from '../../../axios_mindmaps';
 
 const ProjectSelector = (props) => {
 
     const [state, setState] = useState({
         newProjectTemplates: [],
         loadableProjects: [],
-        error: false
     });
 
-    useEffect(() => {
-        
-    }, [])
-
-    const projectList = (
-        <ul>
-            <li>List of projects here</li>
-            <li>Yet to be implemented</li>
-        </ul>
-    );
-
     let templateButtons =  <span>LOADING BUTTONS...</span>;
+
     if (props.errorLoadingData) {
         templateButtons =  (
             <>
@@ -29,6 +17,7 @@ const ProjectSelector = (props) => {
             </>
         );
     }
+
     if (props.newProjectTemplates.length > 0) {
         templateButtons = props.newProjectTemplates.map((template, index) => (
                 <button 
@@ -39,6 +28,25 @@ const ProjectSelector = (props) => {
             ));
     }
 
+    let projectList = (
+        <li>LOADNING PROJECTS...</li>
+    );
+
+    if(props.errorLoadingData) {
+        projectList = <li style={{color: "red"}}>ERROR LOADING PROJECTS</li>
+    }
+
+    if(props.existingProjects) {
+        if (props.existingProjects.length < 1) {
+            projectList = <li><button onClick={props.writeDataToDb} >CLICK TO ADD 2 PROJECTS TO DB</button><span> THEN REFRESH PAGE</span></li>
+        }
+        else {
+            projectList = props.existingProjects.map((project, index) => (
+                <li key={index} onClick={() => props.loadProject(project.id)}>{project.name}</li>
+            ))
+        }
+    }
+
     return (
         <div >
             <div>
@@ -47,7 +55,9 @@ const ProjectSelector = (props) => {
             </div>
             <div>
                 <h3>Load Project</h3>
-                {projectList}
+                <ul>
+                    {projectList}
+                </ul>
             </div>
         </div>
     );
