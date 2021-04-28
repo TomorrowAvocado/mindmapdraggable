@@ -181,7 +181,7 @@ const Mindmap = () => {
 
     return (
         <>  
-            <button onClick={showProjectSelector}>MENU</button>
+            <button onClick={showProjectSelector} style={{position: "fixed", top: "0"}}>MENU</button>
             <svg ref={svgContainer} width="100vw" height="100vh">
 
                 <ZoomPanWrapper 
