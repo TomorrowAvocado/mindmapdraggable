@@ -3,12 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import MindmapNode from '../MindmapNodes/MindmapNode/MindmapNode';
 import ZoomPanWrapper from '../../hoc/ZoomPanWrapper';
 import axios from '../../axios_mindmaps';
+import Modal from '../UI/Modal/Modal';
+import ProjectSelector from '../UI/ProjectSelector/ProjectSelector';
 
 const Mindmap = () => {
 
     const [state, setState] = useState({
 
-        mindmapData :   {
+        newProjectTemplates: [],
+        mindmapData : null, /* {
             id: "Some UUID",
             title: "MY MINDMAP!!",
             mainNode: {
@@ -40,39 +43,71 @@ const Mindmap = () => {
                     }
                 ]
             } 
-        },
+        }, */
         error: false,
-        selectedNodeId: ""
+        selectedNodeId: "",
+        modalShow: true
     })
 
     const svgContainer = useRef(null);
 
     const saveMindmap = () => {
-        const mindmapRequestBody = {
+        /* const mindmapRequestBody = {
             filename: "test1",
             mindmapJSONString: JSON.stringify(state.mindmapData)
         }
         axios.post('/mindmapsJSON/', mindmapRequestBody)
             .then(response => console.log(response))
             .catch(error => console.log(error))
-            .finally(console.log(mindmapRequestBody));
+            .finally(console.log(mindmapRequestBody)); */
+            console.log("SAVED DATA: ", state.mindmapData)
     }
 
-    /* useEffect(() => {
-        axios.get('/mindmapsJSON/1')
+    useEffect(() => {
+        axios.get('/projectTemplates/')
+            .then(response => {
+
+                console.log("PARSED TEMPLATE DATA: ", JSON.parse(response.data[0].templateJSONString));
+
+                const templateList = response.data.map(template => {
+                    return {
+                        id: template.id,
+                        name: template.templateName,
+                        template: JSON.parse(template.templateJSONString)
+                    }
+                });
+
+                console.log("READY LIST: ", templateList)
+
+                setState({
+                    ...state,
+                    newProjectTemplates: templateList
+                });
+
+            })
+            .catch(error => {
+                setState({
+                    ...state,
+                    error: true
+                })
+            });
+
+        /* axios.get('/mindmapsJSON/1')
             .then(response => {
                 console.log(response.data.mindmapJSONString);
                 const mindmapData = JSON.parse(response.data.mindmapJSONString);
-                this.setState({
+                setState({
+                    ...state,
                     mindmapData: mindmapData
                 });
             })
             .catch(error => {
                 setState({
+                    ...state,
                     error: false
                 })
-            });
-    }, []) */
+            }); */
+    }, [])
 
     const updateMainNode = (node, index) => {
         // This method gets called from the MindMapNode component
@@ -94,6 +129,20 @@ const Mindmap = () => {
         });
     }
 
+    const showProjectSelector = () => {
+        setState({...state, modalShow:true});
+    }
+
+    const loadNewProjectFromTemplate = (index) => {
+        const template = state.newProjectTemplates.find(t => t.id === index).template;
+        console.log("SELECTED TEMPLATE: ", template);
+        setState({
+            ...state,
+            mindmapData: template,
+            modalShow: false
+        });
+    }
+
     let content = <text>LOADING MINDMAP...</text>
 
     if(state.error) {
@@ -111,25 +160,36 @@ const Mindmap = () => {
             parent={state.mindmapData.mainNode}
             reportToParent={updateMainNode.bind(this)}
             handleSelected={handleSelectedNode}
-            index={0} />);
+            index={0}
+            selectedNodeId = {state.selectedNodeId} 
+            save={saveMindmap} />);
     }
 
     return (
-        <svg ref={svgContainer} width="100vw" height="100vh">
+        <>  
+            <button onClick={showProjectSelector}>MENU</button>
+            <svg ref={svgContainer} width="100vw" height="100vh">
 
-            <ZoomPanWrapper ref = {svgContainer}>
+                <ZoomPanWrapper 
+                    ref = {svgContainer}>
+                    {content}
+                    {/* <MindmapNode
+                        node={state.mindmapData.mainNode}
+                        parent={state.mindmapData.mainNode}
+                        reportToParent={updateMainNode.bind(this)}
+                        handleSelected={handleSelectedNode}
+                        index={0}
+                        selectedNodeId = {state.selectedNodeId} 
+                        save={saveMindmap}/> */}
 
-                <MindmapNode
-                    node={state.mindmapData.mainNode}
-                    parent={state.mindmapData.mainNode}
-                    reportToParent={updateMainNode.bind(this)}
-                    handleSelected={handleSelectedNode}
-                    index={0}
-                    selectedNodeId = {state.selectedNodeId} />
-
-            </ZoomPanWrapper>
-
-        </svg>
+                </ZoomPanWrapper>
+            </svg>
+            <Modal show={state.modalShow}>
+                <ProjectSelector 
+                    newProjectTemplates = {state.newProjectTemplates}
+                    selectTemplate = {loadNewProjectFromTemplate}/>
+            </Modal>
+        </>
     )
 }
 

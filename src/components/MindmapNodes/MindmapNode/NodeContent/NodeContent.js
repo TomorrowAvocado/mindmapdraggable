@@ -11,7 +11,7 @@ const NodeContent = (props) => {
                 contentEditable="true" /* TODO: hasFocus insted of props.node.isSelected */
                 suppressContentEditableWarning={true}
             >
-                {props.node.id}
+                {props.node.text}
             </p>
         </>
     )

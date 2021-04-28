@@ -68,9 +68,9 @@ const MindmapNode = (props) => {
     }
 
     return (
-        
         <>
-            <DragWrapper>
+
+        <DragWrapper data={{node: state.node, parent: props.parent}}>
 
             {props.node.children.map((child, index) => (
                 //generer bare barn
@@ -87,38 +87,40 @@ const MindmapNode = (props) => {
                     selectedNodeId = {props.selectedNodeId} />
             ))}
 
-                <MindmapEdge 
-                    x1={props.parent.x + props.parent.nodeWidth / 2} 
-                    y1={props.parent.y + props.parent.nodeHeight / 2} 
-                    x2={state.node.x + state.node.nodeWidth / 2} 
-                    y2={state.node.y + state.node.nodeHeight / 2}/>
 
-                <foreignObject className="node-wrapper"
-                    x={state.node.x} y={state.node.y}
-                    width={props.node.nodeWidth}> {/* state.node.strokeWidth*2} */}
+            <MindmapEdge 
+                x1={props.parent.x + props.parent.nodeWidth / 2} 
+                y1={props.parent.y + props.parent.nodeHeight / 2} 
+                x2={state.node.x + state.node.nodeWidth / 2} 
+                y2={state.node.y + state.node.nodeHeight / 2}/>
 
-                    <div 
-                        onClick={() => props.handleSelected(state.node.id)}
-                        className={styles}>
+            <foreignObject className="node-wrapper"
+                x={state.node.x} y={state.node.y}
+                width={props.node.nodeWidth}> {/* state.node.strokeWidth*2} */}
 
-                        <button
-                            className="new-node-button"
-                            onClick={handlePlusBtnClick}>
-                            +                        
-                        </button>
-                        
-                        <button
-                            className="adjust-width-button"
-                            onClick={console.log("DRAG TO ALTER WIDTH")}>
-                            &lt;&gt;
-                        </button>
+                <div 
+                    onMouseDownCapture={() => props.handleSelected(state.node.id)}
+                    className={styles}>
 
-                        <NodeContent node={props.node} />
+                    <button
+                        className="new-node-button"
+                        onClick={handlePlusBtnClick}>
+                        +                        
+                    </button>
+                    
+                    <button
+                        className="adjust-width-button"
+                        onClick={props.save}>
+                        &lt;&gt;
+                    </button>
 
-                    </div>
+                    <NodeContent node={props.node} />
 
-                </foreignObject>
-            </DragWrapper>
+                </div>
+
+            </foreignObject>
+
+        </DragWrapper>
 
         </>
     )
