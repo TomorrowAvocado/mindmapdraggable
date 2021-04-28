@@ -202,6 +202,7 @@ const Mindmap = () => {
                 <ProjectSelector 
                     newProjectTemplates = {state.newProjectTemplates}
                     selectTemplate = {loadNewProjectFromTemplate}
+                    selectLocal = {loadLocalDummy}
                     errorLoadingData = {state.error}/>
             </Modal>
         </>

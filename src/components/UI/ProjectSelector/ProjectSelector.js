@@ -20,12 +20,16 @@ const ProjectSelector = (props) => {
         </ul>
     );
 
-    let templateButtons =  <p>LOADING BUTTONS...</p>;
+    let templateButtons =  <span>LOADING BUTTONS...</span>;
     if (props.errorLoadingData) {
-        templateButtons =  <p>ERROR LOADING TEMPLATES...click background to go local</p>;
+        templateButtons =  (
+            <>
+                <button onClick={props.selectLocal}>Use local data (testing)</button>
+                <span style={{color: "red", marginLeft: "20px"}}>ERROR LOADING TEMPLATES</span>
+            </>
+        );
     }
     if (props.newProjectTemplates.length > 0) {
-        console.log("TEMPLATES LOADED:", state.newProjectTemplates)
         templateButtons = props.newProjectTemplates.map((template, index) => (
                 <button 
                     key={index}
@@ -33,7 +37,6 @@ const ProjectSelector = (props) => {
                     {template.name}
                 </button>
             ));
-        console.log("BUTTONS: ", templateButtons)
     }
 
     return (
