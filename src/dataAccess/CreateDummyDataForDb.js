@@ -1,6 +1,9 @@
 
 const CreateDummyDataForDb = () => {
-    
+    /**
+     * Creates array of two mindmap projects with dummy data.
+     * This data is use to populate the in memory database. (for testing purposes)
+     */
     return (
         [
             {
@@ -96,7 +99,7 @@ const CreateDummyDataForDb = () => {
                         {
                             id: "lvl1nd2",
                             text: "Cars",
-                            x: 600,
+                            x: 700,
                             y: 200,
                             nodeWidth: 200,
                             nodeHeight: 100,

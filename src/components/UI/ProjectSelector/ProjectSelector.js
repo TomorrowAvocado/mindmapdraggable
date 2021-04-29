@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
+/**
+ * Generates a new-project selector, and a load project selector.
+ * New project selector contains a button for each available project template
+ * Load project selector contatins a list of existing projects.
+ * @param {*} props 
+ * @returns ProjectSelector Component
+ */
 const ProjectSelector = (props) => {
 
-    const [state, setState] = useState({
-        newProjectTemplates: [],
-        loadableProjects: [],
-    });
+    // GENERATE NEW PROJECT SELECTOR
 
     let templateButtons =  <span>LOADING BUTTONS...</span>;
 
@@ -28,12 +32,13 @@ const ProjectSelector = (props) => {
             ));
     }
 
-    let projectList = (
-        <li>LOADNING PROJECTS...</li>
-    );
+
+    // GENERATE NEW PROJECT SELECTOR
+
+    let projectList = <li>LOADNING PROJECTS...</li>;
 
     if(props.errorLoadingData) {
-        projectList = <li style={{color: "red"}}>ERROR LOADING PROJECTS</li>
+        projectList = <li style={{color: "red"}}>ERROR LOADING PROJECTS</li>;
     }
 
     if(props.existingProjects) {
@@ -41,24 +46,34 @@ const ProjectSelector = (props) => {
             projectList = <li><button onClick={props.writeDataToDb} >CLICK TO ADD 2 PROJECTS TO DB</button><span> THEN REFRESH PAGE</span></li>
         }
         else {
+
             projectList = props.existingProjects.map((project, index) => (
-                <li key={index} onClick={() => props.loadProject(project.id)}>{project.name}</li>
-            ))
+
+                    <li key={index} onClick={() => props.loadProject(project.id)}>
+                        {project.name}
+                    </li>
+            
+                ));
+
         }
     }
 
     return (
+
         <div >
+
             <div>
                 <h3>New Project</h3>
                 {templateButtons}
             </div>
+
             <div>
                 <h3>Load Project</h3>
                 <ul>
                     {projectList}
                 </ul>
             </div>
+
         </div>
     );
 }

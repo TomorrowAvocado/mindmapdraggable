@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+/**
+ * Generates a line between two poins, representing
+ * an edge between two nodes.
+ * @param {*} props 
+ * @returns Svg Line element
+ */
 const MindmapEdge = (props) => {
 
     const [state, setState] = useState({
@@ -11,12 +17,6 @@ const MindmapEdge = (props) => {
 
     let pathString = '';
     pathString = `M ${state.x1} ${state.y1} l ${state.x2 - state.x1} ${state.y2 - state.y1}`
-
-    useEffect(() => {
-        console.log(props.x2);
-        console.log(state.y2);
-        console.log(pathString);
-    }, [state])
 
     return(
         <line 

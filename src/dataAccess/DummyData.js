@@ -1,7 +1,11 @@
 import React from 'react';
 
 const DummyData = () => {
-        
+    
+    /**
+     * Creates a mindmap project with dummy data.
+     * This is used if backend is offline for testing purposes.
+     */
     return {
         id: "Some UUID",
         title: "MY MINDMAP!!",

@@ -1,9 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
+import DragWrapper from '../../../hoc/DragWrapper';
 import MindmapEdge from '../MindmapEdge/MindmapEdge';
 import NodeContent from './NodeContent/NodeContent';
-import DragWrapper from '../../../hoc/DragWrapper';
+
+
 import './MindmapNode.css';
+
 // Temporary solution for generating ID
 let id = 0
 const getId = () => {
@@ -11,22 +14,39 @@ const getId = () => {
     return id
 }
 
+/**
+ * Generates a svg foreignObject element containing html for node layout and data
+ * Generates a edge to parent node
+ * Adds a new node for each element in its children-array
+ * @param {*} props 
+ * @returns MindmapNode Component
+ */
+
 const MindmapNode = (props) => {
+
 
     const [state, setState] = useState({
         node: props.node,
     })
 
-    let styles = "MindmapNode";
 
-    if(state.node.id === props.selectedNodeId) {
-        styles += " NodeSelected";
+    // If node is selected, set style to visualize this to user.
+    // Change color of border, and make adjust width button appear
+    function setStyle() {
+
+        let styles = "MindmapNode";
+
+        if(state.node.id === props.selectedNodeId) {
+            return styles += " NodeSelected";
+        }
+        else {
+            return styles += " NodeNotSelected";
+        }
     }
-    else {
-        styles += " NodeNotSelected";
-    }
+
 
     function createNewNode(parentNode) {
+
         const newNode = {
             id: getId(), // Temporary solution //// brukes foreløpig kun for å se forskjell på nodene i debugging.
             x: parentNode.x + 100,
@@ -35,12 +55,16 @@ const MindmapNode = (props) => {
             nodeHeight: parentNode.nodeHeight,
             children: []
         }
+
         return newNode
     }
 
+
     const handlePlusBtnClick = () => {
+
         // Create copy of this node
         let thisNode = state.node
+        console.log("CREATE NEW FROM: ", thisNode)
         // Create new node
         const newNode = createNewNode(thisNode)
         // Add the new node to "children" in the copy of this node
@@ -53,8 +77,10 @@ const MindmapNode = (props) => {
         props.reportToParent(thisNode, props.index)
     }
 
+
     // My children know this method as props.reportToParent.
     const updateChild = (updatedChild, index) => {
+
         // I'll just create a copy of myself, and replace the child that is updated.
         let thisNode = state.node
         thisNode.children[index] = updatedChild
@@ -67,10 +93,10 @@ const MindmapNode = (props) => {
         // ... Not that my state will be any different from what I reported to my parent, though.
     }
 
-    return (
-        <>
 
-        <DragWrapper data={{node: state.node, parent: props.parent}}>
+    return (
+
+        <DragWrapper>
 
             {props.node.children.map((child, index) => (
                 //generer bare barn
@@ -100,7 +126,7 @@ const MindmapNode = (props) => {
 
                 <div 
                     onMouseDownCapture={() => props.handleSelected(state.node.id)}
-                    className={styles}>
+                    className={setStyle()}>
 
                     <button
                         className="new-node-button"
@@ -110,7 +136,7 @@ const MindmapNode = (props) => {
                     
                     <button
                         className="adjust-width-button"
-                        onClick={props.save}>
+                        onClick={props.adjustWidth}>
                         &lt;&gt;
                     </button>
 
@@ -121,37 +147,7 @@ const MindmapNode = (props) => {
             </foreignObject>
 
         </DragWrapper>
-
-        </>
     )
 }
 
 export default MindmapNode;
-
-{/* 
-    
-    
-
-
-
-    
-    <>
-            <Draggable /* position={{ x: props.node.x, y: props.node.y }}  >
-                <g>
-                    <foreignObject 
-                        className="mindmap-node" width={node.nodeWidth}
-                        x={props.node.x + 20} y={props.node.y }
-                        overflow="visible">
-                        
-                        <div className="node-wrapper">
-                            <div className="new-node-buttonf" onClick={handlePlusBtnClick}>+</div>
-                            <p className="text-content" ref={textRef} contentEditable="true">{props.node.id}</p>
-                        </div>
-                    </foreignObject>
-                </g>
-            </Draggable>
-
-            {props.node.children.map((child, index) => (
-                <MindmapNode node={child} className={child.id} reportToParent={updateChild.bind(this)} index={index} />
-            ))}
-        </> */}

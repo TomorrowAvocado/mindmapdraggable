@@ -1,14 +1,15 @@
-.node-wrapper {
+foreignObject.node-wrapper {
   display: block;
+  overflow: visible;
 }
-.node-wrapper .MindmapNode {
+foreignObject.node-wrapper .MindmapNode {
   display: block;
   border-radius: 10px;
   padding: 20px;
   height: inherit;
   background-color: white;
 }
-.node-wrapper .MindmapNode .new-node-button {
+foreignObject.node-wrapper .MindmapNode .new-node-button {
   background-color: #555;
   color: white;
   visibility: hidden;
@@ -22,10 +23,10 @@
   font-size: 12pt;
   transition: all 0.15s ease-in;
 }
-.node-wrapper .MindmapNode .new-node-button:hover {
+foreignObject.node-wrapper .MindmapNode .new-node-button:hover {
   transform: scale(1.2);
 }
-.node-wrapper .MindmapNode .adjust-width-button {
+foreignObject.node-wrapper .MindmapNode .adjust-width-button {
   background-color: #7d7bff;
   color: white;
   border-style: none;
@@ -39,13 +40,13 @@
   font-size: 10pt;
   transition: all 0.15s ease-in;
 }
-.node-wrapper .MindmapNode:hover {
+foreignObject.node-wrapper .MindmapNode:hover {
   box-shadow: 0 0 2px 2px #7d7bff;
 }
-.node-wrapper .MindmapNode:hover .new-node-button {
+foreignObject.node-wrapper .MindmapNode:hover .new-node-button {
   visibility: visible;
 }
-.node-wrapper .MindmapNode button:focus {
+foreignObject.node-wrapper .MindmapNode button:focus {
   outline: 0px solid transparent;
 }
 

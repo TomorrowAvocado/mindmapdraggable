@@ -3,9 +3,12 @@ import * as d3 from 'd3';
 
 const ZoomPanWrapper = React.forwardRef((props, ref) => {
 
+
     const gRef = useRef(null)
 
+
     useEffect( () => {
+        
         const svg = d3.select(ref.current)
         const g = d3.select(gRef.current)
         
@@ -19,10 +22,13 @@ const ZoomPanWrapper = React.forwardRef((props, ref) => {
         .on("zoom", zoomed)); 
     })
 
+
     return (
+
         <g ref = {gRef}>
             {props.children}
         </g>
+
     );
 })
 
