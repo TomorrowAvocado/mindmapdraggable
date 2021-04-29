@@ -3,6 +3,7 @@ import React, { Component, createRef } from 'react'
 import { useState } from "react";
 import MindmapEdge from './MindmapEdge';
 import MindmapNode from './MindmapNodeClean';
+import ZoomPanWrapper from '../hoc/ZoomPanWrapper';
 
 import croc from "../assets\\img/croc.png";
 import squirrel from "../assets\\img/squirrel.png";
@@ -30,6 +31,8 @@ class Canvas extends Component {
         nodes: this.props.nodes,
         edges: [{}]
     }
+
+    svgContainer = React.createRef(null);
 
     createNewNode = (parentIndex) => {
 
@@ -190,14 +193,15 @@ class Canvas extends Component {
         return (
             <div>
             <img style={{position: "absolute", zIndex:"999"}} src={menuDummy}/>
+            
             <svg width="100vw" height="99.5vh" >
+            <ZoomPanWrapper ref={this.svgContainer}>
                 {this.state.edges.map((edge) =>
                         <MindmapEdge 
                             key={edge.id} 
                             edge={edge} />   
                 )}
                 {this.state.nodes.map((node, index) =>
-                   
                         <MindmapNode 
                             key={node.id}
                             node={node} 
@@ -208,7 +212,10 @@ class Canvas extends Component {
                             onDragStop={this.handleOnDragStop.bind(this, index)}
                         />
                 )}
+                <rect x="100" y="100" width="150" height="70"/>
+                </ZoomPanWrapper>
             </svg>
+            
             <div style={{
                 position: "absolute", top: 0, right: 0, 
                 width: "2.2vw", height: "2.2vw", zIndex: "9999"}} 
