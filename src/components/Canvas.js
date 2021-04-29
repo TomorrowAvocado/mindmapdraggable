@@ -194,7 +194,7 @@ class Canvas extends Component {
             <div>
             <img style={{position: "absolute", zIndex:"999"}} src={menuDummy}/>
             
-            <svg width="100vw" height="99.5vh" >
+            <svg width="100vw" height="99.5vh" ref={this.svgContainer} >
             <ZoomPanWrapper ref={this.svgContainer}>
                 {this.state.edges.map((edge) =>
                         <MindmapEdge 
