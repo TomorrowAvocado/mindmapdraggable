@@ -16,7 +16,7 @@ const ProjectSelector = (props) => {
     if (props.errorLoadingData) {
         templateButtons =  (
             <>
-                <button onClick={props.selectLocal}>Use local data (testing)</button>
+                <button className={"template-button"} onClick={props.selectLocal}>Use local data (testing)</button>
                 <span style={{color: "red", marginLeft: "20px"}}>ERROR LOADING TEMPLATES</span>
             </>
         );
@@ -35,23 +35,28 @@ const ProjectSelector = (props) => {
 
     // GENERATE NEW PROJECT SELECTOR
 
-    let projectList = <li>LOADNING PROJECTS...</li>;
+    let projectList = <p>LOADNING PROJECTS...</p>;
 
     if(props.errorLoadingData) {
-        projectList = <li style={{color: "red"}}>ERROR LOADING PROJECTS</li>;
+        projectList = <p style={{color: "red"}}>ERROR LOADING PROJECTS</p>;
     }
 
     if(props.existingProjects) {
         if (props.existingProjects.length < 1) {
-            projectList = <li><button onClick={props.writeDataToDb} >CLICK TO ADD 2 PROJECTS TO DB</button><span> THEN REFRESH PAGE</span></li>
+            projectList = (
+                <>
+                    <button className={"add-projects-to-db-button"} onClick={props.writeDataToDb} >CLICK TO ADD 2 PROJECTS TO DB</button>
+                    <p>(THEN REFRESH PAGE)</p>
+                </>
+            );
         }
         else {
 
             projectList = props.existingProjects.map((project, index) => (
 
-                    <li key={index} onClick={() => props.loadProject(project.id)}>
+                    <button className={"project-button"} key={index} onClick={() => props.loadProject(project.id)}>
                         {project.name}
-                    </li>
+                    </button>
             
                 ));
 
@@ -60,8 +65,7 @@ const ProjectSelector = (props) => {
 
     return (
 
-        <div >
-
+        <div className={"project-selector"} >
             <div>
                 <h3>New Project</h3>
                 {templateButtons}
@@ -69,9 +73,7 @@ const ProjectSelector = (props) => {
 
             <div>
                 <h3>Load Project</h3>
-                <ul>
-                    {projectList}
-                </ul>
+                {projectList}
             </div>
 
         </div>
