@@ -212,7 +212,6 @@ class Canvas extends Component {
                             onDragStop={this.handleOnDragStop.bind(this, index)}
                         />
                 )}
-                <rect x="100" y="100" width="150" height="70"/>
                 </ZoomPanWrapper>
             </svg>
             

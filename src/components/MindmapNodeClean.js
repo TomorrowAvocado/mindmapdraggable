@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import React, { Component, useEffect, createRef, ReactDOM, useRef, useState } from 'react'
 import Draggable from 'react-draggable';
 import NodeText from './NodeText';
-
+import DragWrapper from '../hoc/DragWrapper';
 import './MindmapNode.css';
 
 const MindmapNode = (props) => {
@@ -30,7 +30,7 @@ const MindmapNode = (props) => {
 
     return (
 
-        <Draggable 
+        <Draggable
             cancel=".focusedText" /* Cancels drag on className="focusedText" */
             onDrag={props.onDrag}
             onStart={props.onDragStart}
@@ -40,7 +40,7 @@ const MindmapNode = (props) => {
                 x={dim.x} y={dim.y} /* x={props.node.x} y={props.node.y} */
                 width={props.node.nodeWidth + props.node.strokeWidth*2}  
                 height={props.node.nodeHeight + props.node.strokeWidth*2}>
-
+                
                 <div 
                     onClick={props.handleSelected}
                     className={styles}>
