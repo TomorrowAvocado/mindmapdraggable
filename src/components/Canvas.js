@@ -128,15 +128,10 @@ class Canvas extends Component {
         nodeElementBeingDragged = null;
     }
 
-    handleDragNode = (draggedNodeIndex, e) => {
+    handleDragNode = (draggedNodeIndex) => {
 
         // Get bounding rectangle from dragged node
-        let containerDimensions;
-        if(e.target.parentElement) {
-            containerDimensions = this.nodeElementBeingDragged.getBoundingClientRect();
-        }
-        
-
+        let containerDimensions = this.nodeElementBeingDragged.getBoundingClientRect();
         const updatedNode = {...this.state.nodes[draggedNodeIndex] }
 
         console.log("initial x,y: ", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
