@@ -20,3 +20,15 @@ export const dummyMindmapNodes = [
         outgoingEdges: []
     }
 ]
+
+
+/* ,
+    {
+        x1=56,
+        y1=66,
+        x2=456,
+        y2=566,
+        stroke="black",
+        strokeWidth="3"
+    } */
+

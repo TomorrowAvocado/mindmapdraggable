@@ -189,13 +189,13 @@ class Canvas extends Component {
     }
 
     render() {
-        console.log('MINDMAP RENDER!');
+        console.log(this.state.nodes[0]);
+        console.log(this.state.edges[0]);
         return (
             <div>
             <img style={{position: "absolute", zIndex:"999"}} src={menuDummy}/>
             
             <svg width="100vw" height="99.5vh" ref={this.svgContainer} >
-            <ZoomPanWrapper ref={this.svgContainer}>
                 {this.state.edges.map((edge) =>
                         <MindmapEdge 
                             key={edge.id} 
@@ -212,7 +212,6 @@ class Canvas extends Component {
                             onDragStop={this.handleOnDragStop.bind(this, index)}
                         />
                 )}
-                </ZoomPanWrapper>
             </svg>
             
             <div style={{
