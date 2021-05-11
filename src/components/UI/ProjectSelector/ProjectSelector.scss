@@ -6,6 +6,9 @@
     background-color: white;
     border-radius: 20%;
     cursor: pointer;
+    img {
+      width: 100%;
+    }
   }
   button:focus {
     outline: 0px solid transparent;

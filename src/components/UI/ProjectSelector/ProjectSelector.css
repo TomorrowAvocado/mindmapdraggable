@@ -6,6 +6,9 @@
   border-radius: 20%;
   cursor: pointer;
 }
+.project-selector button img {
+  width: 100%;
+}
 .project-selector button:focus {
   outline: 0px solid transparent;
   background-color: lightgray;

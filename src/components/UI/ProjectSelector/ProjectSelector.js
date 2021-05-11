@@ -1,7 +1,13 @@
 import React from 'react';
 
 import './ProjectSelector.css';
+import blank from "../../../assets/blank.png";
+import basic from "../../../assets/basic.png";
 
+const TEMPLATE_ICONS = {
+    blank: blank,
+    basic: basic
+}
 /**
  * Generates a new-project selector, and a load project selector.
  * New project selector contains a button for each available project template
@@ -25,13 +31,19 @@ const ProjectSelector = (props) => {
     }
 
     if (props.newProjectTemplates.length > 0) {
-        templateButtons = props.newProjectTemplates.map((template, index) => (
-                <button 
-                    key={index}
-                    onClick={() => props.selectTemplate(template.id)}>
-                    {template.name}
-                </button>
-            ));
+        templateButtons = props.newProjectTemplates.map((template, index) => {
+                
+                let img = <img src={TEMPLATE_ICONS[template.name.toLowerCase()]}/>
+
+                if (template.name)
+                return(
+                    <button 
+                        key={index}
+                        onClick={() => props.selectTemplate(template.id)}>
+                        {img}
+                    </button>
+                );
+            });
     }
 
 
