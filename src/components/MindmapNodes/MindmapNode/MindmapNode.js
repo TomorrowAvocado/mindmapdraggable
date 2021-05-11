@@ -95,6 +95,9 @@ const MindmapNode = (props) => {
 
 
     return (
+        <>
+
+
 
         <DragWrapper>
 
@@ -114,7 +117,7 @@ const MindmapNode = (props) => {
             ))}
 
 
-            <MindmapEdge 
+<MindmapEdge 
                 x1={props.parent.x + props.parent.nodeWidth / 2} 
                 y1={props.parent.y + props.parent.nodeHeight / 2} 
                 x2={state.node.x + state.node.nodeWidth / 2} 
@@ -124,7 +127,7 @@ const MindmapNode = (props) => {
                 x={state.node.x} y={state.node.y}
                 width={props.node.nodeWidth}> {/* state.node.strokeWidth*2} */}
 
-                <div 
+                <div onDragStartCapture = {() => console.log("HELLO")}
                     onMouseDownCapture={() => props.handleSelected(state.node.id)}
                     className={setStyle()}>
 
@@ -147,7 +150,31 @@ const MindmapNode = (props) => {
             </foreignObject>
 
         </DragWrapper>
+        </>
     )
 }
 
 export default MindmapNode;
+
+/* 
+<DragWrapper>
+
+    {props.node.children.map((child, index) => (
+        <MindmapNode />
+    ))}
+
+    <MindmapEdge />
+
+    <foreignObject >
+        <div>
+            <button>
+                +
+            </button>
+            <NodeContent />
+        </div>
+    </foreignObject>
+
+</DragWrapper>
+ */
+
+

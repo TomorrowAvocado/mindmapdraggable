@@ -192,19 +192,10 @@ const Mindmap = () => {
             
             <svg ref={svgContainer} width="100vw" height="100vh">
 
-                <ZoomPanWrapper 
-                    ref = {svgContainer}>
+                <ZoomPanWrapper ref = {svgContainer}>
                     {content}
-                    {/* <MindmapNode
-                        node={state.mindmapData.mainNode}
-                        parent={state.mindmapData.mainNode}
-                        reportToParent={updateMainNode.bind(this)}
-                        handleSelected={handleSelectedNode}
-                        index={0}
-                        selectedNodeId = {state.selectedNodeId} 
-                        save={saveMindmap}/> */}
-
                 </ZoomPanWrapper>
+                
             </svg>
             <Modal show={state.modalShow} modalClosed={loadLocalDummy}>
                 <ProjectSelector 

@@ -125,3 +125,43 @@ const CreateDummyDataForDb = () => {
 
 export default CreateDummyDataForDb;
 
+
+
+/*  const g = 
+
+{
+    id: "UUID001",
+    title: "Test Project 1",
+    mainNode: {
+        id: "mainnode",
+        text: "Animals",
+        x: 500,
+        y: 500,
+        nodeWidth: 300,
+        nodeHeight: 100,
+        layout: "mindmap",
+        children: []
+    } 
+} 
+
+{
+    id: "UUID002",
+    text: "Reptiles",
+    x: 400,
+    y: 200,
+    nodeWidth: 200,
+    nodeHeight: 100,
+    layout: "mindmap",
+    children: [
+        {
+            id: "UUID003",
+            text: "Crocodile",
+            x: 700,
+            y: 100,
+            nodeWidth: 150,
+            nodeHeight: 100,
+            layout: "mindmap",
+            children: []
+        }
+    ]
+} */

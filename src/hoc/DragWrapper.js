@@ -23,15 +23,30 @@ const DragWrapper = (props) => {
             .subject(function() {
                 return { x: translateX, y: translateY }
             })
+            .on('start', function(event, d) {
+            })
             .on('drag', function(event, d) {
                 const me = d3.select(this);
                 const transform = `translate(${event.x}, ${event.y})`;
                 translateX = event.x;
                 translateY = event.y;
                 me.attr('transform', transform);
+
+                const edgeList = me.selectAll("line")._groups[0]
+                const lastIndex = edgeList.length - 1
+                const edge = edgeList[lastIndex];
+
+                //const transform = `translate(${event.x}, ${event.y})`
+                // console.log(edge);
+                d3.select(edge)
+                    .attr("x1", -translateX)
+                    .attr("y1", -translateY)
             })
     
         handleDrag(d3.select(comp));
+        
+       
+        
     }
 
 
