@@ -1,0 +1,14 @@
+.project-selector {
+  button {
+    margin-right: 20px;
+    height: 100px;
+    width: 100px;
+    background-color: white;
+    border-radius: 20%;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: 0px solid transparent;
+    background-color: lightgray;
+  }
+}

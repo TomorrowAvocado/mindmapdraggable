@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './ProjectSelector.css';
+
 /**
  * Generates a new-project selector, and a load project selector.
  * New project selector contains a button for each available project template
