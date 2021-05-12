@@ -80,12 +80,12 @@ const ProjectSelector = (props) => {
     return (
 
         <div className={"project-selector"} >
-            <div>
+            <div className={"new-project"}>
                 <h3>New Project</h3>
                 {templateButtons}
             </div>
 
-            <div>
+            <div className={"load-project"}>
                 <h3>Load Project</h3>
                 {projectList}
             </div>
