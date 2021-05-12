@@ -117,7 +117,7 @@ const MindmapNode = (props) => {
             ))}
 
 
-<MindmapEdge 
+            <MindmapEdge 
                 x1={props.parent.x + props.parent.nodeWidth / 2} 
                 y1={props.parent.y + props.parent.nodeHeight / 2} 
                 x2={state.node.x + state.node.nodeWidth / 2} 
@@ -136,8 +136,7 @@ const MindmapNode = (props) => {
                         onClick={handlePlusBtnClick}>
                         +                        
                     </button>
-                    
-                    <button
+                    <button draggable="true" onDrag={() => console.log("HO")}
                         className="adjust-width-button"
                         onClick={props.adjustWidth}>
                         &lt;&gt;
@@ -146,9 +145,14 @@ const MindmapNode = (props) => {
                     <NodeContent node={props.node} />
 
                 </div>
+                
 
             </foreignObject>
-
+            {/* <DragWrapper>
+            <circle cx={state.node.x + state.node.nodeWidth} cy={state.node.y}
+                   r="10" stroke="black" fill="black" />
+            </DragWrapper> */}
+            
         </DragWrapper>
         </>
     )
