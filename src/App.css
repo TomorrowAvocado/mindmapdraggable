@@ -2,49 +2,6 @@
   box-sizing: border-box;
 }
 
-.App {
-  background-color: rgb(254, 254, 255);
-}
-.mindMapNode {
-  text-align: center;
-  border-width: 3px;
-  border: solid;
-  border-radius: 20px;
-  padding: 0 20px;
-}
-.mindMapNode:hover {
-  box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
-}
-
-foreignObject {
-  /* Allow border to wrap around content when content grows */
-  overflow: visible;
-
-  box-sizing: border-box;
-}
-
-foreignObject div {
-  box-sizing: border-box;
-}
-
 img {
   width: 100%;
-}
-
-.createNodeBtn {
-  border-style: solid;
-  border-radius: 100%;
-  position: fixed; /* Button is placed inside node */
-  top: 9px;
-  right: 9px;
-  font-size: 12pt;
-  transition: all 0.15s ease-in;
-}
-.createNodeBtn:hover {
-  transform: scale(1.2);
-  cursor: pointer;
-}
-
-[contenteditable] {
-  outline: 0px solid transparent;
 }

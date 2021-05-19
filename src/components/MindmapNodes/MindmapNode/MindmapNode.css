@@ -9,11 +9,34 @@
 .MindmapNode button {
   background-color: #333;
   border: "none";
+  border-radius: 100%;
   color: white;
   visibility: hidden;
+  position: fixed;
+  /* Button is placed inside node */
+  top: 9px;
+  right: 9px;
+  font-size: 12pt;
+  transition: all 0.15s ease-in;
+}
+.MindmapNode:hover {
+  box-shadow: 0 0 10px blue;
 }
 .MindmapNode:hover button {
   visibility: visible;
+}
+.MindmapNode:hover button:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.MindmapNode [contenteditable] {
+  outline: 0px solid transparent;
+}
+
+foreignObject {
+  /* Allow border to wrap around content when content grows */
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 .NodeIsSelected {
