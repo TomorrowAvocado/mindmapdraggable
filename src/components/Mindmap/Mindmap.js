@@ -194,4 +194,4 @@ class Mindmap extends Component {
     }
 }
 
-export default Mindmap;
+export default Mindmap; 
