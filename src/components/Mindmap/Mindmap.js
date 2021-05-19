@@ -35,7 +35,7 @@ class Mindmap extends Component {
         const newCenterY = newY + newHeight / 2;
 
         // Create child node and set values
-        const newNode = {
+        const newNode = {lvjndafølkgjfdølkfjasdkølfjdsløkfjasedløkfjaøsdlkfjasødlkfjsadølkfjasdølkfjasdølkfjasdølkfjasdølfkjasdøflkasjdføklsadjfølksdajfasødlk
             id: newId,
             parentId: parentNode.id,
             title: ("Node " + newId),
