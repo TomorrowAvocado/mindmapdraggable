@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { Component, createRef } from 'react';
 
 import axios from '../../dataAccess/axios_mindmaps';
 import DummyData from '../../dataAccess/DummyData';
@@ -8,15 +8,14 @@ import CreateDummyDataForDb from '../../dataAccess/CreateDummyDataForDb';
 import Toolbar from '../UI/Toolbar/Toolbar';
 import ZoomPanWrapper from '../../hoc/ZoomPanWrapper';
 
-import MindmapNode from '../MindmapNodes/MindmapNode/MindmapNode';
 import MindmapEdge from '../MindmapNodes/MindmapEdge/MindmapEdge';
+import MindmapNode from '../MindmapNodes/MindmapNode/MindmapNode';
 
 import Modal from '../UI/Modal/Modal';
 import ProjectSelector from '../UI/ProjectSelector/ProjectSelector';
 
 
-
-let idCounter = 0;
+let idCounter = 3
 const getId = () => {
     idCounter ++;
     return idCounter;
@@ -25,28 +24,26 @@ const getId = () => {
 let nodeElementBeingDragged = null;
 
 
-const Mindmap = () => {
+class Mindmap extends Component {
 
-    const [state, setState] = useState({ 
+    state = { 
         newProjectTemplates: [],
         existingProjects: null,
-        nodes : null,
-        edges: null,
+        nodes: null,
+        edges: [],
         error: false,
         selectedNodeId: "",
         modalShow: true
-    });
+    }
 
+    componentDidMount() {
+        this.loadTemplatesAndProjects();
+    }
 
-    useEffect(() => {
+    createNewNode = (parentIndex) => {
 
-        loadTemplatesAndProjects()
-
-    }, [])
-
-    const createNewNode = (parentIndex) => {
-
-        const parentNode = state.nodes[parentIndex];
+        const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+        const parentNode = this.state.nodes[parentIndex];
 
         // Set Id and dimensions for new node
         const newId = getId();
@@ -96,53 +93,46 @@ const Mindmap = () => {
         }
         parentNode.outgoingEdges.push(newEdge.id);
         parentNode.isSelected = false;
-        
         // Add new node and edge to mindmap data
-        setState({
-            ...state,
-            nodes: [...state.nodes, newNode], 
-            edges: [...state.edges, newEdge]
+        this.setState({
+            nodes: [...this.state.nodes, newNode], 
+            edges: [...this.state.edges, newEdge]
         })
 
         // Set new node as selected 
-        handleSelected(newNode.id)
+        this.handleSelected(newNode.id)
         console.log("Parent: ", newNode.parentId)
     };
 
-    const handleSelected = (nodeIndex) => {
-        const nodes = state.nodes.map( (node, index) => {
+    handleSelected = (nodeIndex) => {
+        this.setState(this.state.nodes.map( (node, index) => {
             console.log("NewNodeIndex", nodeIndex)
             if (index === nodeIndex ) {
                 node.isSelected = true;
             }
             else
                 node.isSelected = false;
-            }
-        )
-        setState({
-            ...state,
-            nodes: nodes
-        }); 
+        })) 
     }
 
-    const handleDragNodeStart = (e) => {
+    handleDragNodeStart = (e) => {
         if(e.target.parentElement) {
-            nodeElementBeingDragged = e.target.parentElement;
+            this.nodeElementBeingDragged = e.target.parentElement;
         }
     }
 
-    const handleOnDragStop = (draggedNodeIndex, e) => {
+    handleOnDragStop = (draggedNodeIndex, e) => {
         // Handle dragged node one final time after release
         // to let edges line up
-        //handleDragNode(draggedNodeIndex, e);
+        this.handleDragNode(draggedNodeIndex, e);
         nodeElementBeingDragged = null;
     }
 
-   const  handleDragNode = (draggedNodeIndex) => {
+    handleDragNode = (draggedNodeIndex) => {
 
         // Get bounding rectangle from dragged node
-        let containerDimensions = nodeElementBeingDragged.getBoundingClientRect();
-        const updatedNode = {...state.nodes[draggedNodeIndex] }
+        let containerDimensions = this.nodeElementBeingDragged.getBoundingClientRect();
+        const updatedNode = {...this.state.nodes[draggedNodeIndex] }
 
         console.log("initial x,y: ", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
         console.log("containerdims: ", containerDimensions.x, containerDimensions.y, containerDimensions.width, containerDimensions.height);
@@ -152,16 +142,15 @@ const Mindmap = () => {
         updatedNode.centerX = containerDimensions.x + updatedNode.nodeWidth / 2
         updatedNode.centerY = containerDimensions.y + updatedNode.nodeHeight / 2
 
-        //console.log("updated dimensions:", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
+        console.log("updated dimensions:", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
 
-        const nodes = [...state.nodes];
-        const edges = [...state.edges];
-
+        const nodes = [...this.state.nodes];
+        const edges = [...this.state.edges];
         nodes[draggedNodeIndex] = updatedNode;
 
         if(updatedNode.incomingEdgeId !== 0) {
 
-            const updatedEdgeIndex = edges.findIndex(edge => {
+            const updatedEdgeIndex = this.state.edges.findIndex(edge => {
                 return edge.id === updatedNode.incomingEdgeId
             });
 
@@ -169,40 +158,36 @@ const Mindmap = () => {
             edge.x1 = updatedNode.centerX;
             edge.y1 = updatedNode.centerY;
 
-            const edges = [...state.edges];
             edges[draggedNodeIndex] = edge;
+
+            this.setState({
+                edges: edges
+            })
         }
 
         if(updatedNode.outgoingEdges) {
 
             updatedNode.outgoingEdges.map(edgeId => {
 
-                const edgeIndex = edges.findIndex(e => { return e.id === edgeId})
-                const edge = edges[edgeIndex]
-                
-                edge.x2 = updatedNode.centerX;
-                edge.y2 = updatedNode.centerY;
-
-                edges[edgeIndex] = edge
+                const edgeIndex = this.state.edges.findIndex(e => { return e.id === edgeId})
+                console.log(edgeIndex);
+                this.state.edges[edgeIndex].x2 = updatedNode.centerX;
+                this.state.edges[edgeIndex].y2 = updatedNode.centerY;
 
             });
 
         }
-        console.log(state.edges)
-        console.log(state.nodes)
          
-        setState({
-            ...state,
-            nodes: nodes,
-            edges: edges
+        this.setState({
+            nodes: nodes
         })
     }
 
-    const showProjectSelector = () => {
-        setState({...state, modalShow: true});
+    showProjectSelector = () => {
+        this.setState({modalShow:true});
     }
 
-    function loadTemplatesAndProjects() {
+    loadTemplatesAndProjects() {
         const requests = [axios.get('/projectTemplates/'), axios.get('/mindmapsJSON/')];
 
         Promise.all(requests)
@@ -226,8 +211,7 @@ const Mindmap = () => {
                     }
                 });
 
-                setState({
-                    ...state,
+                this.setState({
                     newProjectTemplates: templateList,
                     existingProjects: existingProjects
                 });
@@ -236,22 +220,21 @@ const Mindmap = () => {
             })
             .catch(errors => {
                 console.log(errors);
-                setState({
-                    ...state,
+                this.setState({
                     error: true
                 })
             });
     }
 
-    function writeData() {
+    writeData() {
         const data = CreateDummyDataForDb();
         console.log(data)
-        saveEntry(data[0]);
-        saveEntry(data[1]);
+        this.saveEntry(data[0]);
+        this.saveEntry(data[1]);
         console.log("DATA LOADED")
     }
 
-    function saveEntry(project) {
+    saveEntry(project) {
         const mindmapRequestBody = {
             filename: project.title,
             mindmapJSONString: JSON.stringify(project)
@@ -263,91 +246,90 @@ const Mindmap = () => {
     }
 
 
-    const createNewProjectFromTemplate = (id) => {
+    createNewProjectFromTemplate = (id) => {
 
-        const template = state.newProjectTemplates.find(t => t.id === id).template;
+        const template = this.state.newProjectTemplates.find(t => t.id === id).template;
         
-        setState({
-            ...state,
+        this.setState({
             mindmapData: template,
             modalShow: false
         });
     }
 
 
-    const loadExistingProject = (id) => {
+    loadExistingProject = (id) => {
 
-        const project = state.existingProjects.find(p => p.id === id)
+        const project = this.state.existingProjects.find(p => p.id === id)
         
-        setState({
-            ...state,
+        this.setState({
             mindmapData: project.mindmap,
             modalShow: false
         })
     }
 
 
-    function loadLocalDummy() {
-
-        if(!state.error)
+    loadLocalDummy = () => {
+        if(!this.state.error)
             return;
 
         const data = DummyData();
 
-        setState({
-            ...state,
+        this.setState({
             nodes: data.nodes,
             edges: data.edges,
             modalShow: false
         });
     }
 
-    let nodeComponents = <text>LOADING NODES...</text>
-    let edgeComponents = <text>LOADING EDGES...</text>
+    render() {
 
-    if(state.nodes && state.edges) {
+        let nodeComponents = <text>LOADING NODES...</text>
+        let edgeComponents = <text>LOADING EDGES...</text>
 
-        edgeComponents = state.edges.map((edge) =>
-            <MindmapEdge 
-                key={edge.id} 
-                edge={edge} />   
-        );
+        if(this.state.nodes && this.state.edges) {
 
-        nodeComponents = state.nodes.map((node, index) =>
-            <MindmapNode 
-                key={node.id}
-                node={node} 
-                plusBtnClicked={createNewNode.bind(this, index)} 
-                handleSelected={handleSelected.bind(this, index)}
-                onDragStart={handleDragNodeStart.bind(this)}
-                onDrag={handleDragNode.bind(this, index)}
-                onDragStop={handleOnDragStop.bind(this, index)}
-            />
+            edgeComponents = this.state.edges.map((edge) =>
+                <MindmapEdge 
+                    key={edge.id} 
+                    edge={edge} />   
+            );
+
+            nodeComponents = this.state.nodes.map((node, index) =>
+                <MindmapNode 
+                    key={node.id}
+                    node={node} 
+                    plusBtnClicked={this.createNewNode.bind(this, index)} 
+                    handleSelected={this.handleSelected.bind(this, index)}
+                    onDragStart={this.handleDragNodeStart.bind(this)}
+                    onDrag={this.handleDragNode.bind(this, index)}
+                    onDragStop={this.handleOnDragStop.bind(this, index)}
+                />
+            )
+        }
+
+        return (
+            <>
+                <Toolbar menuClicked={this.showProjectSelector} />
+    
+                <svg width="100vw" height="100vh" >
+                    {edgeComponents}
+                    {nodeComponents}
+                </svg>
+                
+                <Modal show={this.state.modalShow} modalClosed={this.loadLocalDummy}>
+                    <ProjectSelector 
+                        newProjectTemplates = {this.state.newProjectTemplates}
+                        existingProjects = {this.state.existingProjects}
+                        errorLoadingData = {this.state.error}
+                        selectTemplate = {this.createNewProjectFromTemplate}
+                        selectLocal = {this.loadLocalDummy}
+                        loadProject = {this.loadExistingProject}
+                        writeDataToDb = {this.writeData}
+                        />
+                </Modal>
+            </>
         )
     }
-    
-    return (
-        <>
-            <Toolbar menuClicked={showProjectSelector} />
-
-            <svg width="100vw" height="100vh" >
-                {edgeComponents}
-                {nodeComponents}
-            </svg>
-            
-            <Modal show={state.modalShow} modalClosed={loadLocalDummy}>
-                <ProjectSelector 
-                    newProjectTemplates = {state.newProjectTemplates}
-                    existingProjects = {state.existingProjects}
-                    errorLoadingData = {state.error}
-                    selectTemplate = {createNewProjectFromTemplate}
-                    selectLocal = {loadLocalDummy}
-                    loadProject = {loadExistingProject}
-                    writeDataToDb = {writeData}
-                    />
-            </Modal>
-        </>
-    )
 }
 
 export default Mindmap;
