@@ -1,11 +1,11 @@
 
 import './App.css';
-import InitializeMindmap from './components/InitializeMindmap';
+import Mindmap from './components/MindMap/Mindmap';
 
 const App = () => {
   return (
     <div className="App">
-      <InitializeMindmap />
+      <Mindmap />
     </div>
   );
 }
