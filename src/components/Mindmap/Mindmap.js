@@ -311,9 +311,9 @@ const Mindmap = () => {
     }
     
     return (
-        <div>
+        <>
             <Toolbar menuClicked={showProjectSelector} />
-            <svg width="100vw" height="99.5vh" >
+            <svg width="100vw" height="100vh" >
                 {edgeComponents}
                 {nodeComponents}
             </svg>
@@ -328,7 +328,7 @@ const Mindmap = () => {
                     writeDataToDb = {writeData}
                     />
             </Modal>
-        </div>
+        </>
     )
 }
 

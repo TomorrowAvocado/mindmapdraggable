@@ -1,2 +1,24 @@
-
-/*# sourceMappingURL=ProjectSelector.css.map *//*# sourceMappingURL=ProjectSelector.css.map */
+.project-selector button {
+  margin-right: 20px;
+  background-color: white;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.project-selector button img {
+  width: 90%;
+}
+.project-selector button:focus {
+  outline: 0px solid transparent;
+  background-color: lightgray;
+}
+.project-selector div.new-project button {
+  height: 90px;
+  width: 100px;
+  border-radius: 20px;
+}
+.project-selector div.load-project button {
+  margin-bottom: 10px;
+  padding: 10px 30px;
+  display: block;
+  border-radius: 20px;
+}/*# sourceMappingURL=ProjectSelector.css.map */

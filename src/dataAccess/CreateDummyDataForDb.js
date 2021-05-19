@@ -7,8 +7,7 @@ const CreateDummyDataForDb = () => {
         [
             {
                 id: "UUID001",
-                title: "Test Project 1",
-                ma
+                title: "Test Project 1"
             }
         ]
     );
