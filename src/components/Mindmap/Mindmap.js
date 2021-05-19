@@ -1,7 +1,18 @@
 
 import React, { Component } from 'react';
+
+import axios from '../../dataAccess/axios_mindmaps';
+import DummyData from '../../dataAccess/DummyData';
+import CreateDummyDataForDb from '../../dataAccess/CreateDummyDataForDb';
+
+import Toolbar from '../UI/Toolbar/Toolbar';
+import ZoomPanWrapper from '../../hoc/ZoomPanWrapper';
+
 import MindmapNode from '../MindmapNodes/MindmapNode/MindmapNode';
 import MindmapEdge from '../MindmapNodes/MindmapEdge/MindmapEdge';
+
+import Modal from '../UI/Modal/Modal';
+import ProjectSelector from '../UI/ProjectSelector/ProjectSelector';
 
 
 
