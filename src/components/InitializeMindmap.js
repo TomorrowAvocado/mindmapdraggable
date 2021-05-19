@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { dummyMindmapNodes } from '../assets/data/dummyData';
-import Canvas from './Canvas';
+import Mindmap from './Mindmap';
 import axios from 'axios';
 
 const url = "https://bachelor-mindmap-default-rtdb.firebaseio.com/mindmapNodes.json"
@@ -43,7 +43,7 @@ class InitializeMindmap extends Component {
     return (
       this.state.loading ?
         loadingAnimation : this.state.nodes ?
-        <Canvas nodes={this.state.nodes} /> :
+        <Mindmap nodes={this.state.nodes} /> :
           <p>Could not load data</p>
     );
   }

@@ -25,7 +25,7 @@ const images = [croc, squirrel, lion, rhino];
 let nodeElementBeingDragged = null;
 
 
-class Canvas extends Component {
+class Mindmap extends Component {
 
     state = { 
         nodes: this.props.nodes,
@@ -218,4 +218,4 @@ class Canvas extends Component {
     }
 }
 
-export default Canvas
+export default Mindmap
