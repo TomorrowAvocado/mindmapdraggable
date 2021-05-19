@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import DragWrapper from '../../../hoc/DragWrapper';
 import MindmapEdge from '../MindmapEdge/MindmapEdge';
-import NodeContent from './NodeContent/NodeContent';
+import NodeContent from './NodeText/NodeText';
 
 
 import './MindmapNode.css';
@@ -125,7 +125,7 @@ const MindmapNode = (props) => {
 
             <foreignObject className="node-wrapper"
                 x={state.node.x} y={state.node.y}
-                width={props.node.nodeWidth}> {/* state.node.strokeWidth*2} */}
+                width={props.node.nodeWidth}>
 
                 <div onDragStartCapture = {() => console.log("HELLO")}
                     onMouseDownCapture={() => props.handleSelected(state.node.id)}
@@ -148,10 +148,6 @@ const MindmapNode = (props) => {
                 
 
             </foreignObject>
-            {/* <DragWrapper>
-            <circle cx={state.node.x + state.node.nodeWidth} cy={state.node.y}
-                   r="10" stroke="black" fill="black" />
-            </DragWrapper> */}
             
         </DragWrapper>
         </>
@@ -159,26 +155,3 @@ const MindmapNode = (props) => {
 }
 
 export default MindmapNode;
-
-/* 
-<DragWrapper>
-
-    {props.node.children.map((child, index) => (
-        <MindmapNode />
-    ))}
-
-    <MindmapEdge />
-
-    <foreignObject >
-        <div>
-            <button>
-                +
-            </button>
-            <NodeContent />
-        </div>
-    </foreignObject>
-
-</DragWrapper>
- */
-
-

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import './NodeContent.css';
+import './NodeText.css';
 
 const NodeContent = (props) => {
     const [hasFocus, setHasFocus] = useState(false)
@@ -18,12 +18,3 @@ const NodeContent = (props) => {
 };
 
 export default NodeContent;
-
-/* className={hasFocus ? "focusedText" : null}
-            onFocus={() => setHasFocus(true)}
-            onBlur={() => setHasFocus(false)}
-                style={{
-                    fontSize: props.node.fontsize,
-                    cursor: hasFocus ? "text" : "context-menu",
-                    outline: hasFocus ? "black solid 1px" : "none"
-                }} */
