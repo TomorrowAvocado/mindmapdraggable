@@ -96,38 +96,45 @@ const Mindmap = () => {
         }
         parentNode.outgoingEdges.push(newEdge.id);
         parentNode.isSelected = false;
+        
         // Add new node and edge to mindmap data
-        this.setState({
+        setState({
+            ...state,
             nodes: [...state.nodes, newNode], 
             edges: [...state.edges, newEdge]
         })
 
         // Set new node as selected 
-        this.handleSelected(newNode.id)
+        handleSelected(newNode.id)
         console.log("Parent: ", newNode.parentId)
     };
 
     const handleSelected = (nodeIndex) => {
-        setState(state.nodes.map( (node, index) => {
+        const nodes = state.nodes.map( (node, index) => {
             console.log("NewNodeIndex", nodeIndex)
             if (index === nodeIndex ) {
                 node.isSelected = true;
             }
             else
                 node.isSelected = false;
-        })) 
+            }
+        )
+        setState({
+            ...state,
+            nodes: nodes
+        }); 
     }
 
     const handleDragNodeStart = (e) => {
         if(e.target.parentElement) {
-            this.nodeElementBeingDragged = e.target.parentElement;
+            nodeElementBeingDragged = e.target.parentElement;
         }
     }
 
     const handleOnDragStop = (draggedNodeIndex, e) => {
         // Handle dragged node one final time after release
         // to let edges line up
-        this.handleDragNode(draggedNodeIndex, e);
+        //handleDragNode(draggedNodeIndex, e);
         nodeElementBeingDragged = null;
     }
 
@@ -145,49 +152,54 @@ const Mindmap = () => {
         updatedNode.centerX = containerDimensions.x + updatedNode.nodeWidth / 2
         updatedNode.centerY = containerDimensions.y + updatedNode.nodeHeight / 2
 
-        console.log("updated dimensions:", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
+        //console.log("updated dimensions:", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
 
         const nodes = [...state.nodes];
+        const edges = [...state.edges];
+
         nodes[draggedNodeIndex] = updatedNode;
 
         if(updatedNode.incomingEdgeId !== 0) {
 
-            const updatedEdgeIndex = state.edges.findIndex(edge => {
+            const updatedEdgeIndex = edges.findIndex(edge => {
                 return edge.id === updatedNode.incomingEdgeId
             });
 
-            const edge = { ...state.edges[updatedEdgeIndex]}
+            const edge = edges[updatedEdgeIndex]
             edge.x1 = updatedNode.centerX;
             edge.y1 = updatedNode.centerY;
 
             const edges = [...state.edges];
             edges[draggedNodeIndex] = edge;
-
-            this.setState({
-                edges: edges
-            })
         }
 
         if(updatedNode.outgoingEdges) {
 
             updatedNode.outgoingEdges.map(edgeId => {
 
-                const edgeIndex = state.edges.findIndex(e => { return e.id === edgeId})
-                console.log(edgeIndex);
-                this.state.edges[edgeIndex].x2 = updatedNode.centerX;
-                this.state.edges[edgeIndex].y2 = updatedNode.centerY;
+                const edgeIndex = edges.findIndex(e => { return e.id === edgeId})
+                const edge = edges[edgeIndex]
+                
+                edge.x2 = updatedNode.centerX;
+                edge.y2 = updatedNode.centerY;
+
+                edges[edgeIndex] = edge
 
             });
 
         }
+        console.log(state.edges)
+        console.log(state.nodes)
          
-        this.setState({
-            nodes: nodes
+        setState({
+            ...state,
+            nodes: nodes,
+            edges: edges
         })
     }
 
     const showProjectSelector = () => {
-        setState({...state, modalShow:true});
+        setState({...state, modalShow: true});
     }
 
     function loadTemplatesAndProjects() {
@@ -277,13 +289,11 @@ const Mindmap = () => {
 
     function loadLocalDummy() {
 
-        console.log("CLCCKKK");
-
         if(!state.error)
             return;
 
         const data = DummyData();
-        console.log("DATA: ", data)
+
         setState({
             ...state,
             nodes: data.nodes,
