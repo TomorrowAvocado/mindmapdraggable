@@ -1,21 +1,16 @@
-import { getByTestId } from '@testing-library/react';
-import React, { Component, createRef } from 'react'
-import { useState } from ../MindmapNodes/MindmapEdge/MindmapEdge
-import MindmapEdge from '../MindmapEdge/MindmapEdge';
-import MindmapNode from '../MindmapNode/MindmapNode';
-import ZoomPanWrapper from '../hoc/ZoomPanWrapper';
 
-import { dummyMindmapNodes } from '../assets/data/dummyData';
+import React, { Component } from 'react';
+import MindmapNode from '../MindmapNodes/MindmapNode/MindmapNode';
+import MindmapEdge from '../MindmapNodes/MindmapEdge/MindmapEdge';
 
 
+
+let idCounter = 0;
 const getId = () => {
     idCounter ++;
     return idCounter;
 }
 
-let withImages = false;
-let imageCounter = 0;
-const images = [croc, squirrel, lion, rhino];
 let nodeElementBeingDragged = null;
 
 
@@ -29,11 +24,6 @@ class Mindmap extends Component {
     svgContainer = React.createRef(null);
 
     createNewNode = (parentIndex) => {
-
-        let image = null;
-        if(withImages) {
-            image = images[imageCounter++];
-        }
 
         const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
         const parentNode = this.state.nodes[parentIndex];
@@ -52,7 +42,6 @@ class Mindmap extends Component {
             id: newId,
             parentId: parentNode.id,
             title: ("Node " + newId),
-            img: image,
             strokeColor: "#555",
             strokeWidth: 3,
             fontsize: "14pt",
@@ -182,7 +171,6 @@ class Mindmap extends Component {
         console.log(this.state.edges[0]);
         return (
             <div>
-            <img style={{position: "absolute", zIndex:"999"}} src={menuDummy}/>
             
             <svg width="100vw" height="99.5vh" ref={this.svgContainer} >
                 {this.state.edges.map((edge) =>
@@ -203,13 +191,9 @@ class Mindmap extends Component {
                 )}
             </svg>
             
-            <div style={{
-                position: "absolute", top: 0, right: 0, 
-                width: "2.2vw", height: "2.2vw", zIndex: "9999"}} 
-                onClick={() => {withImages = !withImages}}></div>
             </div>
         )
     }
 }
 
-export default Mindmap
+export default Mindmap;
