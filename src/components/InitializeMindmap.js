@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { dummyMindmapNodes } from '../assets/data/dummyData';
-import Mindmap from './Mindmap/Mindmap';
+import Mindmap from './MindMap/Mindmap';
 import axios from 'axios';
 
 const url = "https://bachelor-mindmap-default-rtdb.firebaseio.com/mindmapNodes.json"
