@@ -108,7 +108,7 @@ const Mindmap = () => {
     };
 
     const handleSelected = (nodeIndex) => {
-        setState(this.state.nodes.map( (node, index) => {
+        setState(state.nodes.map( (node, index) => {
             console.log("NewNodeIndex", nodeIndex)
             if (index === nodeIndex ) {
                 node.isSelected = true;
@@ -134,8 +134,8 @@ const Mindmap = () => {
    const  handleDragNode = (draggedNodeIndex) => {
 
         // Get bounding rectangle from dragged node
-        let containerDimensions = this.nodeElementBeingDragged.getBoundingClientRect();
-        const updatedNode = {...this.state.nodes[draggedNodeIndex] }
+        let containerDimensions = nodeElementBeingDragged.getBoundingClientRect();
+        const updatedNode = {...state.nodes[draggedNodeIndex] }
 
         console.log("initial x,y: ", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
         console.log("containerdims: ", containerDimensions.x, containerDimensions.y, containerDimensions.width, containerDimensions.height);
@@ -147,20 +147,20 @@ const Mindmap = () => {
 
         console.log("updated dimensions:", updatedNode.x, updatedNode.y, updatedNode.nodeWidth, updatedNode.nodeHeight, updatedNode.centerX, updatedNode.centerY);
 
-        const nodes = [...this.state.nodes];
+        const nodes = [...state.nodes];
         nodes[draggedNodeIndex] = updatedNode;
 
         if(updatedNode.incomingEdgeId !== 0) {
 
-            const updatedEdgeIndex = this.state.edges.findIndex(edge => {
+            const updatedEdgeIndex = state.edges.findIndex(edge => {
                 return edge.id === updatedNode.incomingEdgeId
             });
 
-            const edge = { ...this.state.edges[updatedEdgeIndex]}
+            const edge = { ...state.edges[updatedEdgeIndex]}
             edge.x1 = updatedNode.centerX;
             edge.y1 = updatedNode.centerY;
 
-            const edges = [...this.state.edges];
+            const edges = [...state.edges];
             edges[draggedNodeIndex] = edge;
 
             this.setState({
@@ -172,7 +172,7 @@ const Mindmap = () => {
 
             updatedNode.outgoingEdges.map(edgeId => {
 
-                const edgeIndex = this.state.edges.findIndex(e => { return e.id === edgeId})
+                const edgeIndex = state.edges.findIndex(e => { return e.id === edgeId})
                 console.log(edgeIndex);
                 this.state.edges[edgeIndex].x2 = updatedNode.centerX;
                 this.state.edges[edgeIndex].y2 = updatedNode.centerY;
@@ -276,12 +276,18 @@ const Mindmap = () => {
 
 
     function loadLocalDummy() {
+
+        console.log("CLCCKKK");
+
         if(!state.error)
             return;
 
+        const data = DummyData();
+        console.log("DATA: ", data)
         setState({
             ...state,
-            mindmapData: DummyData(),
+            nodes: data.nodes,
+            edges: data.edges,
             modalShow: false
         });
     }
@@ -301,11 +307,11 @@ const Mindmap = () => {
             <MindmapNode 
                 key={node.id}
                 node={node} 
-                plusBtnClicked={this.createNewNode.bind(this, index)} 
-                handleSelected={this.handleSelected.bind(this, index)}
-                onDragStart={this.handleDragNodeStart.bind(this)}
-                onDrag={this.handleDragNode.bind(this, index)}
-                onDragStop={this.handleOnDragStop.bind(this, index)}
+                plusBtnClicked={createNewNode.bind(this, index)} 
+                handleSelected={handleSelected.bind(this, index)}
+                onDragStart={handleDragNodeStart.bind(this)}
+                onDrag={handleDragNode.bind(this, index)}
+                onDragStop={handleOnDragStop.bind(this, index)}
             />
         )
     }
@@ -313,10 +319,12 @@ const Mindmap = () => {
     return (
         <>
             <Toolbar menuClicked={showProjectSelector} />
+
             <svg width="100vw" height="100vh" >
                 {edgeComponents}
                 {nodeComponents}
             </svg>
+            
             <Modal show={state.modalShow} modalClosed={loadLocalDummy}>
                 <ProjectSelector 
                     newProjectTemplates = {state.newProjectTemplates}

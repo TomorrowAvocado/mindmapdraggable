@@ -47,7 +47,7 @@ const ProjectSelector = (props) => {
     }
 
 
-    // GENERATE NEW PROJECT SELECTOR
+    // GENERATE LOAD PROJECT SELECTOR
 
     let projectList = <p>LOADNING PROJECTS...</p>;
 

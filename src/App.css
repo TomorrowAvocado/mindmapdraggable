@@ -3,7 +3,7 @@
 }
 
 .App {
-background-color: rgb(254, 254, 255);
+  background-color: rgb(254, 254, 255);
 }
 .mindMapNode {
   text-align: center;
@@ -16,11 +16,10 @@ background-color: rgb(254, 254, 255);
   box-shadow: -2px 0 grey, 0 2px grey, 2px 0 grey, 0 -2px grey;
 }
 
-
-foreignObject { 
+foreignObject {
   /* Allow border to wrap around content when content grows */
-  overflow: visible; 
-  
+  overflow: visible;
+
   box-sizing: border-box;
 }
 
@@ -32,9 +31,6 @@ img {
   width: 100%;
 }
 
-
-
-
 .createNodeBtn {
   border-style: solid;
   border-radius: 100%;
@@ -42,7 +38,7 @@ img {
   top: 9px;
   right: 9px;
   font-size: 12pt;
-  transition: all .15s ease-in;
+  transition: all 0.15s ease-in;
 }
 .createNodeBtn:hover {
   transform: scale(1.2);
@@ -52,4 +48,3 @@ img {
 [contenteditable] {
   outline: 0px solid transparent;
 }
-

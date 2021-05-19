@@ -3,7 +3,6 @@ export const dummyMindmapNodes = [
         id: 1,
         parentId: 0,
         title: "Main node",
-        img: null,
         strokeColor: "black",
         strokeWidth: 3,
         fontsize: "20pt",
